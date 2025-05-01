@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Catalog API",
+  "name": "Catalog AI",
   "logo": {
     "dark": "/logo/logo.png",
     "light": "/logo/logo.png"
@@ -11,26 +11,15 @@
     "light": "#4ADE80",
     "dark": "#059669"
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:support@catalogai.com"
-    }
-  ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.catalogai.com"
+    "name": "Support",
+    "url": "mailto:hamish@getcatalog.ai"
   },
   "anchors": [
     {
-      "name": "API Reference",
-      "icon": "code",
-      "url": "api-reference"
-    },
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.gg/catalogai"
+      "name": "Website",
+      "icon": "globe",
+      "url": "https://www.getcatalog.ai"
     }
   ],
   "navigation": [
@@ -38,13 +27,6 @@
       "group": "Overview",
       "pages": [
         "index",
-        "overview/introduction",
-        "overview/product-features"
-      ]
-    },
-    {
-      "group": "Getting Started",
-      "pages": [
         "getting-started/authentication",
         "getting-started/quick-start"
       ]
@@ -56,12 +38,7 @@
         "developer-guide/filters",
         "developer-guide/smart-search",
         "developer-guide/response-structure",
-        "developer-guide/pagination"
-      ]
-    },
-    {
-      "group": "API Reference",
-      "pages": [
+        "developer-guide/pagination",
         "api-reference/endpoints",
         "api-reference/parameters",
         "api-reference/response-objects"
@@ -92,8 +69,6 @@
     }
   ],
   "footerSocials": {
-    "github": "https://github.com/catalogai/catalog-api",
-    "twitter": "https://twitter.com/catalogai",
-    "discord": "https://discord.gg/catalogai"
+    "twitter": "https://x.com/hamishgunaseka"
   }
 } 

@@ -7,28 +7,7 @@ description: 'How to authenticate with the Catalog API'
 
 All requests to the Catalog API must include a valid API key for authentication. This key ensures that only authorized applications can access your product data.
 
-## API Key Authentication
 
-The API uses a simple key-based authentication system. You must include your API key in the `x-api-key` header with every request:
-
-```bash
-curl -X POST https://catalogai.vercel.app/api/products \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_VALID_API_KEY" \
-  -d '{ "query": "t-shirt" }'
-```
-
-<Tip>
-  Replace `YOUR_VALID_API_KEY` with the actual API key provided to you by our team.
-</Tip>
-
-## Obtaining an API Key
-
-To get an API key:
-
-1. [Contact our support team](/support/contact) to request access to the Catalog API
-2. Once approved, you'll receive your unique API key
-3. Store this key securely and do not share it publicly
 
 ## Security Best Practices
 

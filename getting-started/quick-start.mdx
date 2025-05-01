@@ -3,16 +3,28 @@ title: 'Quick Start'
 description: 'Make your first API call to the Catalog API'
 ---
 
-# Quick Start Guide
+## API Key Authentication
 
-This guide will help you make your first request to the Catalog API in just a few minutes. We'll walk through a simple example to search for products.
+The API uses a simple key-based authentication system. You must include your API key in the `x-api-key` header with every request:
 
-## Prerequisites
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_VALID_API_KEY" \
+  -d '{ "query": "t-shirt" }'
+```
 
-Before you begin, make sure you have:
+<Tip>
+  Replace `YOUR_VALID_API_KEY` with the actual API key provided to you by our team.
+</Tip>
 
-- A valid API key (see [Authentication](/getting-started/authentication))
-- A tool to make HTTP requests (like cURL, Postman, or your preferred programming language)
+## Obtaining an API Key
+
+To get an API key:
+
+1. [Contact our team](mailto:hamish@getcatalog.ai) to request access to the Catalog API
+2. Once onboarded, you'll receive your unique API key
+3. Store this key securely and do not share it publicly
 
 ## Making Your First API Call
 
@@ -188,7 +200,3 @@ Congratulations! You've now made your first API call to the Catalog API. To lear
 - Understand [Smart Search](/developer-guide/smart-search) capabilities
 - Learn about [Filtering](/developer-guide/filters) options
 - Check out our [Examples](/examples/curl) section for more code samples
-
-<Tip>
-  For a complete reference of all available options, see our [API Reference](/api-reference/endpoints) section.
-</Tip> 
