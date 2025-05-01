@@ -27,7 +27,6 @@
       "group": "Overview",
       "pages": [
         "index",
-        "getting-started/authentication",
         "getting-started/quick-start"
       ]
     },
