@@ -36,20 +36,8 @@
       "pages": [
         "developer-guide/request-structure",
         "developer-guide/filters",
-        "developer-guide/smart-search",
         "developer-guide/response-structure",
-        "developer-guide/pagination",
-        "api-reference/endpoints",
-        "api-reference/parameters",
-        "api-reference/response-objects"
-      ]
-    },
-    {
-      "group": "Advanced Topics",
-      "pages": [
-        "advanced-topics/query-expansion",
-        "advanced-topics/implicit-filters",
-        "advanced-topics/best-practices"
+        "developer-guide/pagination"
       ]
     },
     {
@@ -58,13 +46,6 @@
         "examples/curl",
         "examples/javascript",
         "examples/python"
-      ]
-    },
-    {
-      "group": "Support",
-      "pages": [
-        "support/faq",
-        "support/contact"
       ]
     }
   ],
