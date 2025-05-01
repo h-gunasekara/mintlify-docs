@@ -1,0 +1,170 @@
+---
+title: 'cURL Examples'
+description: 'Examples of using the Catalog API with cURL'
+---
+
+# cURL Examples
+
+These examples demonstrate how to use the Catalog API with cURL, a command-line tool for making HTTP requests.
+
+<Note>
+  Replace `YOUR_API_KEY` with your actual API key in all examples.
+</Note>
+
+## Basic Search
+
+Search for products matching "cotton shirt":
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "cotton shirt"
+  }'
+```
+
+## Using Filters
+
+Filter products by vendor, availability, and price range:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "filters": {
+      "vendor": "EcoWear",
+      "is_available": true,
+      "price_min": 20.00,
+      "price_max": 50.00
+    }
+  }'
+```
+
+## Filtering by Attributes
+
+Filter products by color and fabric:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "filters": {
+      "attributes": {
+        "color": "Green",
+        "fabric": ["linen"]
+      }
+    }
+  }'
+```
+
+## Combined Search and Filters
+
+Search for "jacket" and filter by vendor:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "jacket",
+    "filters": {
+      "vendor": "TrailBlazer"
+    }
+  }'
+```
+
+## Pagination
+
+Get the second page of search results for "shoes":
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "shoes",
+    "page": 2
+  }'
+```
+
+## Complex Query
+
+Search for organic products, filter by price, availability, and multiple attributes:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "organic",
+    "filters": {
+      "price_max": 100.00,
+      "is_available": true,
+      "attributes": {
+        "color": ["White", "Cream", "Natural"],
+        "fabric": ["cotton", "organic_cotton"],
+        "category": "Home > Bedding"
+      }
+    },
+    "page": 1
+  }'
+```
+
+## Error Handling
+
+If you need to debug API errors, add the `-v` (verbose) flag to see more details about the request and response:
+
+```bash
+curl -v -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "cotton shirt"
+  }'
+```
+
+## Shell Script Example
+
+Here's a complete shell script example that performs a search and handles the JSON response:
+
+```bash
+#!/bin/bash
+
+API_ENDPOINT="https://catalogai.vercel.app/api/products"
+API_KEY="YOUR_API_KEY"
+
+# Function to make API call
+search_products() {
+  local query="$1"
+  local response
+  
+  response=$(curl -s -X POST "$API_ENDPOINT" \
+    -H "Content-Type: application/json" \
+    -H "x-api-key: $API_KEY" \
+    -d "{
+      \"query\": \"$query\"
+    }")
+  
+  # Check if response contains an error
+  if echo "$response" | grep -q "error"; then
+    echo "API Error:"
+    echo "$response" | grep -o '"error":"[^"]*"'
+    return 1
+  fi
+  
+  # Extract and display some information
+  total_items=$(echo "$response" | grep -o '"totalItems":[0-9]*' | cut -d ':' -f2)
+  echo "Found $total_items products matching '$query'"
+  
+  # Display the first 3 product titles
+  echo "$response" | grep -o '"title":"[^"]*"' | head -3 | cut -d ':' -f2 | tr -d '"'
+  
+  return 0
+}
+
+# Call the function with a search term
+search_products "organic shirt"
+``` 

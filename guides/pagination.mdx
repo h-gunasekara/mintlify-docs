@@ -1,0 +1,211 @@
+---
+title: 'Pagination'
+description: 'How to paginate through product results with the Catalog API'
+---
+
+# Pagination
+
+When working with the Product Catalog API, you'll often need to navigate through large result sets efficiently. This guide explains how to use pagination to retrieve and display results in manageable chunks.
+
+## Pagination Basics
+
+The API uses a simple page-based pagination system with two main parameters:
+
+- `page`: The current page number (starting at 1)
+- `limit`: The number of items per page (fixed at 10 items per page in the current implementation)
+
+## Using Pagination in Requests
+
+To paginate through results, simply include the `page` parameter in your request:
+
+```json
+{
+  "query": "shirt",
+  "page": 1  // Start with page 1
+}
+```
+
+For subsequent pages, increment the page number:
+
+```json
+{
+  "query": "shirt",
+  "page": 2  // Get the second page
+}
+```
+
+## Pagination Response Data
+
+Each API response includes metadata about pagination in the `meta` object:
+
+```json
+{
+  "products": [...],
+  "meta": {
+    "totalItems": 35,     // Total number of matching items
+    "totalPages": 4,      // Total number of pages
+    "currentPage": 2,     // Current page number
+    "pageSize": 10        // Number of items per page
+  }
+}
+```
+
+Use this information to:
+- Display the current position (e.g., "Showing 11-20 of 35 products")
+- Create navigation controls (next/previous buttons, page numbers)
+- Determine if there are more pages to load
+
+## Page Navigation Calculation
+
+To implement pagination controls in your UI, use these calculations:
+
+```javascript
+// Start and end item numbers on current page
+const startItem = (currentPage - 1) * pageSize + 1;
+const endItem = Math.min(currentPage * pageSize, totalItems);
+
+// Check if previous/next buttons should be enabled
+const hasPreviousPage = currentPage > 1;
+const hasNextPage = currentPage < totalPages;
+
+// Calculate visible page numbers (e.g., for a pagination bar)
+const visiblePages = getVisiblePageNumbers(currentPage, totalPages);
+```
+
+## Handling Empty Pages
+
+If a user requests a page beyond the available data, the API will return an empty products array but still provide accurate metadata:
+
+```json
+{
+  "products": [],  // Empty array for pages beyond available data
+  "meta": {
+    "totalItems": 35,
+    "totalPages": 4,
+    "currentPage": 10,  // Page requested was beyond available data
+    "pageSize": 10
+  }
+}
+```
+
+Your application should handle this gracefully, perhaps by redirecting to the first or last valid page.
+
+## Pagination With Filters
+
+Pagination works the same way when combined with filters or search queries:
+
+```json
+{
+  "query": "shirt",
+  "filters": {
+    "price_min": 20,
+    "vendor": "EcoWear"
+  },
+  "page": 3  // Get the third page of filtered results
+}
+```
+
+## Performance Considerations
+
+1. **Result Cap**: Note that `totalItems` is capped at 50, even if there are more matching items. This is for performance reasons.
+
+2. **Page Size Limit**: The API currently uses a fixed page size of 10 items per page.
+
+3. **Deep Page Penalty**: Requesting very high page numbers can be less efficient than starting a new, more specific search.
+
+## Best Practices
+
+1. **Always Start at Page 1**: Begin with the first page and provide navigation to subsequent pages.
+
+2. **Show Position Context**: Display "Showing X-Y of Z results" to help users understand where they are in the result set.
+
+3. **Implement Jump Controls**: For large result sets, allow users to jump to specific pages or navigate to first/last pages.
+
+4. **Handle Edge Cases**: Ensure your application gracefully handles requests for invalid page numbers (0, negative, or beyond total pages).
+
+## Example: Building a Pagination Component
+
+Here's a simple React example of a pagination component:
+
+```jsx
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  // Don't render pagination if there's only one page
+  if (totalPages <= 1) return null;
+  
+  const handlePrevious = () => {
+    if (currentPage > 1) onPageChange(currentPage - 1);
+  };
+  
+  const handleNext = () => {
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
+  };
+  
+  // Generate array of page numbers to display
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // If few pages, show all
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      // Otherwise, show current page with neighbors
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      
+      // Adjust if we're near the end
+      if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      // Add first page, ellipsis if needed
+      if (startPage > 1) {
+        pages.push(1);
+        if (startPage > 2) pages.push('...');
+      }
+      
+      // Add page numbers
+      for (let i = startPage; i <= endPage; i++) pages.push(i);
+      
+      // Add last page, ellipsis if needed
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
+  
+  return (
+    <div className="pagination">
+      <button 
+        onClick={handlePrevious} 
+        disabled={currentPage === 1}
+      >
+        Previous
+      </button>
+      
+      {getPageNumbers().map((page, index) => (
+        <button
+          key={index}
+          onClick={() => typeof page === 'number' && onPageChange(page)}
+          disabled={page === '...' || page === currentPage}
+          className={page === currentPage ? 'active' : ''}
+        >
+          {page}
+        </button>
+      ))}
+      
+      <button 
+        onClick={handleNext} 
+        disabled={currentPage === totalPages}
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+```
+
+Remember to combine this pagination component with your product display logic and API calls to create a complete paginated interface. 

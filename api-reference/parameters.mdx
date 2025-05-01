@@ -1,0 +1,226 @@
+---
+title: 'Request Parameters'
+description: 'Complete reference for all Catalog API request parameters'
+---
+
+# Request Parameters
+
+This page provides a comprehensive reference for all parameters that can be used in requests to the Catalog API.
+
+## Top-Level Parameters
+
+These parameters can be included at the top level of your request body.
+
+<ResponseField name="query" type="string" optional>
+  Natural language search string for finding products. The API processes this string with smart features like synonym expansion and implicit filter detection.
+  
+  **Example:** `"organic cotton shirt"`
+  
+  **Default:** `null` (no query)
+  
+  **Usage Notes:**
+  - When provided, the API will perform a smart search that attempts to understand natural language queries
+  - Implicit filters may be extracted from this string (e.g., "blue shirts under $50")
+  - See [Smart Search](/developer-guide/smart-search) for more details
+</ResponseField>
+
+<ResponseField name="filters" type="object" optional>
+  Object containing filter criteria to narrow down results. 
+  
+  **Example:** `{"price_min": 20, "price_max": 50, "is_available": true}`
+  
+  **Default:** `{}` (no filters)
+  
+  **Usage Notes:**
+  - All specified filters are combined using AND logic
+  - Explicit filters override any implicit filters extracted from the `query`
+  - See [Filter Reference](#filter-reference) below for available filter options
+</ResponseField>
+
+<ResponseField name="page" type="number" optional>
+  The page number (1-indexed) for pagination.
+  
+  **Example:** `2`
+  
+  **Default:** `1`
+  
+  **Usage Notes:**
+  - Used for paginating through large result sets
+  - Must be a positive integer
+  - See [Pagination](/developer-guide/pagination) for more details
+</ResponseField>
+
+## Filter Reference
+
+The following filters can be included in the `filters` object of your request.
+
+### Price Filters
+
+<ResponseField name="filters.price_min" type="number" optional>
+  Minimum price (inclusive). Products with a price less than this value will be excluded.
+  
+  **Example:** `25.99`
+  
+  **Default:** `null` (no minimum price)
+  
+  **Validation:** Must be a non-negative number
+</ResponseField>
+
+<ResponseField name="filters.price_max" type="number" optional>
+  Maximum price (inclusive). Products with a price greater than this value will be excluded.
+  
+  **Example:** `99.99`
+  
+  **Default:** `null` (no maximum price)
+  
+  **Validation:** Must be a non-negative number and greater than or equal to `price_min` (if provided)
+</ResponseField>
+
+### Vendor Filter
+
+<ResponseField name="filters.vendor" type="string" optional>
+  The vendor name (exact match). Only products from this vendor will be included.
+  
+  **Example:** `"Palace"` or `"Nike"`
+  
+  **Default:** `null` (no vendor filtering)
+  
+  **Validation:** Must be a non-empty string
+</ResponseField>
+
+### Availability Filter
+
+<ResponseField name="filters.is_available" type="boolean" optional>
+  Product availability filter. Set to `true` to include only available products, or `false` to include only unavailable products.
+  
+  **Example:** `true`
+  
+  **Default:** `null` (no availability filtering)
+  
+  **Validation:** Must be a boolean value
+</ResponseField>
+
+## Attribute Filters
+
+The following filters can be included within the `filters.attributes` object.
+
+<ResponseField name="filters.attributes" type="object" optional>
+  Object containing attribute-specific filters.
+  
+  **Example:** `{"color": "Red", "fabric": {"cotton": true}}`
+  
+  **Default:** `{}` (no attribute filters)
+  
+  **Usage Notes:**
+  - Used for filtering by product-specific attributes
+  - Supports nested attributes for more advanced filtering
+</ResponseField>
+
+### Color Attribute
+
+<ResponseField name="filters.attributes.color" type="string" optional>
+  Filter by a specific color (exact match).
+  
+  **Example:** `"Red"` or `"Navy Blue"`
+  
+  **Default:** `null` (no color filtering)
+  
+  **Validation:** Must be a non-empty string
+</ResponseField>
+
+### Fabric Attribute
+
+<ResponseField name="filters.attributes.fabric" type="object" optional>
+  Filter by fabric types. Keys are fabric names, and values must be `true` to include that fabric.
+  
+  **Example:** `{"cotton": true, "linen": true}`
+  
+  **Default:** `null` (no fabric filtering)
+  
+  **Validation:** Must be an object with boolean values
+  
+  **Usage Notes:**
+  - Products will match if they contain ANY of the specified fabrics (OR logic between fabric types)
+  - The value for each fabric key must be `true` to include it
+</ResponseField>
+
+## Parameter Combinations
+
+Parameters can be combined to create complex queries. Here are some common combinations:
+
+### Search with Filtering
+
+<CodeGroup>
+```json Combined Query and Filters
+{
+  "query": "shirt",
+  "filters": {
+    "price_min": 20,
+    "price_max": 100,
+    "vendor": "EcoWear",
+    "attributes": {
+      "color": "Blue"
+    }
+  }
+}
+```
+</CodeGroup>
+
+### Attribute-Only Filtering
+
+<CodeGroup>
+```json Attribute-Only Filtering
+{
+  "filters": {
+    "attributes": {
+      "color": "Green",
+      "fabric": {
+        "organic cotton": true,
+        "hemp": true
+      }
+    },
+    "is_available": true
+  }
+}
+```
+</CodeGroup>
+
+### Paginated Search
+
+<CodeGroup>
+```json Paginated Search
+{
+  "query": "sneakers",
+  "filters": {
+    "vendor": "Nike",
+    "is_available": true
+  },
+  "page": 2
+}
+```
+</CodeGroup>
+
+## Parameter Validation
+
+The API performs validation on all parameters. If validation fails, you'll receive a `400 Bad Request` response with details about the validation errors.
+
+### Example Validation Error
+
+<CodeGroup>
+```json Validation Error Example
+{
+  "error": "Bad Request",
+  "message": "Invalid request parameters",
+  "details": {
+    "price_min": "Must be a positive number",
+    "price_max": "Must be greater than or equal to price_min"
+  }
+}
+```
+</CodeGroup>
+
+## Related Resources
+
+- [Request Structure](/developer-guide/request-structure) - More information about the overall request structure
+- [Filters](/developer-guide/filters) - Detailed guide on using filters effectively
+- [Smart Search](/developer-guide/smart-search) - In-depth explanation of the smart search capabilities 

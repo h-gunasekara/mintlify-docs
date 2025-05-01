@@ -1,0 +1,80 @@
+---
+title: 'Authentication'
+description: 'How to authenticate with the Catalog API'
+---
+
+# Authentication
+
+All requests to the Catalog API must include a valid API key for authentication. This key ensures that only authorized applications can access your product data.
+
+## API Key Authentication
+
+The API uses a simple key-based authentication system. You must include your API key in the `x-api-key` header with every request:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/products \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_VALID_API_KEY" \
+  -d '{ "query": "t-shirt" }'
+```
+
+<Tip>
+  Replace `YOUR_VALID_API_KEY` with the actual API key provided to you by our team.
+</Tip>
+
+## Obtaining an API Key
+
+To get an API key:
+
+1. [Contact our support team](/support/contact) to request access to the Catalog API
+2. Once approved, you'll receive your unique API key
+3. Store this key securely and do not share it publicly
+
+## Security Best Practices
+
+To keep your API key secure:
+
+<Check>
+  Store your API key in environment variables or a secure configuration system
+</Check>
+
+<Check>
+  Never hardcode your API key directly in client-side code where it could be exposed
+</Check>
+
+<Check>
+  If building a public-facing application, proxy API requests through your own backend
+</Check>
+
+<Check>
+  Rotate your API key periodically for enhanced security
+</Check>
+
+<Warning>
+  If you suspect your API key has been compromised, contact us immediately to have it revoked and replaced.
+</Warning>
+
+## Error Handling
+
+If you make a request without a valid API key, you'll receive a `401 Unauthorized` response:
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Missing or invalid API key"
+}
+```
+
+## Rate Limiting
+
+API usage is subject to rate limits based on your specific plan. Rate limit information is included in the response headers:
+
+- `X-RateLimit-Limit`: Total requests allowed per period
+- `X-RateLimit-Remaining`: Remaining requests in the current period
+- `X-RateLimit-Reset`: Timestamp when the rate limit will reset
+
+If you exceed your rate limit, you'll receive a `429 Too Many Requests` response.
+
+## Next Steps
+
+Now that you understand how to authenticate with the API, proceed to our [Quick Start Guide](/getting-started/quick-start) to make your first successful API call. 

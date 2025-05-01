@@ -1,0 +1,106 @@
+---
+title: 'Typesense Integration'
+description: 'Understanding how the Catalog API uses Typesense for search'
+---
+
+# Typesense Integration
+
+The Product Catalog API is powered by [Typesense](https://typesense.org/), a modern, open-source search engine designed for speed and developer experience. This page explains how our Typesense integration works and how to get the most out of its powerful search capabilities.
+
+## What is Typesense?
+
+Typesense is a fast, typo-tolerant search engine optimized for search-as-you-type experiences and instantaneous search results. Unlike traditional search engines, Typesense provides:
+
+- **Speed**: Search results in milliseconds
+- **Typo Tolerance**: Automatic handling of misspellings and typos
+- **Ranking**: Intelligent ranking of results based on multiple factors
+- **Faceting**: Dynamic categorization of results
+- **Simple API**: RESTful JSON API with clear semantics
+
+## How We Use Typesense
+
+Our Catalog API leverages Typesense for:
+
+1. **Full-Text Search**: Searching across product titles, descriptions, and attributes
+2. **Filtering**: Fast faceted searches and filtering on multiple criteria
+3. **Typo Tolerance**: Handling misspellings and variations of product terms
+4. **Ranking**: Smart relevance-based ordering of search results
+
+## Search Schema
+
+Our Typesense collection has the following schema for products:
+
+```json
+{
+  "name": "products",
+  "fields": [
+    {"name": "id", "type": "int32"},
+    {"name": "title", "type": "string"},
+    {"name": "description", "type": "string"},
+    {"name": "vendor", "type": "string", "facet": true},
+    {"name": "url", "type": "string"},
+    {"name": "is_available", "type": "bool", "facet": true},
+    {"name": "price_value", "type": "float"},
+    {"name": "price_display", "type": "float"},
+    {"name": "price_currency", "type": "string"},
+    {"name": "attributes.color", "type": "string", "facet": true},
+    {"name": "attributes.category", "type": "string", "facet": true},
+    {"name": "attributes.fabric.*", "type": "bool", "facet": true}
+  ],
+  "default_sorting_field": "price_value"
+}
+```
+
+## Search Parameter Mapping
+
+When you make a request to our API, we map your parameters to Typesense search parameters:
+
+| API Parameter | Typesense Parameter | Description |
+|---------------|---------------------|-------------|
+| `query` | `q` | The search query text |
+| `filters.vendor` | `filter_by` | Filter expression for vendor |
+| `filters.price_min` | `filter_by` | Range filter for minimum price |
+| `filters.price_max` | `filter_by` | Range filter for maximum price |
+| `filters.is_available` | `filter_by` | Boolean filter for availability |
+| `filters.attributes.*` | `filter_by` | Filters for various product attributes |
+| `page` and `limit` | `page` and `per_page` | Pagination parameters |
+
+## Performance Optimization
+
+To maximize performance when working with our Typesense-powered API:
+
+1. **Use Filters**: Combine text search with filters for faster, more precise results
+2. **Pagination**: Always use pagination to limit result set size
+3. **Focused Queries**: More specific queries perform better than generic ones
+4. **Faceting**: Let the API handle faceting rather than doing it client-side
+
+## Advanced Typesense Features
+
+While our API abstracts away many Typesense details, it's useful to know that our implementation supports:
+
+1. **Prefix Searching**: As users type, we match prefixes for instant search
+2. **Fuzzy Search**: Automatic typo correction (e.g., "coton" matches "cotton")
+3. **Field Weighting**: Title matches are weighted higher than description matches
+4. **Hybrid Ranking**: Results balance exact matches and semantic relevance
+
+## Behind the Scenes
+
+When you make a search request, we:
+
+1. Parse your query and filters
+2. Construct an optimized Typesense search request
+3. Execute the search against our indexed product database
+4. Format and return the results
+
+This process typically completes in under 50ms, allowing for near-instantaneous search experiences in your applications.
+
+## Limitations
+
+While Typesense provides powerful search capabilities, be aware of these limitations:
+
+1. **Result Count Cap**: Total item counts are capped at 50 for performance reasons
+2. **Complex Boolean Logic**: The API simplifies filters to basic AND/OR conditions
+3. **Highlighting**: Text highlighting is not currently supported
+4. **Geo Search**: Geographic search capabilities are not implemented
+
+For more details on Typesense itself, visit the [Typesense documentation](https://typesense.org/docs/). 

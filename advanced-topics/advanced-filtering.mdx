@@ -1,0 +1,312 @@
+---
+title: 'Advanced Filtering'
+description: 'Advanced filtering techniques for the Catalog API'
+---
+
+# Advanced Filtering
+
+The Catalog API offers sophisticated filtering capabilities beyond basic attribute matching. This guide explores advanced filtering techniques to help you build powerful product search experiences.
+
+## Nested Attribute Filtering
+
+The API supports filtering on nested attributes using dot notation and complex object structures:
+
+<CodeGroup>
+```json Nested Attribute Filtering
+{
+  "filters": {
+    "attributes": {
+      "dimensions": {
+        "height_cm": {
+          "min": 20,
+          "max": 40
+        },
+        "width_cm": {
+          "min": 10
+        }
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters products where:
+- The height is between 20-40 cm
+- The width is at least 10 cm
+
+## Multi-Value Filtering
+
+When filtering on attributes that can have multiple values (like tags, categories, or features), you can use array-based filtering:
+
+<CodeGroup>
+```json Multi-Value Filtering (Any Match)
+{
+  "filters": {
+    "attributes": {
+      "categories": {
+        "$any": ["Shirts", "T-Shirts", "Tops"]
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This will match products that belong to ANY of the specified categories.
+
+<CodeGroup>
+```json Multi-Value Filtering (All Match)
+{
+  "filters": {
+    "attributes": {
+      "features": {
+        "$all": ["Waterproof", "Breathable", "Lightweight"]
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This will only match products that have ALL of the specified features.
+
+## Range-Based Filtering
+
+For numerical values, the API supports range-based filtering using `min` and `max` properties:
+
+<CodeGroup>
+```json Range-Based Filtering
+{
+  "filters": {
+    "attributes": {
+      "rating": {
+        "min": 4.0,
+        "max": 5.0
+      },
+      "weight_grams": {
+        "max": 500
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters for:
+- Products with ratings between 4.0 and 5.0
+- Products that weigh 500 grams or less
+
+## Date-Based Filtering
+
+The API supports filtering based on dates:
+
+<CodeGroup>
+```json Date-Based Filtering
+{
+  "filters": {
+    "created_at": {
+      "min": "2023-01-01T00:00:00Z",
+      "max": "2023-12-31T23:59:59Z"
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters for products created during the 2023 calendar year.
+
+## Existence Filtering
+
+You can filter for the presence or absence of a specific attribute:
+
+<CodeGroup>
+```json Existence Filtering
+{
+  "filters": {
+    "attributes": {
+      "sale_price": {
+        "$exists": true
+      },
+      "discontinued": {
+        "$exists": false
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters for products that:
+- Have a sale price attribute (so they're on sale)
+- Don't have a discontinued attribute (so they're not discontinued)
+
+## Combining Multiple Filters with Logic Operators
+
+The API allows combining multiple filter conditions using logical operators:
+
+### Using AND Logic
+
+By default, all filters within a filter object are combined using AND logic. This means a product must match ALL specified conditions to be included in the results.
+
+<CodeGroup>
+```json AND Logic (Implicit)
+{
+  "filters": {
+    "price_min": 20,
+    "price_max": 100,
+    "vendor": "EcoWear",
+    "is_available": true
+  }
+}
+```
+</CodeGroup>
+
+This example finds products that are:
+- Priced between $20 and $100 AND
+- Made by EcoWear AND
+- Currently available
+
+### Using OR Logic
+
+For more complex scenarios, you can use the `$or` operator to specify conditions where ANY of the conditions can match:
+
+<CodeGroup>
+```json OR Logic
+{
+  "filters": {
+    "$or": [
+      {
+        "vendor": "Nike"
+      },
+      {
+        "vendor": "Adidas"
+      },
+      {
+        "attributes": {
+          "type": "Athletic Shoes"
+        }
+      }
+    ]
+  }
+}
+```
+</CodeGroup>
+
+This example finds products that are:
+- Made by Nike OR
+- Made by Adidas OR
+- Categorized as Athletic Shoes
+
+### Combining AND and OR Logic
+
+You can create sophisticated filter combinations by nesting logical operators:
+
+<CodeGroup>
+```json Combined AND/OR Logic
+{
+  "filters": {
+    "is_available": true,
+    "$or": [
+      {
+        "price_max": 50,
+        "attributes": {
+          "on_sale": true
+        }
+      },
+      {
+        "vendor": "Premium Brand",
+        "price_min": 200
+      }
+    ]
+  }
+}
+```
+</CodeGroup>
+
+This complex example finds products that are:
+- Available AND
+- Either:
+  - Priced $50 or less AND on sale, OR
+  - Made by "Premium Brand" AND priced $200 or more
+
+## Filtering on Computed Values
+
+Some filters operate on computed values rather than direct product attributes:
+
+<CodeGroup>
+```json Computed Value Filtering
+{
+  "filters": {
+    "discount_percentage": {
+      "min": 20
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters for products with at least a 20% discount. The discount percentage is calculated as:
+```
+discount_percentage = ((compare_at_price - price) / compare_at_price) * 100
+```
+
+## Special Filter Parameters
+
+The API provides special filter parameters for specific use cases:
+
+### Exclusion Filters
+
+You can exclude specific products from the results:
+
+<CodeGroup>
+```json Exclusion Filter
+{
+  "filters": {
+    "id": {
+      "$not": [1234, 5678]
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example excludes products with the IDs 1234 and 5678 from the results.
+
+### Exact Match vs. Contains
+
+By default, string filters perform exact matches. You can use the `$contains` operator for partial matches:
+
+<CodeGroup>
+```json Contains Filter
+{
+  "filters": {
+    "attributes": {
+      "description": {
+        "$contains": "waterproof"
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+This example filters for products where the description contains the word "waterproof".
+
+## Best Practices for Advanced Filtering
+
+When using advanced filtering, consider these best practices:
+
+1. **Avoid over-filtering**: Combining too many filters can lead to zero results. Consider prioritizing the most important filters first.
+
+2. **Provide clear UI feedback**: When using complex filters, help users understand which filters are currently active and how to remove them.
+
+3. **Monitor performance**: Very complex filter combinations can impact query performance. Test with representative data volumes.
+
+4. **Use the API response metadata**: The API provides metadata about how many results matched each filter, which can help users refine their filters effectively.
+
+## Related Resources
+
+- [Filters](/developer-guide/filters) - Basic filter capabilities
+- [Implicit Filters](/advanced-topics/implicit-filters) - Understanding implicit filtering
+- [Response Format](/api-reference/response-format) - Understanding the response structure 

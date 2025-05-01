@@ -1,0 +1,191 @@
+---
+title: 'Implicit Filters'
+description: 'How the Catalog API extracts filters from natural language queries'
+---
+
+# Implicit Filters
+
+The Catalog API can intelligently extract implicit filters from natural language search queries. This allows users to search using conversational language while the API automatically applies the appropriate filters.
+
+## What Are Implicit Filters?
+
+Implicit filters are search constraints that are extracted from natural language queries rather than being explicitly provided as structured filter parameters.
+
+For example, when a user searches for:
+
+<CodeGroup>
+```text User Query
+"blue organic cotton shirts under $50"
+```
+</CodeGroup>
+
+The API identifies and extracts multiple implicit filters:
+- Color: blue
+- Material: organic cotton
+- Product type: shirts
+- Price: less than $50
+
+This is all done without requiring structured filter parameters in the API request.
+
+## How Implicit Filtering Works
+
+When a search query is received, the API analyzes it to detect phrases that suggest specific filters:
+
+<Steps>
+  <Step title="Query Analysis">
+    The API breaks down the query into tokens and analyzes them for potential filter patterns.
+  </Step>
+  <Step title="Filter Pattern Recognition">
+    The system identifies patterns suggesting filter constraints: color terms, price references, material descriptions, etc.
+  </Step>
+  <Step title="Filter Extraction">
+    Once identified, the API extracts filter values and their associated attributes.
+  </Step>
+  <Step title="Search Enhancement">
+    The extracted filters are combined with the core search terms to enhance the query.
+  </Step>
+</Steps>
+
+## Types of Implicit Filters
+
+The Catalog API can recognize several types of implicit filters in natural language queries:
+
+### Price Filters
+
+<Accordion title="Price Range Extraction">
+  The API recognizes various ways users express price constraints:
+  
+  - "under $50" → `price_max: 50`
+  - "less than $30" → `price_max: 30`
+  - "shirts from $20 to $50" → `price_min: 20, price_max: 50`
+  - "$100+" → `price_min: 100`
+  - "above $75" → `price_min: 75`
+</Accordion>
+
+### Color Filters
+
+<Accordion title="Color Term Recognition">
+  The API detects color terms and maps them to the color attribute:
+  
+  - "red shoes" → `attributes.color: "red"`
+  - "navy blue hoodie" → `attributes.color: "navy blue"`
+  - "black and white sneakers" → Multiple color handling
+</Accordion>
+
+### Material Filters
+
+<Accordion title="Fabric and Material Detection">
+  The API recognizes fabric and material references:
+  
+  - "cotton shirts" → `attributes.fabric.cotton: true`
+  - "wool sweater" → `attributes.fabric.wool: true`
+  - "linen pants" → `attributes.fabric.linen: true`
+</Accordion>
+
+### Availability Filters
+
+<Accordion title="Availability References">
+  The API understands references to product availability:
+  
+  - "in stock shirts" → `is_available: true`
+  - "available products" → `is_available: true`
+</Accordion>
+
+### Brand/Vendor Filters
+
+<Accordion title="Brand Recognition">
+  The API recognizes brand names in queries:
+  
+  - "Nike shoes" → `vendor: "Nike"`
+  - "Levi's jeans" → `vendor: "Levi's"`
+</Accordion>
+
+## Implicit Filters in the Response
+
+When implicit filters are extracted from a query, they're included in the response metadata so you can see how the query was interpreted:
+
+```json
+{
+  "products": [ ... ],
+  "meta": {
+    "query": {
+      "original": "blue organic cotton shirts under $50",
+      "processed": "shirts",
+      "synonyms_used": ["shirt", "shirts", "top"],
+      "implicit_filters": {
+        "attributes.color": "blue",
+        "attributes.fabric.cotton": true,
+        "attributes.fabric.organic": true,
+        "price_max": 50
+      }
+    },
+    // Other metadata fields...
+  }
+}
+```
+
+This transparent approach helps you understand how the API processed the user's query and which filters were applied.
+
+## Precedence Rules
+
+When both implicit filters (extracted from the query) and explicit filters (provided in the `filters` parameter) are present, the API follows these precedence rules:
+
+1. **Explicit filters always take precedence** over implicit filters for the same attribute
+2. If the query contains contradictory implicit filters, the API resolves based on confidence scores
+3. Core search terms (product type, category, etc.) are still used for relevancy scoring in addition to filtering
+
+## Fine-Tuning Implicit Filtering
+
+While implicit filtering works automatically, you can fine-tune how it behaves in your specific use case:
+
+### Using Explicit Filters Alongside Implicit Filters
+
+For maximum control, you can combine implicit and explicit filters:
+
+<CodeGroup>
+```json Combined Approach
+{
+  "query": "organic cotton shirts",  // Will extract implicit filters
+  "filters": {
+    "price_min": 30,  // This explicit filter will override any implicit price_min
+    "vendor": "EcoWear"  // Additional explicit filter
+  }
+}
+```
+</CodeGroup>
+
+### Handling Edge Cases
+
+In some cases, the implicit filter extraction might not align with user intent. For example, a search for "red wing boots" might be interpreted as:
+- Color: red
+- Product: wing boots
+
+When the user might actually be looking for the brand "Red Wing" boots.
+
+In such cases, you can:
+
+1. Use explicit filters to override the incorrect implicit interpretation
+2. Monitor user behavior and refine your search implementation
+3. Provide clear UI for users to refine their search results
+
+## Use Cases for Implicit Filters
+
+Implicit filtering is particularly valuable in these scenarios:
+
+### 1. Mobile Search
+
+Mobile users prefer typing less and using natural language. Implicit filtering allows them to enter queries like "blue nike shoes under $100" rather than filling out multiple filter fields.
+
+### 2. Voice Search
+
+Voice search is inherently conversational. Implicit filtering allows your application to process voice queries like "show me red dresses under $50 dollars" directly.
+
+### 3. Search-as-You-Type
+
+For search-as-you-type interfaces, implicit filtering provides immediate filtering as users type queries containing filter attributes.
+
+## Related Resources
+
+- [Smart Search](/developer-guide/smart-search) - Overview of all smart search capabilities
+- [Query Expansion](/advanced-topics/query-expansion) - How the API expands search terms for better recall
+- [Filters](/developer-guide/filters) - Detailed guide on using explicit filters 

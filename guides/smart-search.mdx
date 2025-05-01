@@ -1,0 +1,122 @@
+---
+title: 'Smart Search Features'
+description: 'Understanding how the Catalog API search capabilities work'
+---
+
+# Smart Search Features
+
+The Catalog API is powered by Typesense, a modern search engine that provides advanced full-text search capabilities. This guide explains how the search functionality works and how to get the most out of it.
+
+## Basic Search
+
+To perform a basic search, simply include a `query` parameter in your request:
+
+```json
+{
+  "query": "cotton shirt"
+}
+```
+
+This will search across multiple fields, including:
+- Product title
+- Product description
+- Vendor
+- Product attributes
+
+## How Search Works
+
+When you provide a search query, the API performs several steps to ensure relevant results:
+
+1. **Tokenization**: The query is split into individual tokens (words)
+2. **Field Weighting**: Matches in the title are given more importance than matches in the description
+3. **Exact and Fuzzy Matching**: Both exact matches and slight variations (for typo tolerance) are considered
+4. **Relevance Scoring**: Results are ranked based on a combination of factors, including match quality and field importance
+
+## Free-Text Search Advantages
+
+Our search implementation offers several advantages:
+
+1. **Natural Language Processing**: Users can search using natural language (e.g., "blue cotton shirt")
+2. **Typo Tolerance**: Slight spelling mistakes are automatically corrected (e.g., "coton shirt" will match "cotton shirt")
+3. **Relevant Ranking**: Results are ranked by relevance, with the most likely matches appearing first
+
+## Using Wildcards and Prefixes
+
+Typesense automatically handles prefix search, so if a user types "cott", products with "cotton" will match. You don't need to add wildcards explicitly.
+
+## Combining Search with Filters
+
+For the most effective results, combine search queries with filters:
+
+```json
+{
+  "query": "cotton shirt",
+  "filters": {
+    "price_max": 50.00,
+    "is_available": true
+  }
+}
+```
+
+This approach gives you the best of both worlds:
+- The flexibility and natural language understanding of full-text search
+- The precision of structured filtering
+
+## Search Field Coverage
+
+The search is performed across the following fields:
+
+- `title`: Product title
+- `description`: Product description
+- `vendor`: Product vendor/brand name
+- `attributes.*`: All attributes, including:
+  - `attributes.color`
+  - `attributes.fabric`
+  - `attributes.category`
+
+## Performance Optimization Tips
+
+1. **Be Specific**: More specific search terms generally yield more relevant results.
+
+2. **Consider Search Terms**: Think about how users might search for products and what terms they might use.
+
+3. **Use the Right Tool for the Job**: For exact matches on specific fields (like price), use filters instead of including them in the search query.
+
+## Analyzing Search Relevance
+
+If your search results don't seem to match expectations:
+
+1. Check if your search terms match the actual data. For example, searching for "polyester" won't match products that only mention "poly" in their description.
+
+2. Consider using broader terms if specific terms aren't finding matches.
+
+3. Remember that the API uses relevance ranking, so products with more matching fields or exact matches will appear higher in results.
+
+## Pagination with Search
+
+When using search with pagination, remember that the `page` parameter starts from 1:
+
+```json
+{
+  "query": "cotton shirt",
+  "page": 2  // Gets the second page of results
+}
+```
+
+The response includes metadata about the total number of matching items and pages:
+
+```json
+{
+  "products": [...],
+  "meta": {
+    "totalItems": 25,
+    "totalPages": 3,
+    "currentPage": 2,
+    "pageSize": 10
+  }
+}
+```
+
+<Note>
+  The `totalItems` value is capped at 50, regardless of the actual total. This is to optimize performance for large result sets.
+</Note> 

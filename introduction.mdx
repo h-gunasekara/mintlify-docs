@@ -1,71 +1,40 @@
 ---
-title: Introduction
-description: "Welcome to the home of your new documentation"
+title: 'Introduction'
+description: 'Overview of the Product Catalog API'
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.png"
-  alt="Hero Dark"
-/>
+# Product Catalog API
 
-## Setting up
+The Product Catalog API allows you to search and retrieve product data from our database. Built on top of [Typesense](https://typesense.org/), a lightning-fast open-source search engine, our API enables powerful and efficient product discovery for your applications.
 
-The first step to world-class documentation is setting up your editing environments.
+## Key Features
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
+- **Full-Text Search**: Search across product titles, descriptions, vendors, and attributes
+- **Filtering**: Apply precise filters based on product attributes including price, availability, color, and fabric
+- **Smart Query Processing**: Automatic synonym expansion and implicit filter detection
+- **Pagination**: Get paginated results for better performance and UX
+- **Typesense-Powered**: Built on a modern, typo-tolerant search engine optimized for performance
 
-## Make it yours
+## When to Use This API
 
-Update your docs to your brand and add valuable content for the best user conversion.
+Our Product Catalog API is ideal for:
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/content/components/accordions"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+- E-commerce applications needing product search functionality
+- Retail dashboards and analytics tools
+- Product comparison services
+- Inventory management systems
+- Any application that needs to display and filter product data
+
+## Base URL
+
+```
+https://catalogai.vercel.app/api
+```
+
+## Available Endpoints
+
+| Endpoint | Description |
+| --- | --- |
+| [`/products`](/api-reference/products) | Search and retrieve product data with filtering and pagination |
+
+Ready to start? Check out the [Authentication](/authentication) guide to get your API key and make your first request.
