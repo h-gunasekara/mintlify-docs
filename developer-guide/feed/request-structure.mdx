@@ -1,0 +1,106 @@
+---
+title: 'Request Structure'
+description: 'How to structure your API requests and use filters/pagination with the Catalog Feed API'
+---
+This guide explains how to structure your requests to the Catalog Feed API, including how to use filters and pagination. All requests follow a consistent format to make integration straightforward.
+
+## HTTP Method and Endpoint
+
+All requests to the Catalog Feed API use the POST method and should be sent to:
+
+```
+POST https://catalogai.vercel.app/api/feed
+```
+
+## Headers
+
+Every request must include these headers:
+
+| Header | Value | Description |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | Indicates that the request body is in JSON format |
+| `x-api-key` | `YOUR_VALID_API_KEY` | Your unique API key for authentication |
+
+## Request Body
+
+The request body must be a JSON object with the required parameters:
+
+```json Basic Request Body
+{
+  "vendor": "Vendorname",
+  "page": 1
+}
+```
+
+### Request Parameters
+
+Parameters are passed directly in the root of the JSON request body.
+
+<ResponseField name="vendor" type="string" required>
+  Filter feed results by vendor name (case-insensitive partial match). Only products matching this vendor pattern will be included.
+  
+  **Example:** `"Saintlaurent"` would match products from the Saint Laurent vendor.
+
+  <Info>
+    Vendor names are derived from the URL site name (domain) with capitalization. For example, `https://www.jennikayne.com/` corresponds to the vendor name `Jennikayne`.
+  </Info>
+</ResponseField>
+
+<ResponseField name="page" type="number" required>
+  The page number (1-indexed) for pagination. The API returns a fixed number of products per page (10 items per page).
+  
+  **Example:** `2`
+
+  <Note>
+    Page numbers are 1-indexed, meaning the first page is page 1 (not 0).
+  </Note>
+</ResponseField>
+
+## Example Requests
+
+### Basic Required Request
+
+<CodeGroup>
+```json Minimum Required Request
+{
+  "vendor": "Saintlaurent",
+  "page": 1
+}
+```
+</CodeGroup>
+
+### Requesting a Specific Page
+
+<CodeGroup>
+```json Request (Page 2)
+{
+  "vendor": "Saintlaurent",
+  "page": 2
+}
+```
+</CodeGroup>
+
+### Different Vendor Example
+
+<CodeGroup>
+```json Different Vendor Request
+{
+  "vendor": "Jennikayne",
+  "page": 1
+}
+```
+</CodeGroup>
+
+## Request Validation
+
+The API performs validation on your request:
+
+- `vendor` is required and must be a string. It's recommended to use the capitalized site name (domain without TLD).
+  - **Example:** For `https://www.jennikayne.com/`, use `"Jennikayne"`
+- `page` is required and must be a positive integer.
+
+If validation fails, you'll receive an appropriate error response with details about the issue. See the [Response Structure](/developer-guide/feed/response-structure) guide for error formats.
+
+## Related Guides
+
+- [Response Structure](/developer-guide/feed/response-structure) - Understanding the Feed API response format (including pagination metadata) 

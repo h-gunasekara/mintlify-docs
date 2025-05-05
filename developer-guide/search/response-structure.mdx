@@ -2,9 +2,6 @@
 title: 'Response Structure'
 description: 'Understanding the response format of the Catalog API'
 ---
-
-# Response Structure
-
 This guide explains the structure of responses from the Catalog API. All successful API calls return responses with a consistent format to make integration straightforward.
 
 ## Success Response Format
@@ -20,54 +17,45 @@ When your API request is successful, you'll receive a `200 OK` response with a J
 
 ### The `products` Array
 
-The `products` array contains a list of product objects matching your search and filter criteria. Each product has a comprehensive structure:
+The `products` array contains a list of product objects matching your search and filter criteria. Each product has a comprehensive structure with flattened attributes:
 
 ```json
 {
-  "id": 2458,
-  "title": "Oversized Logo Hoodie",
-  "description": "Iconic oversized silhouette hoodie featuring our signature logo print...",
-  "vendor": "Balenciaga",
-  "url": "https://www.balenciaga.com/en-us/oversized-logo-hoodie-black-600583TJVE11055.html",
+  "id": "813",
+  "title": "Giuseppa Dress",
+  "description": "Long dress with thin straps. Fluid silk fabric. V-neckline at the front. Lined. Length from the shoulder: 119 cm / 46.8 in (size EU36/UK8). Made in China. Care instructions: Hand wash in cold water.",
+  "vendor": "Sezane",
+  "url": "https://www.sezane.com/us/product/giuseppa-dress/ecru-polka-dots-on-chocolate-print",
   "is_available": true,
-  "attributes": {
-    "category": "Men > Hoodies & Sweatshirts",
-    "color": "Black",
-    "fabric": { "cotton": true, "polyester": true },
-    "product_id": "60JVE55"
-  },
-  "images": [
-    { "url": "https://assets.balenciaga.com/images/60JVE55.jpg", "alt": "Black oversized hoodie back" }
-  ],
-  "variants": [
-    {
-      "url": "https://www.balenciaga.com/en-us/oversized-logo-hoodie-black-60JVE55.html",
-      "image": {
-        "url": "https://assets.balenciaga.com/images/60JVE55.jpg"
-      },
-      "title": "Oversized Logo Hoodie - Black",
-      "options": [
-        {
-          "size": "S",
-          "price": {
-            "value": 950,
-            "currency": "USD",
-            "display_value": 950
-          },
-          "is_in_stock": true
-        },
-        // More size options...
-      ]
-    }
-  ],
+  "image_url": "https://media.sezane.com/image/upload/c_fill,d_placeholder_dark.png,fl_progressive:semi,h_816,q_auto:best,w_582/cbwis0utxwljhi2nxbx4.jpg",
+  "attributes.aesthetic": "feminine",
+  "attributes.age_group": "adult",
+  "attributes.color_family": "brown",
+  "attributes.fit": "fluid",
+  "attributes.gender": "women",
+  "attributes.material": "silk",
+  "attributes.mood": "romantic",
+  "attributes.occasion": "everyday",
+  "attributes.pattern": "polka dots on chocolate print",
+  "attributes.season": "spring",
+  "attributes.size_type": "EU/UK",
+  "attributes.style": "long dress",
+  "attributes.trend": "classic",
+  "created_at": 1745119358,
+  "updated_at": 1745882098,
   "price_currency": "USD",
-  "price_display": 950
+  "price_display": 295,
+  "price_value": 295,
+  "variants_in_stock": [true, true, true, true, true, true, true],
+  "variants_price_display": [295, 295, 295, 295, 295, 295, 295],
+  "variants_size": ["2", "4", "6", "8", "10", "12", "14"],
+  "variants_title": ["Us Product Giuseppa Dress Ecru Polka Dots On Chocolate Print"]
 }
 ```
 
 #### Product Object Fields
 
-<ResponseField name="id" type="integer">
+<ResponseField name="id" type="string">
   Unique identifier for the product
 </ResponseField>
 
@@ -91,102 +79,82 @@ The `products` array contains a list of product objects matching your search and
   Whether the product is currently available
 </ResponseField>
 
-<ResponseField name="attributes" type="object">
-  Object containing various product attributes:
+<ResponseField name="image_url" type="string">
+  URL to the main product image
+</ResponseField>
+
+<ResponseField name="attributes.*" type="varies">
+  Flattened product attributes using dot notation. Common attributes include:
   
   <Expandable title="Attribute Details">
-    <ResponseField name="category" type="string">
-      Product category hierarchy (e.g., "Men > Hoodies & Sweatshirts")
+    <ResponseField name="attributes.aesthetic" type="string">
+      Product aesthetic (e.g., "feminine", "minimalist")
     </ResponseField>
     
-    <ResponseField name="color" type="string">
-      Product color name
+    <ResponseField name="attributes.color_family" type="string">
+      Product color family (e.g., "brown", "blue")
     </ResponseField>
     
-    <ResponseField name="fabric" type="object">
-      Object with fabric types as keys and boolean values
+    <ResponseField name="attributes.fit" type="string">
+      Product fit description (e.g., "fluid", "slim")
     </ResponseField>
     
-    <ResponseField name="product_id" type="string">
-      Vendor's product identifier
+    <ResponseField name="attributes.gender" type="string">
+      Target gender for the product
     </ResponseField>
     
-    <ResponseField name="..." type="varies">
-      Other attributes may be present depending on the product
+    <ResponseField name="attributes.material" type="string">
+      Primary material (e.g., "silk", "cotton")
+    </ResponseField>
+    
+    <ResponseField name="attributes.pattern" type="string">
+      Pattern description
+    </ResponseField>
+    
+    <ResponseField name="attributes.style" type="string">
+      Style description
+    </ResponseField>
+    
+    <ResponseField name="attributes.size_type" type="string">
+      Size standard (e.g., "EU/UK", "US")
     </ResponseField>
   </Expandable>
 </ResponseField>
 
-<ResponseField name="images" type="array">
-  Array of image objects:
-  
-  <Expandable title="Image Object">
-    <ResponseField name="url" type="string">
-      URL to the image file
-    </ResponseField>
-    
-    <ResponseField name="alt" type="string">
-      Alt text for the image (may be null)
-    </ResponseField>
-  </Expandable>
+<ResponseField name="created_at" type="integer">
+  Unix timestamp when the product was created
 </ResponseField>
 
-<ResponseField name="variants" type="array">
-  Array of product variants:
-  
-  <Expandable title="Variant Object">
-    <ResponseField name="url" type="string">
-      URL to the specific variant
-    </ResponseField>
-    
-    <ResponseField name="image" type="object">
-      Image specific to this variant
-    </ResponseField>
-    
-    <ResponseField name="title" type="string">
-      Title of this variant
-    </ResponseField>
-    
-    <ResponseField name="options" type="array">
-      Array of option objects (typically sizes):
-      
-      <Expandable title="Option Object">
-        <ResponseField name="size" type="string">
-          Size identifier (e.g., "S", "M", "L")
-        </ResponseField>
-        
-        <ResponseField name="price" type="object">
-          Price information for this option:
-          
-          <Expandable title="Price Object">
-            <ResponseField name="value" type="number">
-              Numeric price value
-            </ResponseField>
-            
-            <ResponseField name="currency" type="string">
-              Currency code (e.g., "USD")
-            </ResponseField>
-            
-            <ResponseField name="display_value" type="number">
-              Formatted price for display
-            </ResponseField>
-          </Expandable>
-        </ResponseField>
-        
-        <ResponseField name="is_in_stock" type="boolean">
-          Whether this option is currently in stock
-        </ResponseField>
-      </Expandable>
-    </ResponseField>
-  </Expandable>
+<ResponseField name="updated_at" type="integer">
+  Unix timestamp when the product was last updated
 </ResponseField>
 
 <ResponseField name="price_currency" type="string">
-  Currency code for the product's price
+  Currency code for the product's price (e.g., "USD")
 </ResponseField>
 
 <ResponseField name="price_display" type="number">
-  Default display price for the product
+  Display price for the product
+</ResponseField>
+
+<ResponseField name="price_value" type="number">
+  Numeric value of the product price
+</ResponseField>
+
+<ResponseField name="variants_in_stock" type="array">
+  Array of boolean values indicating if each size variant is in stock
+</ResponseField>
+
+<ResponseField name="variants_price_display" type="array">
+  Array of price values for each variant
+</ResponseField>
+
+<ResponseField name="variants_size" type="array">
+  Array of available size options
+</ResponseField>
+
+<ResponseField name="variants_title" type="array">
+  Array of titles for each variant
 </ResponseField>
 
 ### The `meta` Object
@@ -299,23 +267,22 @@ const prevPage = hasPrevPage ? currentPage - 1 : null;
 
 ### Displaying Products
 
-The comprehensive structure lets you display rich product information:
+The flattened structure makes it straightforward to display product information:
 
 ```javascript
 // Example: Rendering basic product info
 response.products.forEach(product => {
   console.log(`${product.title} - $${product.price_display} ${product.price_currency}`);
   console.log(`  Vendor: ${product.vendor}`);
-  console.log(`  Color: ${product.attributes.color}`);
+  console.log(`  Color: ${product["attributes.color_family"]}`);
   console.log(`  Available: ${product.is_available ? 'Yes' : 'No'}`);
   
-  // Get the main image URL (if available)
-  const mainImageUrl = product.images.length > 0 ? product.images[0].url : 'no-image.jpg';
+  // Display the main image URL
+  const mainImageUrl = product.image_url || 'no-image.jpg';
   
   // Get available sizes
-  const availableSizes = product.variants[0].options
-    .filter(option => option.is_in_stock)
-    .map(option => option.size)
+  const availableSizes = product.variants_size
+    .filter((_, index) => product.variants_in_stock[index])
     .join(', ');
   
   console.log(`  Available sizes: ${availableSizes}`);

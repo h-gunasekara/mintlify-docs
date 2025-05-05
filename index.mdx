@@ -10,14 +10,11 @@ Welcome to the Catalog API documentation. Our API allows you to retrieve product
 ## Core Features
 
 <CardGroup cols={2}>
-  <Card title="Advanced Filtering" icon="filter" href="/developer-guide/filters">
-    Fine-grained control over product attributes, pricing, and availability
+  <Card title="Search" icon="magnifying-glass" href="/developer-guide/search/request-structure">
+    Powerful product search with advanced filtering and relevance ranking
   </Card>
-  <Card title="Easy Integration" icon="code" href="/getting-started/quick-start">
-    Simple API endpoints with comprehensive examples in multiple languages
-  </Card>
-  <Card title="Pagination Support" icon="list" href="/developer-guide/pagination">
-    Efficiently retrieve and display large product catalogs
+  <Card title="Feed" icon="rss" href="/developer-guide/feed/request-structure">
+    Customizable product feeds for showcasing collections and recommendations
   </Card>
 </CardGroup>
 
@@ -33,11 +30,3 @@ Get up and running with the Catalog API in minutes:
     Follow our [Quick Start Guide](/getting-started/quick-start) to make your first API call
   </Step>
 </Steps>
-
-## Endpoint
-
-All API requests should be sent to:
-
-```
-POST https://catalogai.vercel.app/api/products
-```

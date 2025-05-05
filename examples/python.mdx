@@ -127,9 +127,9 @@ Search for "jacket" and filter by vendor:
 try:
     data = fetch_products({
         "query": "jacket",
-        "filters": {"vendor": "TrailBlazer"}
+        "filters": {"vendor": "Saintlaurent"}
     })
-    print(f"Found {data['meta']['totalItems']} TrailBlazer jackets")
+    print(f"Found {data['meta']['totalItems']} Saintlaurent jackets")
 except Exception as e:
     print(f"Error: {e}")
 ```

@@ -31,12 +31,17 @@
       ]
     },
     {
-      "group": "Developer Guide",
+      "group": "Search",
       "pages": [
-        "developer-guide/request-structure",
-        "developer-guide/filters",
-        "developer-guide/response-structure",
-        "developer-guide/pagination"
+        "developer-guide/search/request-structure",
+        "developer-guide/search/response-structure"
+      ]
+    },
+    {
+      "group": "Feed",
+      "pages": [
+        "developer-guide/feed/request-structure",
+        "developer-guide/feed/response-structure"
       ]
     },
     {

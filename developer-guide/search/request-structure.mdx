@@ -1,0 +1,663 @@
+---
+title: 'Request Structure'
+description: 'How to structure your API requests to the Catalog API'
+---
+This guide explains how to structure your requests to the Catalog API. All requests follow a consistent format to make integration straightforward.
+
+## HTTP Method and Endpoint
+
+All requests to the Catalog API use the POST method and should be sent to:
+
+```
+POST https://catalogai.vercel.app/api/products
+```
+
+## Headers
+
+Every request must include these headers:
+
+| Header | Value | Description |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | Indicates that the request body is in JSON format |
+| `x-api-key` | `YOUR_VALID_API_KEY` | Your unique API key for authentication |
+
+## Request Body
+
+The request body must be a JSON object containing the following optional fields:
+
+```json
+{
+  "query": "string",
+  "filters": { ... },
+  "page": number
+}
+```
+
+### Request Parameters
+
+<ResponseField name="query" type="string" optional>
+  Natural language search string. The API processes this with intelligent features like synonym expansion and implicit filter detection.
+  
+  **Example:** `"organic cotton shirt"`
+</ResponseField>
+
+<ResponseField name="filters" type="object" optional>
+  Object containing filter criteria to narrow down results. See the Filters section below for detailed options.
+  
+  **Example:** `{"price_min": 20, "price_max": 50, "is_available": true}`
+</ResponseField>
+
+<ResponseField name="page" type="number" optional default="1">
+  The page number (1-indexed) for pagination.
+  
+  **Example:** `2`
+</ResponseField>
+
+## Filter Options
+
+The Catalog API provides powerful filtering capabilities to help you narrow down product results. This section explains all available filter options and how to use them effectively.
+
+### Filter Structure
+
+Filters are passed in the `filters` object of your request body:
+
+```json
+{
+  "filters": {
+    "price_min": 20.00,
+    "price_max": 50.00,
+    "vendor": "EcoWear",
+    "is_available": true,
+    "attributes": {
+      "color": "Red",
+      "fabric": {
+        "cotton": true,
+        "polyester": true
+      }
+    }
+  }
+}
+```
+
+<Note>
+  All specified filters are combined using AND logic. A product must match ALL specified filter criteria to be included in the results.
+</Note>
+
+### Available Filters
+
+#### Price Filters
+
+Filter products based on their price:
+
+<ResponseField name="price_min" type="number" optional>
+  Minimum price (inclusive). Products with a price less than this value will be excluded.
+  
+  **Example:** `25.99`
+</ResponseField>
+
+<ResponseField name="price_max" type="number" optional>
+  Maximum price (inclusive). Products with a price greater than this value will be excluded.
+  
+  **Example:** `99.99`
+</ResponseField>
+
+<CodeGroup>
+```json Example - Price Range
+{
+  "filters": {
+    "price_min": 25.99,
+    "price_max": 99.99
+  }
+}
+```
+</CodeGroup>
+
+#### Vendor Filter
+
+Filter products by vendor or brand:
+
+<ResponseField name="vendor" type="string" optional>
+  The vendor name (exact match). Only products from this vendor will be included.
+  
+  **Example:** `"Palace"` or `"Nike"`
+</ResponseField>
+
+<CodeGroup>
+```json Example - Vendor Filter
+{
+  "filters": {
+    "vendor": "Palace"
+  }
+}
+```
+</CodeGroup>
+
+#### Availability Filter
+
+Filter products by availability status:
+
+<ResponseField name="is_available" type="boolean" optional>
+  Product availability. Set to `true` to include only available products, or `false` to include only unavailable products.
+  
+  **Example:** `true`
+</ResponseField>
+
+<CodeGroup>
+```json Example - Available Products Only
+{
+  "filters": {
+    "is_available": true
+  }
+}
+```
+</CodeGroup>
+
+#### Attribute Filters
+
+Filter by product attributes using the `attributes` object:
+
+<ResponseField name="attributes" type="object" optional>
+  Object containing attribute-specific filters.
+</ResponseField>
+
+##### Color Attribute
+
+<ResponseField name="attributes.color" type="string" optional>
+  Filter by a specific color (exact match).
+  
+  **Example:** `"Red"` or `"Navy Blue"`
+</ResponseField>
+
+<CodeGroup>
+```json Example - Color Filter
+{
+  "filters": {
+    "attributes": {
+      "color": "Red"
+    }
+  }
+}
+```
+</CodeGroup>
+
+##### Fabric Attribute
+
+<ResponseField name="attributes.fabric" type="object" optional>
+  Filter by fabric types. Keys are fabric names, and values must be `true` to include that fabric.
+  
+  **Example:** `{"cotton": true, "linen": true}`
+</ResponseField>
+
+<CodeGroup>
+```json Example - Fabric Filter
+{
+  "filters": {
+    "attributes": {
+      "fabric": {
+        "cotton": true,
+        "linen": true
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+<Note>
+  For the fabric filter, products will match if they contain ANY of the specified fabrics (OR logic between fabric types).
+</Note>
+
+### Combining Filters
+
+You can combine multiple filters for precise results:
+
+<CodeGroup>
+```json Example - Combined Filters
+{
+  "filters": {
+    "price_min": 20.00,
+    "price_max": 100.00,
+    "is_available": true,
+    "attributes": {
+      "color": "Blue",
+      "fabric": {
+        "cotton": true
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+The above example would return:
+- Products priced between $20 and $100 (inclusive)
+- Products that are currently available
+- Products that are blue in color
+- Products made with cotton fabric
+
+### Filter Precedence
+
+When using both the `query` parameter and explicit filters:
+
+1. The API first extracts any implicit filters from the query
+2. Your explicit filters always take precedence over implicit filters
+3. If the same filter is specified both implicitly (in the query) and explicitly (in the filters object), the explicit value is used
+
+### Example Use Cases
+
+#### Price Range Products
+
+<CodeGroup>
+```json Budget-Friendly Products
+{
+  "filters": {
+    "price_min": 0,
+    "price_max": 30.00
+  }
+}
+```
+</CodeGroup>
+
+#### Premium Products from a Specific Brand
+
+<CodeGroup>
+```json Premium Brand Products
+{
+  "filters": {
+    "price_min": 100.00,
+    "vendor": "Balenciaga",
+    "is_available": true
+  }
+}
+```
+</CodeGroup>
+
+#### Products with Specific Materials
+
+<CodeGroup>
+```json Eco-Friendly Materials
+{
+  "filters": {
+    "attributes": {
+      "fabric": {
+        "organic cotton": true,
+        "recycled polyester": true
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+## Pagination
+
+The Catalog API uses page-based pagination to efficiently handle large result sets. This section explains how to paginate through product results and how to use the pagination metadata.
+
+### How Pagination Works
+
+The API returns a limited number of products per request. By default, results are returned in pages of 10 items. You can request specific pages by including the `page` parameter in your request.
+
+### Requesting a Specific Page
+
+To request a specific page, include the `page` parameter in your request body:
+
+<CodeGroup>
+```json Request (Page 1)
+{
+  "query": "shirts",
+  "page": 1
+}
+```
+
+```json Request (Page 2)
+{
+  "query": "shirts",
+  "page": 2
+}
+```
+</CodeGroup>
+
+<Note>
+  Page numbers are 1-indexed, meaning the first page is page 1 (not 0).
+</Note>
+
+### Pagination Metadata
+
+Every response includes a `meta` object with pagination details:
+
+```json
+{
+  "products": [ ... ],
+  "meta": {
+    "totalItems": 42,   // Total number of products matching criteria
+    "totalPages": 5,    // Total number of pages available
+    "currentPage": 1,   // Current page number
+    "pageSize": 10      // Number of items per page
+  }
+}
+```
+
+<Warning>
+  The `totalItems` value is capped at 50 for performance reasons, even if the actual total count is higher.
+</Warning>
+
+### Implementing Pagination Controls
+
+Here's an example of how to implement pagination controls in your application:
+
+#### JavaScript Example
+
+```javascript
+function renderPagination(meta) {
+  const { currentPage, totalPages } = meta;
+  
+  // Determine which pages to show
+  const showFirstPage = currentPage > 2;
+  const showLastPage = currentPage < totalPages - 1;
+  const pageNumbers = [];
+  
+  // Add page numbers to display
+  if (showFirstPage) {
+    pageNumbers.push(1);
+    if (currentPage > 3) pageNumbers.push('...');
+  }
+  
+  // Add previous page if not on first page
+  if (currentPage > 1) pageNumbers.push(currentPage - 1);
+  
+  // Add current page
+  pageNumbers.push(currentPage);
+  
+  // Add next page if not on last page
+  if (currentPage < totalPages) pageNumbers.push(currentPage + 1);
+  
+  // Add last page
+  if (showLastPage) {
+    if (currentPage < totalPages - 2) pageNumbers.push('...');
+    pageNumbers.push(totalPages);
+  }
+  
+  // Create the navigation HTML
+  const paginationHTML = `
+    <div class="pagination">
+      ${currentPage > 1 ? '<button class="prev">Previous</button>' : ''}
+      ${pageNumbers.map(page => {
+        if (page === '...') return '<span class="ellipsis">...</span>';
+        return `<button class="page-number ${page === currentPage ? 'active' : ''}">${page}</button>`;
+      }).join('')}
+      ${currentPage < totalPages ? '<button class="next">Next</button>' : ''}
+    </div>
+  `;
+  
+  // Insert into the DOM
+  document.getElementById('pagination-container').innerHTML = paginationHTML;
+  
+  // Add event listeners to buttons
+  document.querySelectorAll('.page-number').forEach(button => {
+    button.addEventListener('click', () => {
+      if (button.classList.contains('active')) return;
+      const pageNumber = parseInt(button.textContent);
+      fetchPage(pageNumber);
+    });
+  });
+  
+  if (currentPage > 1) {
+    document.querySelector('.prev').addEventListener('click', () => {
+      fetchPage(currentPage - 1);
+    });
+  }
+  
+  if (currentPage < totalPages) {
+    document.querySelector('.next').addEventListener('click', () => {
+      fetchPage(currentPage + 1);
+    });
+  }
+}
+
+function fetchPage(pageNumber) {
+  // Update UI to show loading state
+  showLoadingState();
+  
+  // Make API request with the new page number
+  fetchProducts({
+    query: currentQuery,
+    filters: currentFilters,
+    page: pageNumber
+  })
+    .then(response => {
+      // Update product list with new data
+      renderProducts(response.products);
+      
+      // Update pagination controls
+      renderPagination(response.meta);
+      
+      // Hide loading state
+      hideLoadingState();
+    })
+    .catch(error => {
+      // Handle error
+      showErrorMessage(error);
+      hideLoadingState();
+    });
+}
+```
+
+### Best Practices
+
+#### Maintain State
+
+When implementing pagination, maintain the current search and filter state when navigating between pages:
+
+```javascript
+// Example state management
+let currentState = {
+  query: "shirts",
+  filters: {
+    price_min: 20,
+    price_max: 100,
+    is_available: true
+  },
+  page: 1
+};
+
+// When changing pages, only update the page parameter
+function goToPage(newPage) {
+  currentState = {
+    ...currentState,
+    page: newPage
+  };
+  
+  // Make the API request with the updated state
+  fetchProducts(currentState);
+}
+```
+
+#### Handle Empty Pages
+
+If a user requests a page beyond the available pages, the API will return an empty `products` array:
+
+```json
+{
+  "products": [],
+  "meta": {
+    "totalItems": 42,
+    "totalPages": 5,
+    "currentPage": 10,  // Beyond the available pages
+    "pageSize": 10
+  }
+}
+```
+
+Handle this gracefully by checking for empty results and offering to return to a valid page:
+
+```javascript
+if (response.products.length === 0 && response.meta.totalItems > 0) {
+  showMessage("No products found on this page.");
+  offerToRedirect("Would you like to go to page 1?", () => {
+    fetchPage(1);
+  });
+}
+```
+
+#### Use Loading States
+
+Always show loading states when fetching a new page to improve user experience:
+
+```javascript
+function fetchPage(pageNumber) {
+  // Show loading state
+  showLoadingIndicator();
+  
+  // Make API request
+  fetchProducts({
+    query: currentQuery,
+    filters: currentFilters,
+    page: pageNumber
+  })
+    .then(response => {
+      // Update UI with new data
+      updateProductList(response.products);
+      updatePaginationControls(response.meta);
+      
+      // Hide loading state
+      hideLoadingIndicator();
+    })
+    .catch(error => {
+      // Handle error
+      showError(error);
+      hideLoadingIndicator();
+    });
+}
+```
+
+### Example: Infinite Scroll
+
+For a modern user experience, you might implement infinite scroll instead of traditional pagination:
+
+```javascript
+let currentPage = 1;
+let isLoading = false;
+let hasMorePages = true;
+
+// Detect when user scrolls near the bottom of the page
+window.addEventListener('scroll', () => {
+  if (isLoading || !hasMorePages) return;
+  
+  const scrollY = window.scrollY;
+  const visibleHeight = document.documentElement.clientHeight;
+  const pageHeight = document.documentElement.scrollHeight;
+  const bottomOfPage = scrollY + visibleHeight >= pageHeight - 300;
+  
+  if (bottomOfPage) {
+    loadNextPage();
+  }
+});
+
+function loadNextPage() {
+  isLoading = true;
+  showLoadingIndicator();
+  
+  fetchProducts({
+    query: currentQuery,
+    filters: currentFilters,
+    page: currentPage + 1
+  })
+    .then(response => {
+      // Append new products to the existing list
+      appendProducts(response.products);
+      
+      // Update pagination state
+      currentPage = response.meta.currentPage;
+      hasMorePages = currentPage < response.meta.totalPages;
+      
+      // Hide loading indicator
+      hideLoadingIndicator();
+      isLoading = false;
+    })
+    .catch(error => {
+      console.error("Error loading next page:", error);
+      hideLoadingIndicator();
+      isLoading = false;
+    });
+}
+```
+
+## Example Requests
+
+### Basic Search Request
+
+<CodeGroup>
+
+```json Request
+{
+  "query": "organic cotton shirt"
+}
+```
+
+</CodeGroup>
+
+### Search with Filters
+
+<CodeGroup>
+
+```json Request
+{
+  "query": "jacket",
+  "filters": {
+    "vendor": "Saintlaurent",
+    "is_available": true,
+    "price_min": 50,
+    "price_max": 200
+  }
+}
+```
+
+</CodeGroup>
+
+### Filters-Only Request
+
+<CodeGroup>
+
+```json Request
+{
+  "filters": {
+    "attributes": {
+      "color": "Green",
+      "fabric": {
+        "linen": true
+      }
+    },
+    "is_available": true
+  }
+}
+```
+
+</CodeGroup>
+
+### Paginated Request
+
+<CodeGroup>
+
+```json Request
+{
+  "query": "shoes",
+  "page": 2
+}
+```
+
+</CodeGroup>
+
+## Request Validation
+
+The API performs validation on your request:
+
+- If `query` is provided, it must be a string
+- If `filters` is provided, it must be a valid filter object
+- If `page` is provided, it must be a positive integer
+
+If validation fails, you'll receive an appropriate error response with details about the issue.
+
+## Related Guides
+
+- [Response Structure](/developer-guide/search/response-structure) - Understanding the API response format
+- [Examples](/examples/javascript) - More code examples 

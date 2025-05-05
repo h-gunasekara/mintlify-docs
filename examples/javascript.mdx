@@ -127,9 +127,9 @@ Search for "jacket" and filter by vendor:
   try {
     const data = await fetchProducts({
       query: "jacket",
-      filters: { vendor: "TrailBlazer" }
+      filters: { vendor: "Saintlaurent" }
     });
-    console.log(`Found ${data.meta.totalItems} TrailBlazer jackets`);
+    console.log(`Found ${data.meta.totalItems} Saintlaurent jackets`);
   } catch (error) {
     console.error("Search failed:", error);
   }
