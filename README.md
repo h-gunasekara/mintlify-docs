@@ -1,32 +1,76 @@
-# Mintlify Starter Kit
+# Catalog AI Documentation
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+This repository contains the official documentation for Catalog AI, a powerful product search and filtering API for e-commerce applications.
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+## Features
 
-### Development
+The documentation covers:
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+- **Search API**: Advanced product search with natural language processing and filtering capabilities
+- **Feed API**: Customizable product feeds for showcasing collections and recommendations
+- **API Playground**: Interactive examples in JavaScript, Python, and cURL
+- **Developer Guides**: Detailed guides on request/response structures
 
-```
+## Documentation Structure
+
+- **Overview**: Introduction to Catalog AI and its capabilities
+- **Getting Started**: Quick setup guides and authentication
+- **Developer Guides**: 
+  - Search API (request and response structures)
+  - Feed API (request and response structures)
+- **Examples**: Code samples and use cases
+
+## Local Development
+
+To preview the documentation changes locally:
+
+1. Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify)
+
+```bash
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where docs.json is)
+2. Run the development server at the root of your documentation
 
-```
+```bash
 mintlify dev
 ```
 
-### Publishing Changes
+3. Visit http://localhost:3000 to see your documentation
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+### Configuration
 
-#### Troubleshooting
+The documentation is configured through the `mint.json` file, which includes:
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+- Site metadata
+- Navigation structure
+- Color themes and branding
+- Sidebar organization
+
+## Deployment
+
+Changes to the documentation are automatically deployed when pushed to the main branch.
+
+1. Install our GitHub App to enable automatic deployments
+2. Push changes to the default branch
+3. Your changes will be live within minutes
+
+## API Access
+
+To access the Catalog AI API:
+
+1. [Contact the team](mailto:hamish@getcatalog.ai) to obtain an API key
+2. Include your API key in the `x-api-key` header with every request
+3. Use the API endpoints at `https://catalogai.vercel.app/api/`
+
+## Troubleshooting
+
+- If `mintlify dev` isn't running, try `mintlify install` to re-install dependencies
+- If a page loads as a 404, ensure you're running in a folder with `mint.json`
+- For API issues, check authentication headers and request format
+- For further assistance, contact [support](mailto:hamish@getcatalog.ai)
+
+## Links
+
+- [Catalog AI Website](https://www.getcatalog.ai)
+- [Twitter](https://x.com/hamishgunaseka)
