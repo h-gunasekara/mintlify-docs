@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Catalog AI",
+  "name": "Catalog - Agentic Commerce Infrastructure",
   "logo": {
     "dark": "/logo/logo.png",
     "light": "/logo/logo.png"
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "group": "Search",
+      "group": "Discovery",
       "pages": [
         "developer-guide/search/request-structure",
         "developer-guide/search/response-structure"

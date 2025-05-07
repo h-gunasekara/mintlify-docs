@@ -1,13 +1,13 @@
 # Catalog AI Documentation
 
-This repository contains the official documentation for Catalog AI, a powerful product search and filtering API for e-commerce applications.
+This repository contains the official documentation for Catalog AI, a powerful product discovery platform for agentic commerce.
 
 ## Features
 
 The documentation covers:
 
-- **Search API**: Advanced product search with natural language processing and filtering capabilities
-- **Feed API**: Customizable product feeds for showcasing collections and recommendations
+- **Search API**: Advanced product discovery with natural language processing and intelligent filtering capabilities
+- **Feed API**: Customizable product feeds for powering agentic shopping applications
 - **API Playground**: Interactive examples in JavaScript, Python, and cURL
 - **Developer Guides**: Detailed guides on request/response structures
 
