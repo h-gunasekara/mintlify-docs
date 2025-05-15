@@ -2,10 +2,10 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Catalog - Agentic Commerce Infrastructure",
   "logo": {
-    "dark": "/logo/logo.png",
-    "light": "/logo/logo.png"
+    "dark": "/logo/catalog-logo-white.svg",
+    "light": "/logo/catalog-logo-black.svg"
   },
-  "favicon": "/favicon-32x32.png",
+  "favicon": "/logo/catalog-logo-black.svg",
   "colors": {
     "primary": "#00B158",
     "light": "#4ADE80",
