@@ -45,6 +45,13 @@
       ]
     },
     {
+      "group": "Vendors",
+      "pages": [
+        "developer-guide/vendors/request-structure",
+        "developer-guide/vendors/response-structure"
+      ]
+    },
+    {
       "group": "Examples",
       "pages": [
         "examples"
