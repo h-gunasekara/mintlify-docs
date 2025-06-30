@@ -26,11 +26,10 @@ The `products` array contains a list of product objects in the feed, ordered by 
   "title": "Oversized Logo Hoodie",
   "description": "Iconic oversized silhouette hoodie featuring our signature logo print. Made from premium cotton blend with brushed interior for ultimate comfort.",
   "description_html": "<p>Iconic oversized silhouette hoodie featuring our signature logo print.</p><p>Made from premium cotton blend with brushed interior for ultimate comfort.</p>",
-  "vendor": "Balenciaga",
+  "vendor": "balenciaga",
   "brand": "Balenciaga",
   "url": "https://www.balenciaga.com/en-us/oversized-logo-hoodie-black-600583TJVE11055.html",
-  "price_amount": 95000,
-  "price_currency": "USD",
+  "handle": "oversized-logo-hoodie-black",
   "is_available": true,
   "attributes": {
     "category": "Men > Hoodies & Sweatshirts",
@@ -45,7 +44,6 @@ The `products` array contains a list of product objects in the feed, ordered by 
     "mood": "casual",
     "occasion": "everyday"
   },
-  "tags": ["hoodie", "oversized", "logo", "streetwear", "premium"],
   "images": [
     {
       "url": "https://assets.balenciaga.com/images/600583TJVE11055_1.jpg",
@@ -114,13 +112,28 @@ The `products` array contains a list of product objects in the feed, ordered by 
       "quantityAvailable": 0
     }
   ],
-  "collection_handle": "mens-hoodies",
-  "handle": "oversized-logo-hoodie-black",
+  "attributes": {
+    "category": "Men > Hoodies & Sweatshirts",
+    "color": "Black",
+    "fabric": ["cotton", "polyester"],
+    "productId": "600583TJVE11055",
+    "fit": "oversized",
+    "season": "all-season",
+    "aesthetic": "streetwear",
+    "gender": "men",
+    "material": "cotton",
+    "mood": "casual",
+    "occasion": "everyday"
+  },
+  "price_amount": 95000,
+  "price_currency": "USD",
   "max_price": 95000,
   "min_price": 95000,
   "product_type": "Hoodie",
   "store_canonical_url": "https://www.balenciaga.com",
   "store_domain": "balenciaga.com",
+  "platform": "shopify",
+  "platform_id": "600583TJVE11055",
   "options": [
     {
       "name": "Size",
@@ -133,8 +146,7 @@ The `products` array contains a list of product objects in the feed, ordered by 
       "values": ["Black", "White", "Grey", "Navy"]
     }
   ],
-  "created_at": "2024-01-15T10:30:00.000Z",
-  "published_at": "2024-01-15T12:00:00.000Z",
+  "tags": ["hoodie", "oversized", "logo", "streetwear", "premium"],
   "updated_at": "2024-01-20T14:45:30.000Z"
 }
 ```
@@ -158,7 +170,7 @@ The `products` array contains a list of product objects in the feed, ordered by 
 </ResponseField>
 
 <ResponseField name="vendor" type="string">
-  Vendor/retailer name
+  Vendor/retailer name (always lowercase)
 </ResponseField>
 
 <ResponseField name="brand" type="string|null">
@@ -333,8 +345,12 @@ The `products` array contains a list of product objects in the feed, ordered by 
   </Expandable>
 </ResponseField>
 
-<ResponseField name="collection_handle" type="string">
-  URL handle/slug for the product collection
+<ResponseField name="platform" type="string|null">
+  E-commerce platform used by the vendor (e.g., "shopify", "magento", "woocommerce")
+</ResponseField>
+
+<ResponseField name="platform_id" type="string|null">
+  Product identifier on the vendor's platform
 </ResponseField>
 
 <ResponseField name="handle" type="string">
@@ -379,13 +395,7 @@ The `products` array contains a list of product objects in the feed, ordered by 
   </Expandable>
 </ResponseField>
 
-<ResponseField name="created_at" type="string">
-  ISO 8601 timestamp when the product was created
-</ResponseField>
 
-<ResponseField name="published_at" type="string|null">
-  ISO 8601 timestamp when the product was published (may be null for drafts)
-</ResponseField>
 
 <ResponseField name="updated_at" type="string">
   ISO 8601 timestamp when the product was last updated
@@ -457,6 +467,14 @@ or
 ```
 
 ### Validation Error (400 Bad Request)
+
+```json
+{
+  "error": "Invalid request: Request body is required with vendor and page parameters"
+}
+```
+
+or
 
 ```json
 {
