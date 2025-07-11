@@ -1,0 +1,79 @@
+---
+title: 'Request Structure'
+description: 'How to get individual product information from the Catalog Product API'
+---
+
+This guide shows you how to request detailed information about a specific product using its URL.
+
+## Basic Request
+
+Send a POST request to:
+```
+POST https://catalogai.vercel.app/api/product
+```
+
+### Headers
+| Header | Value |
+| --- | --- |
+| `Content-Type` | `application/json` |
+| `x-api-key` | `YOUR_API_KEY` |
+
+### Request Body
+```json
+{
+  "url": "https://www.saintlaurent.com/en-us/leather-jackets/classic-biker-jacket-in-black-leather-633218Y5YA21000.html"
+}
+```
+
+## Parameters
+
+<ResponseField name="url" type="string" required>
+  The complete product page URL you want to get information about.
+  
+  **Example:** `"https://www.ganni.com/en-gb/recycled-wool-knitwear-k1628-943.html"`
+</ResponseField>
+
+<ResponseField name="enableAI" type="boolean" optional>
+  Whether to use AI to enhance product descriptions. Defaults to `true`.
+  
+  **Example:** `false`
+</ResponseField>
+
+## Example Requests
+
+### Get Product Information
+```json
+{
+  "url": "https://www.cos.com/en_usd/women/knitwear/product.oversized-cashmere-sweater-brown.1188535001.html"
+}
+```
+
+### Get Product Without AI Enhancement
+```json
+{
+  "url": "https://www.balenciaga.com/en-us/hourglass-small-bag-black-671285VB35N1000.html",
+  "enableAI": false
+}
+```
+
+## How It Works
+
+1. **Search Database**: First checks if the product is already in our database
+2. **Extract from Website**: If not found, extracts product data from the website
+3. **Enhance with AI**: Improves descriptions and categorization (if enabled)
+4. **Return Results**: Sends back the complete product information
+
+## Response Format
+
+You'll get back either:
+- **Success**: Complete product details including title, price, images, and variants
+- **Not Found**: Empty result if the product couldn't be found or extracted
+
+<Note>
+The API works with most major fashion and retail websites. If a product isn't found, make sure the URL is correct and points to a valid product page.
+</Note>
+
+## Related Guides
+
+- [Product Response Structure](/developer-guide/product/response-structure) - Understanding what data you get back
+- [Feed API](/developer-guide/feed/request-structure) - Getting multiple products from a brand 
