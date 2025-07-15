@@ -1,0 +1,502 @@
+---
+title: "Filtering"
+description: "Advanced filtering techniques for precise product discovery"
+---
+
+The Catalog API provides powerful filtering capabilities to help you find exactly the products you need. Learn how to combine different filter types for precise results.
+
+## Filter Types
+
+### Price Filters
+
+Filter products by price range using `price_min` and `price_max`:
+
+<CodeGroup>
+
+```javascript Price Range
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'dress',
+    filters: {
+      price_min: 5000,  // $50.00
+      price_max: 15000  // $150.00
+    }
+  })
+});
+```
+
+```python Price Range
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/search',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'query': 'dress',
+        'filters': {
+            'price_min': 5000,  # $50.00
+            'price_max': 15000  # $150.00
+        }
+    }
+)
+```
+
+</CodeGroup>
+
+<Note>
+  Prices are always in cents. For example, `5000` represents $50.00.
+</Note>
+
+### Vendor Filters
+
+Filter by specific vendors (brands):
+
+<CodeGroup>
+
+```javascript Single Vendor
+{
+  "filters": {
+    "vendor": "Sezane"
+  }
+}
+```
+
+```javascript Multiple Vendors
+{
+  "filters": {
+    "vendor": ["Sezane", "Ganni", "Palace"]
+  }
+}
+```
+
+</CodeGroup>
+
+### Availability Filter
+
+Filter by product availability:
+
+<CodeGroup>
+
+```javascript Available Only
+{
+  "filters": {
+    "is_available": true
+  }
+}
+```
+
+```javascript Unavailable Only
+{
+  "filters": {
+    "is_available": false
+  }
+}
+```
+
+</CodeGroup>
+
+## Attribute Filters
+
+Use the `attributes` object to filter by rich product properties:
+
+### Color Filtering
+
+<CodeGroup>
+
+```javascript Single Color
+{
+  "filters": {
+    "attributes": {
+      "color": "blue"
+    }
+  }
+}
+```
+
+```javascript Multiple Colors
+{
+  "filters": {
+    "attributes": {
+      "color": ["blue", "red", "green"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Material and Fabric
+
+<CodeGroup>
+
+```javascript Material Filter
+{
+  "filters": {
+    "attributes": {
+      "material": "silk"
+    }
+  }
+}
+```
+
+```javascript Fabric Filter
+{
+  "filters": {
+    "attributes": {
+      "fabric": ["cotton", "linen", "silk"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Demographic Filters
+
+<CodeGroup>
+
+```javascript Gender Filter
+{
+  "filters": {
+    "attributes": {
+      "gender": "women"
+    }
+  }
+}
+```
+
+```javascript Season Filter
+{
+  "filters": {
+    "attributes": {
+      "season": "summer"
+    }
+  }
+}
+```
+
+```javascript Occasion Filter
+{
+  "filters": {
+    "attributes": {
+      "occasion": "formal"
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Category Filtering
+
+Filter by product categories using hierarchical paths:
+
+<CodeGroup>
+
+```javascript Category Filter
+{
+  "filters": {
+    "attributes": {
+      "category": "Women > Dresses"
+    }
+  }
+}
+```
+
+```javascript Subcategory Filter
+{
+  "filters": {
+    "attributes": {
+      "category": "Women > Tops > Blouses"
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+## Combining Filters
+
+Combine multiple filters for precise results. All filters use AND logic:
+
+<CodeGroup>
+
+```javascript Complex Filter Example
+{
+  "query": "summer party dress",
+  "filters": {
+    "price_max": 20000,
+    "vendor": ["Sezane", "Ganni"],
+    "is_available": true,
+    "attributes": {
+      "gender": "women",
+      "season": "summer",
+      "occasion": ["party", "formal"],
+      "color": ["blue", "pink", "white"],
+      "material": "silk"
+    }
+  }
+}
+```
+
+```python Complex Filter in Python
+filters = {
+    'price_max': 20000,
+    'vendor': ['Sezane', 'Ganni'],
+    'is_available': True,
+    'attributes': {
+        'gender': 'women',
+        'season': 'summer',
+        'occasion': ['party', 'formal'],
+        'color': ['blue', 'pink', 'white'],
+        'material': 'silk'
+    }
+}
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/search',
+    headers={'Content-Type': 'application/json', 'x-api-key': 'YOUR_API_KEY'},
+    json={'query': 'summer party dress', 'filters': filters}
+)
+```
+
+</CodeGroup>
+
+## Filter Logic
+
+### AND vs OR Logic
+
+- **Between filter types**: AND logic (product must match ALL specified filters)
+- **Within arrays**: OR logic (product must match ANY value in the array)
+
+<CodeGroup>
+
+```javascript Filter Logic Example
+{
+  "filters": {
+    "price_max": 15000,        // AND price <= $150
+    "vendor": ["Sezane", "Ganni"],  // AND vendor is Sezane OR Ganni
+    "attributes": {
+      "color": ["blue", "red"],      // AND color is blue OR red
+      "season": "summer"             // AND season is summer
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+This finds products that are:
+- Under $150 AND
+- From Sezane OR Ganni AND
+- Blue OR red AND
+- For summer
+
+## Best Practices
+
+### Start Broad, Then Narrow
+
+Begin with broad filters and progressively add more specific criteria:
+
+<CodeGroup>
+
+```javascript Step 1: Basic Filter
+{
+  "query": "dress",
+  "filters": {
+    "is_available": true
+  }
+}
+```
+
+```javascript Step 2: Add Price Range
+{
+  "query": "dress",
+  "filters": {
+    "is_available": true,
+    "price_max": 20000
+  }
+}
+```
+
+```javascript Step 3: Add Attributes
+{
+  "query": "dress",
+  "filters": {
+    "is_available": true,
+    "price_max": 20000,
+    "attributes": {
+      "occasion": "formal",
+      "season": "summer"
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Use Semantic Search + Filters
+
+Combine natural language queries with precise filters:
+
+<CodeGroup>
+
+```javascript Semantic + Filters
+{
+  "query": "elegant minimalist work outfit",
+  "filters": {
+    "attributes": {
+      "occasion": "work",
+      "color": ["black", "navy", "grey"],
+      "gender": "women"
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Handle Empty Results
+
+Always handle cases where filters return no results:
+
+<CodeGroup>
+
+```javascript Error Handling
+const searchWithFallback = async (query, filters) => {
+  // Try with all filters
+  let response = await search(query, filters);
+  
+  if (response.products.length === 0) {
+    // Remove some specific filters and retry
+    const relaxedFilters = { ...filters };
+    delete relaxedFilters.attributes?.color;
+    
+    response = await search(query, relaxedFilters);
+  }
+  
+  if (response.products.length === 0) {
+    // Further fallback: just the query
+    response = await search(query, {});
+  }
+  
+  return response;
+};
+```
+
+</CodeGroup>
+
+## Common Filter Patterns
+
+### Sustainable Fashion
+
+<CodeGroup>
+
+```javascript Sustainable Products
+{
+  "query": "sustainable eco-friendly",
+  "filters": {
+    "attributes": {
+      "fabric": ["organic cotton", "linen", "hemp"],
+      "material": ["cotton", "linen", "hemp"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Luxury Items
+
+<CodeGroup>
+
+```javascript Luxury Filter
+{
+  "query": "luxury designer",
+  "filters": {
+    "price_min": 50000,  // $500+
+    "vendor": ["Chanel", "Gucci", "Prada"]
+  }
+}
+```
+
+</CodeGroup>
+
+### Seasonal Shopping
+
+<CodeGroup>
+
+```javascript Summer Collection
+{
+  "query": "summer collection",
+  "filters": {
+    "attributes": {
+      "season": "summer",
+      "color": ["white", "blue", "yellow", "pink"]
+    }
+  }
+}
+```
+
+```javascript Winter Essentials
+{
+  "query": "winter warm clothing",
+  "filters": {
+    "attributes": {
+      "season": "winter",
+      "category": ["Women > Outerwear", "Women > Sweaters"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+### Occasion-Based
+
+<CodeGroup>
+
+```javascript Wedding Guest
+{
+  "query": "wedding guest dress",
+  "filters": {
+    "attributes": {
+      "occasion": "formal",
+      "color": ["blue", "pink", "green", "yellow"]  // Avoid white
+    }
+  }
+}
+```
+
+```javascript Work Wardrobe
+{
+  "query": "professional work clothes",
+  "filters": {
+    "attributes": {
+      "occasion": "work",
+      "color": ["black", "navy", "grey", "white"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+## Performance Tips
+
+- Use specific vendor filters when possible for faster results
+- Combine semantic queries with filters for better relevance
+- Start with broader filters and progressively narrow down
+- Cache common filter combinations for better user experience
+
+<Tip>
+  The API is optimized for real-time filtering with sub-100ms response times. All attributes are indexed for fast filtering performance.
+</Tip>

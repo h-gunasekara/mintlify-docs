@@ -1,0 +1,569 @@
+---
+title: "Pagination"
+description: "Navigate through large result sets efficiently with pagination"
+---
+
+The Catalog API uses page-based pagination to efficiently handle large result sets. Learn how to implement pagination in your application.
+
+## How Pagination Works
+
+The API returns a limited number of items per page (default: 10, max: 50) along with metadata to help you navigate through the results.
+
+### Basic Pagination
+
+<CodeGroup>
+
+```javascript Page 1
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'dresses',
+    page: 1,
+    limit: 10
+  })
+});
+```
+
+```javascript Page 2
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'dresses',
+    page: 2,
+    limit: 10
+  })
+});
+```
+
+</CodeGroup>
+
+### Pagination Response
+
+Every paginated response includes a `meta` object with pagination details:
+
+```json
+{
+  "products": [...],
+  "meta": {
+    "totalItems": 127,    // Total matching products (capped at 50)
+    "totalPages": 5,      // Total pages available
+    "currentPage": 1,     // Current page number
+    "pageSize": 10        // Items per page
+  }
+}
+```
+
+<Warning>
+  The `totalItems` value is capped at 50 for performance optimization, even if more matching results exist.
+</Warning>
+
+## Implementation Patterns
+
+### Basic Pagination Component
+
+<CodeGroup>
+
+```javascript React Pagination
+import { useState, useEffect } from 'react';
+
+const ProductSearch = () => {
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const searchProducts = async (page = 1) => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://catalogai.vercel.app/api/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.CATALOG_API_KEY
+        },
+        body: JSON.stringify({
+          query: 'summer dress',
+          page,
+          limit: 12
+        })
+      });
+      
+      const data = await response.json();
+      setProducts(data.products);
+      setMeta(data.meta);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Search failed:', error);
+    }
+    setLoading(false);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= meta.totalPages) {
+      searchProducts(newPage);
+    }
+  };
+
+  return (
+    <div>
+      {/* Product Grid */}
+      <div className="grid grid-cols-3 gap-4">
+        {products.map(product => (
+          <div key={product.id}>
+            {/* Product Card */}
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-8">
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        
+        <span className="mx-4">
+          Page {currentPage} of {meta.totalPages}
+        </span>
+        
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === meta.totalPages}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+```python Python Pagination
+import requests
+
+class ProductSearchPaginator:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = 'https://catalogai.vercel.app/api/search'
+        
+    def search(self, query, page=1, limit=10, filters=None):
+        payload = {
+            'query': query,
+            'page': page,
+            'limit': limit
+        }
+        
+        if filters:
+            payload['filters'] = filters
+            
+        response = requests.post(
+            self.base_url,
+            headers={
+                'Content-Type': 'application/json',
+                'x-api-key': self.api_key
+            },
+            json=payload
+        )
+        
+        return response.json()
+    
+    def get_all_pages(self, query, filters=None, max_pages=5):
+        """Fetch all pages up to max_pages limit"""
+        all_products = []
+        page = 1
+        
+        while page <= max_pages:
+            result = self.search(query, page=page, filters=filters)
+            
+            if not result['products']:
+                break
+                
+            all_products.extend(result['products'])
+            
+            if page >= result['meta']['totalPages']:
+                break
+                
+            page += 1
+            
+        return all_products
+
+# Usage
+paginator = ProductSearchPaginator('YOUR_API_KEY')
+products = paginator.get_all_pages('summer dress', max_pages=3)
+```
+
+</CodeGroup>
+
+### Infinite Scroll
+
+<CodeGroup>
+
+```javascript Infinite Scroll
+import { useState, useEffect, useCallback } from 'react';
+
+const InfiniteProductList = () => {
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetch('https://catalogai.vercel.app/api/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.CATALOG_API_KEY
+        },
+        body: JSON.stringify({
+          query: 'fashion',
+          page,
+          limit: 12
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.products.length === 0 || page >= data.meta.totalPages) {
+        setHasMore(false);
+      } else {
+        setProducts(prev => [...prev, ...data.products]);
+        setPage(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Failed to load more:', error);
+    }
+    setLoading(false);
+  }, [page, loading, hasMore]);
+
+  useEffect(() => {
+    loadMore();
+  }, []);
+
+  return (
+    <div>
+      <div className="grid grid-cols-3 gap-4">
+        {products.map(product => (
+          <div key={product.id}>
+            {/* Product Card */}
+          </div>
+        ))}
+      </div>
+      
+      {hasMore && (
+        <button 
+          onClick={loadMore} 
+          disabled={loading}
+          className="mt-4"
+        >
+          {loading ? 'Loading...' : 'Load More'}
+        </button>
+      )}
+    </div>
+  );
+};
+```
+
+</CodeGroup>
+
+## GET Endpoint Pagination
+
+For GET endpoints like `/api/feed` and `/api/vendors`, use query parameters:
+
+<CodeGroup>
+
+```javascript Feed Pagination
+const response = await fetch(
+  'https://catalogai.vercel.app/api/feed?vendor=Sezane&page=2&limit=20',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+```javascript Vendor Pagination
+const response = await fetch(
+  'https://catalogai.vercel.app/api/vendors?page=1&limit=50',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>
+
+## Performance Optimization
+
+### Preload Next Page
+
+<CodeGroup>
+
+```javascript Preload Strategy
+const useProductSearch = (query) => {
+  const [currentData, setCurrentData] = useState(null);
+  const [nextData, setNextData] = useState(null);
+  const [page, setPage] = useState(1);
+
+  const fetchPage = async (pageNum) => {
+    const response = await fetch('https://catalogai.vercel.app/api/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.CATALOG_API_KEY
+      },
+      body: JSON.stringify({
+        query,
+        page: pageNum,
+        limit: 12
+      })
+    });
+    return response.json();
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      const [current, next] = await Promise.all([
+        fetchPage(page),
+        page < 5 ? fetchPage(page + 1) : null  // Only preload if within bounds
+      ]);
+      
+      setCurrentData(current);
+      setNextData(next);
+    };
+    
+    loadData();
+  }, [page, query]);
+
+  const goToNextPage = () => {
+    if (nextData) {
+      setCurrentData(nextData);
+      setPage(page + 1);
+      // Preload the next page
+    }
+  };
+
+  return { currentData, goToNextPage, page };
+};
+```
+
+</CodeGroup>
+
+### Cache Previous Pages
+
+<CodeGroup>
+
+```javascript Page Caching
+class PageCache {
+  constructor(maxSize = 10) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
+  }
+  
+  set(key, data) {
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, data);
+  }
+  
+  get(key) {
+    return this.cache.get(key);
+  }
+  
+  has(key) {
+    return this.cache.has(key);
+  }
+}
+
+const pageCache = new PageCache();
+
+const searchWithCache = async (query, page, filters) => {
+  const cacheKey = `${query}-${page}-${JSON.stringify(filters)}`;
+  
+  if (pageCache.has(cacheKey)) {
+    return pageCache.get(cacheKey);
+  }
+  
+  const response = await fetch('https://catalogai.vercel.app/api/search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.CATALOG_API_KEY
+    },
+    body: JSON.stringify({
+      query,
+      page,
+      filters
+    })
+  });
+  
+  const data = await response.json();
+  pageCache.set(cacheKey, data);
+  
+  return data;
+};
+```
+
+</CodeGroup>
+
+## URL State Management
+
+Sync pagination state with URL for better user experience:
+
+<CodeGroup>
+
+```javascript URL Pagination
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+const ProductSearchPage = () => {
+  const router = useRouter();
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState({});
+  
+  const currentPage = parseInt(router.query.page) || 1;
+  const query = router.query.q || '';
+
+  const searchProducts = async (page) => {
+    const response = await fetch('https://catalogai.vercel.app/api/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.CATALOG_API_KEY
+      },
+      body: JSON.stringify({
+        query,
+        page
+      })
+    });
+    
+    const data = await response.json();
+    setProducts(data.products);
+    setMeta(data.meta);
+  };
+
+  const handlePageChange = (newPage) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, page: newPage }
+    });
+  };
+
+  useEffect(() => {
+    if (query) {
+      searchProducts(currentPage);
+    }
+  }, [query, currentPage]);
+
+  return (
+    <div>
+      {/* Product Grid */}
+      <div className="grid grid-cols-3 gap-4">
+        {products.map(product => (
+          <div key={product.id}>
+            {/* Product Card */}
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-8">
+        {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(pageNum => (
+          <button
+            key={pageNum}
+            onClick={() => handlePageChange(pageNum)}
+            className={`mx-1 px-3 py-1 ${
+              pageNum === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+          >
+            {pageNum}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+```
+
+</CodeGroup>
+
+## Best Practices
+
+### Limit Management
+
+<Tip>
+  Choose page sizes that balance performance and user experience:
+  - **Mobile**: 6-12 items per page
+  - **Desktop**: 12-24 items per page
+  - **Maximum**: 50 items per page
+</Tip>
+
+### Loading States
+
+Always provide loading indicators during pagination:
+
+<CodeGroup>
+
+```javascript Loading States
+const [loading, setLoading] = useState(false);
+
+const handlePageChange = async (newPage) => {
+  setLoading(true);
+  try {
+    await searchProducts(newPage);
+  } finally {
+    setLoading(false);
+  }
+};
+
+return (
+  <div>
+    {loading && <div className="text-center py-4">Loading...</div>}
+    {/* Product Grid */}
+  </div>
+);
+```
+
+</CodeGroup>
+
+### Error Handling
+
+Handle pagination errors gracefully:
+
+<CodeGroup>
+
+```javascript Error Handling
+const handlePageChange = async (newPage) => {
+  try {
+    await searchProducts(newPage);
+  } catch (error) {
+    console.error('Pagination failed:', error);
+    // Show user-friendly error message
+    // Optionally retry or fallback to previous page
+  }
+};
+```
+
+</CodeGroup>
+
+<Note>
+  Remember that the total items count is capped at 50 for performance. Design your pagination UI to handle this limitation gracefully.
+</Note>

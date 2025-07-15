@@ -1,0 +1,256 @@
+---
+title: "Get Feed"
+api: "GET https://catalogai.vercel.app/api/feed"
+description: "Retrieve customizable product feeds for commerce applications"
+---
+
+Get a customized product feed based on vendor and filtering criteria. Ideal for building product catalogs, recommendation engines, and commerce feeds.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="vendor" type="string">
+  Filter products by specific vendor name
+</ParamField>
+
+<ParamField query="limit" type="number" default="10">
+  Number of products to return (max 50)
+</ParamField>
+
+<ParamField query="page" type="number" default="1">
+  Page number for pagination (1-indexed)
+</ParamField>
+
+<ParamField query="available_only" type="boolean" default="false">
+  Return only available products
+</ParamField>
+
+<ParamField query="category" type="string">
+  Filter by product category (e.g., "Women > Dresses")
+</ParamField>
+
+## Response
+
+<ResponseField name="products" type="array">
+  Array of products matching the feed criteria
+  
+  <Expandable title="Product Object">
+    <ResponseField name="id" type="string">
+      Unique product identifier
+    </ResponseField>
+    
+    <ResponseField name="title" type="string">
+      Product title
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Product description
+    </ResponseField>
+    
+    <ResponseField name="vendor" type="string">
+      Brand or vendor name
+    </ResponseField>
+    
+    <ResponseField name="price" type="number">
+      Price in cents
+    </ResponseField>
+    
+    <ResponseField name="currency" type="string">
+      Currency code
+    </ResponseField>
+    
+    <ResponseField name="is_available" type="boolean">
+      Product availability status
+    </ResponseField>
+    
+    <ResponseField name="image_url" type="string">
+      Primary product image URL
+    </ResponseField>
+    
+    <ResponseField name="product_url" type="string">
+      Link to product page
+    </ResponseField>
+    
+    <ResponseField name="attributes" type="object">
+      Rich product attributes including color, material, category, etc.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Feed metadata and pagination information
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="totalItems" type="number">
+      Total number of products in feed
+    </ResponseField>
+    
+    <ResponseField name="totalPages" type="number">
+      Total number of pages available
+    </ResponseField>
+    
+    <ResponseField name="currentPage" type="number">
+      Current page number
+    </ResponseField>
+    
+    <ResponseField name="pageSize" type="number">
+      Number of items per page
+    </ResponseField>
+    
+    <ResponseField name="vendor" type="string">
+      Vendor name if filtered
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/feed?vendor=Sezane&limit=20&available_only=true" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/feed?vendor=Sezane&limit=20&available_only=true',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://catalogai.vercel.app/api/feed',
+    headers={'x-api-key': 'YOUR_API_KEY'},
+    params={
+        'vendor': 'Sezane',
+        'limit': 20,
+        'available_only': True
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "products": [
+    {
+      "id": "sez-001",
+      "title": "Silk Blouse",
+      "description": "Classic silk blouse with button front",
+      "vendor": "Sezane",
+      "price": 14999,
+      "currency": "USD",
+      "is_available": true,
+      "image_url": "https://example.com/blouse.jpg",
+      "product_url": "https://sezane.com/blouse-001",
+      "attributes": {
+        "color": "cream",
+        "material": "silk",
+        "category": "Women > Tops",
+        "season": "all-season"
+      }
+    }
+  ],
+  "meta": {
+    "totalItems": 45,
+    "totalPages": 3,
+    "currentPage": 1,
+    "pageSize": 20,
+    "vendor": "Sezane"
+  }
+}
+```
+
+</ResponseExample>
+
+## Examples
+
+### Vendor Feed
+
+Get all products from a specific vendor:
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/feed?vendor=Ganni" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/feed?vendor=Ganni',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>
+
+### Available Products Only
+
+Get only available products:
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/feed?available_only=true&limit=50" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/feed?available_only=true&limit=50',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>
+
+### Category Feed
+
+Get products from a specific category:
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/feed?category=Women%20%3E%20Dresses" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/feed?category=Women%20%3E%20Dresses',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>

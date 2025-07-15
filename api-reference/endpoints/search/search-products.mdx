@@ -1,0 +1,511 @@
+---
+title: "Search Products"
+api: "POST https://catalogai.vercel.app/api/search"
+description: "Search products using natural language queries with advanced filtering"
+---
+
+Search for products using intelligent semantic search with natural language understanding. The API supports complex filtering, pagination, and returns structured product data optimized for AI applications.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`
+</ParamField>
+
+### Body
+
+<ParamField body="query" type="string">
+  Natural language search query for semantic product discovery
+  
+  **Examples:**
+  - `"silk dress for summer wedding"`
+  - `"organic cotton t-shirt"`
+  - `"minimalist black handbag"`
+  - `"*"` (match all products)
+  
+  If omitted, defaults to `"*"` which returns all products.
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Filter criteria to narrow down results
+  
+  <Expandable title="Filter Properties">
+    <ParamField body="filters.price_min" type="number">
+      Minimum price in cents (e.g., 2500 for $25.00)
+    </ParamField>
+    
+    <ParamField body="filters.price_max" type="number">
+      Maximum price in cents (e.g., 15000 for $150.00)
+    </ParamField>
+    
+    <ParamField body="filters.vendor" type="string | array">
+      Vendor name(s) - can be single string or array of strings
+    </ParamField>
+    
+    <ParamField body="filters.is_available" type="boolean">
+      Filter by availability status
+    </ParamField>
+    
+    <ParamField body="filters.attributes" type="object">
+      Product attribute filters
+      
+      <Expandable title="Attribute Filters">
+        <ParamField body="filters.attributes.color" type="string | array">
+          Color filter (e.g., `"red"` or `["red", "blue"]`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.material" type="string">
+          Material type (e.g., `"silk"`, `"cotton"`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.fabric" type="array">
+          Fabric types (e.g., `["cotton", "linen"]`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.gender" type="string">
+          Target gender (`"women"`, `"men"`, `"unisex"`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.season" type="string">
+          Seasonal appropriateness (`"spring"`, `"summer"`, `"fall"`, `"winter"`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.occasion" type="string">
+          Suitable occasion (`"everyday"`, `"formal"`, `"party"`, `"work"`)
+        </ParamField>
+        
+        <ParamField body="filters.attributes.category" type="string">
+          Product category (e.g., `"Women > Dresses"`)
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="page" type="number" default="1">
+  Page number for pagination (1-indexed)
+</ParamField>
+
+<ParamField body="limit" type="number" default="10">
+  Number of items per page (currently fixed at 10)
+</ParamField>
+
+## Response
+
+<ResponseField name="products" type="array">
+  Array of matching products
+  
+  <Expandable title="Product Object">
+    <ResponseField name="id" type="string">
+      Unique product identifier
+    </ResponseField>
+    
+    <ResponseField name="title" type="string">
+      Product title
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Product description
+    </ResponseField>
+    
+    <ResponseField name="vendor" type="string">
+      Brand or vendor name
+    </ResponseField>
+    
+    <ResponseField name="price" type="number">
+      Price in cents (e.g., 2999 for $29.99)
+    </ResponseField>
+    
+    <ResponseField name="currency" type="string">
+      Currency code (e.g., "USD")
+    </ResponseField>
+    
+    <ResponseField name="is_available" type="boolean">
+      Product availability status
+    </ResponseField>
+    
+    <ResponseField name="image_url" type="string">
+      Primary product image URL
+    </ResponseField>
+    
+    <ResponseField name="product_url" type="string">
+      Link to product page
+    </ResponseField>
+    
+    <ResponseField name="attributes" type="object">
+      Rich product attributes
+      
+      <Expandable title="Attribute Properties">
+        <ResponseField name="color" type="string">
+          Primary color
+        </ResponseField>
+        
+        <ResponseField name="material" type="string">
+          Primary material
+        </ResponseField>
+        
+        <ResponseField name="category" type="string">
+          Product category hierarchy
+        </ResponseField>
+        
+        <ResponseField name="gender" type="string">
+          Target gender
+        </ResponseField>
+        
+        <ResponseField name="season" type="string">
+          Seasonal appropriateness
+        </ResponseField>
+        
+        <ResponseField name="occasion" type="string">
+          Suitable occasion
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Pagination and result metadata
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="totalItems" type="number">
+      Total number of matching products (capped at 50)
+    </ResponseField>
+    
+    <ResponseField name="totalPages" type="number">
+      Total number of pages available
+    </ResponseField>
+    
+    <ResponseField name="currentPage" type="number">
+      Current page number
+    </ResponseField>
+    
+    <ResponseField name="pageSize" type="number">
+      Number of items per page
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "summer dress",
+    "filters": {
+      "price_max": 15000,
+      "is_available": true,
+      "attributes": {
+        "color": ["blue", "white"],
+        "season": "summer"
+      }
+    },
+    "page": 1
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'summer dress',
+    filters: {
+      price_max: 15000,
+      is_available: true,
+      attributes: {
+        color: ['blue', 'white'],
+        season: 'summer'
+      }
+    },
+    page: 1
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/search',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'query': 'summer dress',
+        'filters': {
+            'price_max': 15000,
+            'is_available': True,
+            'attributes': {
+                'color': ['blue', 'white'],
+                'season': 'summer'
+            }
+        },
+        'page': 1
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "products": [
+    {
+      "id": "12345",
+      "title": "Blue Linen Summer Dress",
+      "description": "Lightweight linen dress perfect for warm weather",
+      "vendor": "Summer Collections",
+      "price": 8999,
+      "currency": "USD",
+      "is_available": true,
+      "image_url": "https://example.com/dress.jpg",
+      "product_url": "https://store.example.com/dress-12345",
+      "attributes": {
+        "color": "blue",
+        "material": "linen",
+        "category": "Women > Dresses",
+        "gender": "women",
+        "season": "summer",
+        "occasion": "casual"
+      }
+    },
+    {
+      "id": "67890",
+      "title": "White Cotton Midi Dress",
+      "description": "Classic white cotton dress with midi length",
+      "vendor": "Essentials",
+      "price": 12999,
+      "currency": "USD",
+      "is_available": true,
+      "image_url": "https://example.com/white-dress.jpg",
+      "product_url": "https://store.example.com/dress-67890",
+      "attributes": {
+        "color": "white",
+        "material": "cotton",
+        "category": "Women > Dresses",
+        "gender": "women",
+        "season": "summer",
+        "occasion": "everyday"
+      }
+    }
+  ],
+  "meta": {
+    "totalItems": 24,
+    "totalPages": 3,
+    "currentPage": 1,
+    "pageSize": 10
+  }
+}
+```
+
+</ResponseExample>
+
+## Examples
+
+### Basic Search
+
+Search for products with a simple query:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{"query": "black shoes"}'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'black shoes'
+  })
+});
+```
+
+</CodeGroup>
+
+### Price Range Filter
+
+Filter products by price range:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "handbag",
+    "filters": {
+      "price_min": 5000,
+      "price_max": 25000
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'handbag',
+    filters: {
+      price_min: 5000,
+      price_max: 25000
+    }
+  })
+});
+```
+
+</CodeGroup>
+
+### Multi-Vendor Search
+
+Search across specific vendors:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "silk blouse",
+    "filters": {
+      "vendor": ["Sezane", "Ganni"],
+      "is_available": true
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'silk blouse',
+    filters: {
+      vendor: ['Sezane', 'Ganni'],
+      is_available: true
+    }
+  })
+});
+```
+
+</CodeGroup>
+
+### Complex Attribute Filtering
+
+Use multiple attribute filters for precise results:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "work outfit",
+    "filters": {
+      "attributes": {
+        "gender": "women",
+        "occasion": "work",
+        "color": ["black", "navy", "grey"],
+        "category": "Women > Blazers"
+      }
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'work outfit',
+    filters: {
+      attributes: {
+        gender: 'women',
+        occasion: 'work',
+        color: ['black', 'navy', 'grey'],
+        category: 'Women > Blazers'
+      }
+    }
+  })
+});
+```
+
+</CodeGroup>
+
+## Error Responses
+
+<ResponseExample>
+
+```json 400 Bad Request
+{
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "The 'price_min' parameter must be a positive number",
+    "details": {
+      "parameter": "price_min",
+      "expected": "positive number",
+      "received": "-100"
+    }
+  }
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Invalid API key provided"
+  }
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": {
+    "code": "RATE_LIMITED",
+    "message": "Rate limit exceeded. Try again in 60 seconds.",
+    "details": {
+      "retryAfter": 60
+    }
+  }
+}
+```
+
+</ResponseExample>

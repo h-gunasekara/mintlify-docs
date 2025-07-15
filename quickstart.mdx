@@ -1,0 +1,187 @@
+---
+title: "Quickstart"
+description: "Get started with the Catalog API in under 5 minutes"
+---
+
+## Get your API key
+
+To access the Catalog API, you'll need an API key. [Contact our team](mailto:hamish@getcatalog.ai) to get started.
+
+## Authentication
+
+Include your API key in the `x-api-key` header with every request:
+
+```bash
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+## Make your first request
+
+Search for products using natural language:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{"query": "black dresses under $100"}'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'black dresses under $100'
+  })
+});
+
+const data = await response.json();
+console.log(data.products);
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/search',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={'query': 'black dresses under $100'}
+)
+
+data = response.json()
+print(data['products'])
+```
+
+</CodeGroup>
+
+## Response format
+
+The API returns structured product data with metadata:
+
+```json
+{
+  "products": [
+    {
+      "id": "12345",
+      "title": "Classic Black Dress",
+      "description": "Elegant midi dress perfect for any occasion",
+      "vendor": "Fashion Brand",
+      "price": 7999,
+      "currency": "USD",
+      "is_available": true,
+      "image_url": "https://example.com/image.jpg",
+      "attributes": {
+        "color": "black",
+        "material": "polyester",
+        "category": "Women > Dresses"
+      }
+    }
+  ],
+  "meta": {
+    "totalItems": 42,
+    "totalPages": 5,
+    "currentPage": 1,
+    "pageSize": 10
+  }
+}
+```
+
+## Add filters
+
+Refine your search with filters:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "summer dress",
+    "filters": {
+      "price_max": 10000,
+      "is_available": true,
+      "attributes": {
+        "color": ["blue", "white"],
+        "season": "summer"
+      }
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'summer dress',
+    filters: {
+      price_max: 10000,
+      is_available: true,
+      attributes: {
+        color: ['blue', 'white'],
+        season: 'summer'
+      }
+    }
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/search',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'query': 'summer dress',
+        'filters': {
+            'price_max': 10000,
+            'is_available': True,
+            'attributes': {
+                'color': ['blue', 'white'],
+                'season': 'summer'
+            }
+        }
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="book" href="/api-reference/overview">
+    Explore all available endpoints and parameters
+  </Card>
+  <Card title="Filtering Guide" icon="filter" href="/guides/filtering">
+    Learn about advanced filtering options
+  </Card>
+  <Card title="Error Handling" icon="triangle-exclamation" href="/guides/error-handling">
+    Handle errors gracefully in your application
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn more about API authentication
+  </Card>
+</CardGroup>

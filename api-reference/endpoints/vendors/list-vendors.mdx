@@ -1,0 +1,218 @@
+---
+title: "List Vendors"
+api: "GET https://catalogai.vercel.app/api/vendors"
+description: "List all available vendors and their metadata"
+---
+
+Retrieve a list of all vendors available in the Catalog API with their associated metadata and product counts.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="limit" type="number" default="50">
+  Number of vendors to return (max 100)
+</ParamField>
+
+<ParamField query="page" type="number" default="1">
+  Page number for pagination (1-indexed)
+</ParamField>
+
+<ParamField query="search" type="string">
+  Search vendors by name
+</ParamField>
+
+## Response
+
+<ResponseField name="vendors" type="array">
+  Array of vendor objects
+  
+  <Expandable title="Vendor Object">
+    <ResponseField name="name" type="string">
+      Vendor/brand name
+    </ResponseField>
+    
+    <ResponseField name="product_count" type="number">
+      Total number of products from this vendor
+    </ResponseField>
+    
+    <ResponseField name="available_count" type="number">
+      Number of currently available products
+    </ResponseField>
+    
+    <ResponseField name="categories" type="array">
+      Product categories available from this vendor
+    </ResponseField>
+    
+    <ResponseField name="price_range" type="object">
+      Price range information
+      
+      <Expandable title="Price Range">
+        <ResponseField name="min" type="number">
+          Minimum price in cents
+        </ResponseField>
+        
+        <ResponseField name="max" type="number">
+          Maximum price in cents
+        </ResponseField>
+        
+        <ResponseField name="avg" type="number">
+          Average price in cents
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Pagination and summary metadata
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="totalVendors" type="number">
+      Total number of vendors
+    </ResponseField>
+    
+    <ResponseField name="totalPages" type="number">
+      Total number of pages
+    </ResponseField>
+    
+    <ResponseField name="currentPage" type="number">
+      Current page number
+    </ResponseField>
+    
+    <ResponseField name="pageSize" type="number">
+      Number of items per page
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://catalogai.vercel.app/api/vendors \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/vendors', {
+  headers: {
+    'x-api-key': 'YOUR_API_KEY'
+  }
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://catalogai.vercel.app/api/vendors',
+    headers={'x-api-key': 'YOUR_API_KEY'}
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "vendors": [
+    {
+      "name": "Sezane",
+      "product_count": 245,
+      "available_count": 198,
+      "categories": [
+        "Women > Tops",
+        "Women > Dresses",
+        "Women > Accessories"
+      ],
+      "price_range": {
+        "min": 2999,
+        "max": 49999,
+        "avg": 18500
+      }
+    },
+    {
+      "name": "Ganni",
+      "product_count": 189,
+      "available_count": 156,
+      "categories": [
+        "Women > Dresses",
+        "Women > Tops",
+        "Women > Outerwear"
+      ],
+      "price_range": {
+        "min": 3999,
+        "max": 59999,
+        "avg": 22000
+      }
+    }
+  ],
+  "meta": {
+    "totalVendors": 45,
+    "totalPages": 1,
+    "currentPage": 1,
+    "pageSize": 50
+  }
+}
+```
+
+</ResponseExample>
+
+## Examples
+
+### Search Vendors
+
+Search for vendors by name:
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/vendors?search=Sez" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/vendors?search=Sez',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>
+
+### Paginated Results
+
+Get vendors with pagination:
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://catalogai.vercel.app/api/vendors?page=2&limit=25" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://catalogai.vercel.app/api/vendors?page=2&limit=25',
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  }
+);
+```
+
+</CodeGroup>
