@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Catalog - Agentic Commerce Infrastructure",
+  "name": "Catalog API",
   "logo": {
     "dark": "/logo/catalog-logo-white.svg",
     "light": "/logo/catalog-logo-black.svg"
@@ -8,64 +8,83 @@
   "favicon": "/logo/catalog-logo-black.svg",
   "colors": {
     "primary": "#00B158",
-    "light": "#4ADE80",
-    "dark": "#059669"
+    "light": "#00D166",
+    "dark": "#008F47",
+    "anchors": {
+      "from": "#00B158",
+      "to": "#00D166"
+    }
+  },
+  "topbar": {
+    "style": "gradient"
   },
   "topbarCtaButton": {
-    "name": "Support",
-    "url": "mailto:hamish@getcatalog.ai"
+    "name": "Get API Key",
+    "url": "mailto:founders@getcatalog.ai"
   },
   "anchors": [
     {
       "name": "Website",
       "icon": "globe",
       "url": "https://www.getcatalog.ai"
+    },
+    {
+      "name": "Support",
+      "icon": "envelope",
+      "url": "mailto:founders@getcatalog.ai"
     }
   ],
   "navigation": [
     {
-      "group": "Overview",
+      "group": "Get Started",
       "pages": [
-        "index",
-        "getting-started/quick-start"
+        "welcome",
+        "quickstart",
+        "authentication"
       ]
     },
     {
-      "group": "Discovery",
+      "group": "API Reference",
       "pages": [
-        "developer-guide/search/request-structure",
-        "developer-guide/search/response-structure"
+        "api-reference/overview",
+        {
+          "group": "Search",
+          "pages": [
+            "api-reference/endpoints/search/search-products"
+          ]
+        },
+        {
+          "group": "Feed",
+          "pages": [
+            "api-reference/endpoints/feed/get-feed"
+          ]
+        },
+        {
+          "group": "Product",
+          "pages": [
+            "api-reference/endpoints/products/get-product"
+          ]
+        },
+        {
+          "group": "Vendors",
+          "pages": [
+            "api-reference/endpoints/vendors/list-vendors"
+          ]
+        }
       ]
     },
     {
-      "group": "Feed",
+      "group": "Guides",
       "pages": [
-        "developer-guide/feed/request-structure",
-        "developer-guide/feed/response-structure"
-      ]
-    },
-    {
-      "group": "Product",
-      "pages": [
-        "developer-guide/product/request-structure",
-        "developer-guide/product/response-structure"
-      ]
-    },
-    {
-      "group": "Vendors",
-      "pages": [
-        "developer-guide/vendors/request-structure",
-        "developer-guide/vendors/response-structure"
-      ]
-    },
-    {
-      "group": "Examples",
-      "pages": [
-        "examples"
+        "guides/filtering",
+        "guides/pagination",
+        "guides/error-handling"
       ]
     }
   ],
-  "footerSocials": {
-    "twitter": "https://x.com/hamishgunaseka"
+
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
   }
 } 

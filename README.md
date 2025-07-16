@@ -59,7 +59,7 @@ Changes to the documentation are automatically deployed when pushed to the main 
 
 To access the Catalog AI API:
 
-1. [Contact the team](mailto:hamish@getcatalog.ai) to obtain an API key
+1. [Contact the team](mailto:founders@getcatalog.ai) to obtain an API key
 2. Include your API key in the `x-api-key` header with every request
 3. Use the API endpoints at `https://catalogai.vercel.app/api/`
 
@@ -68,9 +68,8 @@ To access the Catalog AI API:
 - If `mintlify dev` isn't running, try `mintlify install` to re-install dependencies
 - If a page loads as a 404, ensure you're running in a folder with `mint.json`
 - For API issues, check authentication headers and request format
-- For further assistance, contact [support](mailto:hamish@getcatalog.ai)
+- For further assistance, contact [support](mailto:founders@getcatalog.ai)
 
 ## Links
 
 - [Catalog AI Website](https://www.getcatalog.ai)
-- [Twitter](https://x.com/hamishgunaseka)

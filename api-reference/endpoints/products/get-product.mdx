@@ -1,0 +1,260 @@
+---
+title: "Get Product by URL"
+api: "POST https://catalogai.vercel.app/api/product"
+description: "Get detailed information about a specific product by URL"
+---
+
+Retrieve comprehensive details about a specific product by providing its URL. This endpoint can also detect new vendors and automatically trigger scraping for Shopify stores.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+### Request Body
+
+<ParamField body="url" type="string" required>
+  The product URL to search for
+</ParamField>
+
+<ParamField body="enableAI" type="boolean" default="true">
+  Whether to enable AI enrichment for single products
+</ParamField>
+
+## Response
+
+<ResponseField name="product" type="object | null">
+  Detailed product information (null if not found)
+  
+  <Expandable title="Product Properties">
+    <ResponseField name="id" type="string">
+      Unique product identifier
+    </ResponseField>
+    
+    <ResponseField name="title" type="string">
+      Product title
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Detailed product description
+    </ResponseField>
+    
+    <ResponseField name="vendor" type="string">
+      Brand or vendor name
+    </ResponseField>
+    
+    <ResponseField name="price" type="number">
+      Price in cents
+    </ResponseField>
+    
+    <ResponseField name="currency" type="string">
+      Currency code (e.g., "USD")
+    </ResponseField>
+    
+    <ResponseField name="is_available" type="boolean">
+      Product availability status
+    </ResponseField>
+    
+    <ResponseField name="image_url" type="string">
+      Primary product image URL
+    </ResponseField>
+    
+    <ResponseField name="product_url" type="string">
+      Link to product page
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="string">
+      Product creation timestamp (ISO 8601)
+    </ResponseField>
+    
+    <ResponseField name="updated_at" type="string">
+      Last update timestamp (ISO 8601)
+    </ResponseField>
+    
+    <ResponseField name="attributes" type="object">
+      Comprehensive product attributes
+      
+      <Expandable title="Available Attributes">
+        <ResponseField name="color" type="string">
+          Primary product color
+        </ResponseField>
+        
+        <ResponseField name="material" type="string">
+          Primary material
+        </ResponseField>
+        
+        <ResponseField name="category" type="string">
+          Product category hierarchy
+        </ResponseField>
+        
+        <ResponseField name="gender" type="string">
+          Target gender
+        </ResponseField>
+        
+        <ResponseField name="season" type="string">
+          Seasonal appropriateness
+        </ResponseField>
+        
+        <ResponseField name="occasion" type="string">
+          Suitable occasion
+        </ResponseField>
+        
+        <ResponseField name="size_range" type="array">
+          Available sizes
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Response metadata
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="found" type="boolean">
+      Whether the product was found
+    </ResponseField>
+    
+    <ResponseField name="url" type="string">
+      Echo back the requested URL
+    </ResponseField>
+    
+    <ResponseField name="newVendorDetected" type="boolean">
+      Indicates if a new vendor was detected and scraping was triggered (only present if true)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/api/product \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "url": "https://store.example.com/products/classic-black-dress",
+    "enableAI": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/product', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    url: 'https://store.example.com/products/classic-black-dress',
+    enableAI: true
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/api/product',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'url': 'https://store.example.com/products/classic-black-dress',
+        'enableAI': True
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Product Found
+{
+  "product": {
+    "id": "12345",
+    "title": "Classic Black Dress",
+    "description": "Elegant midi dress perfect for any occasion. Made from premium fabric with a flattering silhouette.",
+    "vendor": "Fashion Brand",
+    "price": 7999,
+    "currency": "USD",
+    "is_available": true,
+    "image_url": "https://example.com/dress.jpg",
+    "product_url": "https://store.example.com/products/classic-black-dress",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-20T14:22:00Z",
+    "attributes": {
+      "color": "black",
+      "material": "polyester",
+      "category": "Women > Dresses",
+      "gender": "women",
+      "season": "all-season",
+      "occasion": "formal",
+      "size_range": ["XS", "S", "M", "L", "XL"]
+    }
+  },
+  "meta": {
+    "found": true,
+    "url": "https://store.example.com/products/classic-black-dress"
+  }
+}
+```
+
+```json Product Not Found
+{
+  "product": null,
+  "meta": {
+    "found": false,
+    "url": "https://store.example.com/products/nonexistent-product"
+  }
+}
+```
+
+```json New Vendor Detected
+{
+  "product": {
+    "id": "67890",
+    "title": "New Product from Shopify Store",
+    "description": "Product from a newly discovered Shopify vendor.",
+    "vendor": "New Shopify Store",
+    "price": 4999,
+    "currency": "USD",
+    "is_available": true,
+    "image_url": "https://newstore.com/product.jpg",
+    "product_url": "https://newstore.com/products/new-product",
+    "created_at": "2024-01-25T09:15:00Z",
+    "updated_at": "2024-01-25T09:15:00Z",
+    "attributes": {
+      "color": "blue",
+      "material": "cotton",
+      "category": "Men > Shirts"
+    }
+  },
+  "meta": {
+    "found": true,
+    "url": "https://newstore.com/products/new-product",
+    "newVendorDetected": true
+  }
+}
+```
+
+```json 400 Bad Request
+{
+  "error": "URL is required and must be a string"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+</ResponseExample>

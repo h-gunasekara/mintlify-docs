@@ -1,0 +1,143 @@
+---
+title: "API Reference"
+description: "Complete reference for the Catalog API endpoints"
+---
+
+The Catalog API provides endpoints for product search, discovery, and commerce intelligence. All endpoints return JSON and require authentication via API key.
+
+## Base URL
+
+```
+https://catalogai.vercel.app
+```
+
+## Authentication
+
+All requests require an API key in the `x-api-key` header:
+
+```bash
+curl -H "x-api-key: YOUR_API_KEY" https://catalogai.vercel.app/api/search
+```
+
+## Endpoints
+
+### Search
+
+<Card title="Search Products" icon="magnifying-glass" href="/api-reference/endpoints/search/search-products">
+  **POST** `/api/search`
+  
+  Search products using natural language queries with advanced filtering capabilities.
+</Card>
+
+### Feed
+
+<Card title="Get Feed" icon="rss" href="/api-reference/endpoints/feed/get-feed">
+  **GET** `/api/feed`
+  
+  Retrieve customizable product feeds for commerce applications.
+</Card>
+
+### Product
+
+<Card title="Get Product by URL" icon="box" href="/api-reference/endpoints/products/get-product">
+  **POST** `/api/product`
+  
+  Get detailed information about a specific product by URL.
+</Card>
+
+### Vendors
+
+<Card title="List Vendors" icon="store" href="/api-reference/endpoints/vendors/list-vendors">
+  **GET** `/api/vendors`
+  
+  List all available vendors and their metadata.
+</Card>
+
+## Common Parameters
+
+Many endpoints accept these common parameters:
+
+<ResponseField name="page" type="integer" default="1">
+  Page number for pagination (1-indexed)
+</ResponseField>
+
+<ResponseField name="limit" type="integer" default="10">
+  Number of items per page (max 50)
+</ResponseField>
+
+## Response Format
+
+All API responses follow a consistent structure:
+
+```json
+{
+  "data": {
+    // Response data specific to the endpoint
+  },
+  "meta": {
+    "totalItems": 100,
+    "totalPages": 10,
+    "currentPage": 1,
+    "pageSize": 10
+  }
+}
+```
+
+For search and feed endpoints, the response includes a `products` array:
+
+```json
+{
+  "products": [
+    {
+      "id": "12345",
+      "title": "Product Name",
+      "description": "Product description",
+      "vendor": "Brand Name",
+      "price": 2999,
+      "currency": "USD",
+      "is_available": true,
+      "image_url": "https://example.com/image.jpg",
+      "attributes": {
+        "color": "blue",
+        "material": "cotton",
+        "category": "Women > Shirts"
+      }
+    }
+  ],
+  "meta": {
+    "totalItems": 42,
+    "totalPages": 5,
+    "currentPage": 1,
+    "pageSize": 10
+  }
+}
+```
+
+## Error Handling
+
+Errors are returned with appropriate HTTP status codes and descriptive messages:
+
+```json
+{
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "The 'query' parameter must be a string",
+    "details": {
+      "parameter": "query",
+      "expected": "string",
+      "received": "number"
+    }
+  }
+}
+```
+
+Common error codes:
+
+| Code | Status | Description |
+| ---- | ------ | ----------- |
+| `UNAUTHORIZED` | 401 | Invalid or missing API key |
+| `FORBIDDEN` | 403 | API key access denied |
+| `INVALID_PARAMETER` | 400 | Invalid request parameter |
+| `NOT_FOUND` | 404 | Resource not found |
+| `RATE_LIMITED` | 429 | Too many requests |
+| `INTERNAL_ERROR` | 500 | Server error |
