@@ -1,0 +1,96 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Catalog API",
+  "colors": {
+    "primary": "#00B158",
+    "light": "#00D166",
+    "dark": "#008F47"
+  },
+  "favicon": "/logo/catalog-logo-black.svg",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "welcome",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/overview",
+              {
+                "group": "Search",
+                "pages": [
+                  "api-reference/endpoints/search/search-products"
+                ]
+              },
+              {
+                "group": "Feed",
+                "pages": [
+                  "api-reference/endpoints/feed/get-feed"
+                ]
+              },
+              {
+                "group": "Product",
+                "pages": [
+                  "api-reference/endpoints/products/get-product"
+                ]
+              },
+              {
+                "group": "Vendors",
+                "pages": [
+                  "api-reference/endpoints/vendors/list-vendors"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/filtering",
+              "guides/pagination",
+              "guides/error-handling"
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "Website",
+        "href": "https://www.getcatalog.ai",
+        "icon": "globe"
+      },
+      {
+        "anchor": "Support",
+        "href": "mailto:founders@getcatalog.ai",
+        "icon": "envelope"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/catalog-logo-black.svg",
+    "dark": "/logo/catalog-logo-white.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Get API Key",
+      "href": "mailto:founders@getcatalog.ai"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
+    ]
+  }
+}
