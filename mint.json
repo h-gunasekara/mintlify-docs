@@ -86,5 +86,13 @@
   "feedback": {
     "thumbsRating": true,
     "suggestEdit": true
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
+    ]
   }
 } 
