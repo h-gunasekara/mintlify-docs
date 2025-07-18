@@ -127,16 +127,3 @@ print(f"Cached: {data.get('cached', False)}")
 ```
 
 </ResponseExample>
-
-## Error Handling
-
-The endpoint includes comprehensive error handling:
-
-- **Timeout Protection**: 30-second timeout with fallback to cached data
-- **Database Resilience**: Handles database timeouts and connection issues
-- **Graceful Degradation**: Returns stale cached data when fresh data is unavailable
-- **Structured Errors**: Consistent error format with codes for programmatic handling
-
-<Warning>
-During high load or database maintenance, you may receive cached data with appropriate cache status indicators. This ensures the API remains responsive even during system stress.
-</Warning>

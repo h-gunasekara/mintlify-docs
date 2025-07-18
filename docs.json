@@ -18,8 +18,7 @@
             "group": "Get Started",
             "pages": [
               "welcome",
-              "quickstart",
-              "authentication"
+              "quickstart"
             ]
           },
           {
@@ -56,8 +55,7 @@
             "group": "Guides",
             "pages": [
               "guides/filtering",
-              "guides/pagination",
-              "guides/error-handling"
+              "guides/pagination"
             ]
           }
         ]
