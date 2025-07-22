@@ -64,7 +64,7 @@ Filter by specific vendors (brands):
 ```javascript Single Vendor
 {
   "filters": {
-    "vendor": "Sezane"
+    "vendor": "fwrd"
   }
 }
 ```
@@ -72,7 +72,7 @@ Filter by specific vendors (brands):
 ```javascript Multiple Vendors
 {
   "filters": {
-    "vendor": ["Sezane", "Ganni", "Palace"]
+    "vendor": ["fwrd", "Ganni", "Palace"]
   }
 }
 ```
@@ -234,7 +234,7 @@ Combine multiple filters for precise results. All filters use AND logic:
   "query": "summer party dress",
   "filters": {
     "price_max": 20000,
-    "vendor": ["Sezane", "Ganni"],
+    "vendor": ["fwrd", "Ganni"],
     "is_available": true,
     "attributes": {
       "gender": "women",
@@ -250,7 +250,7 @@ Combine multiple filters for precise results. All filters use AND logic:
 ```python Complex Filter in Python
 filters = {
     'price_max': 20000,
-    'vendor': ['Sezane', 'Ganni'],
+    'vendor': ['fwrd', 'Ganni'],
     'is_available': True,
     'attributes': {
         'gender': 'women',
@@ -283,7 +283,7 @@ response = requests.post(
 {
   "filters": {
     "price_max": 15000,        // AND price <= $150
-    "vendor": ["Sezane", "Ganni"],  // AND vendor is Sezane OR Ganni
+    "vendor": ["fwrd", "Ganni"],  // AND vendor is fwrd OR Ganni
     "attributes": {
       "color": ["blue", "red"],      // AND color is blue OR red
       "season": "summer"             // AND season is summer
@@ -296,7 +296,7 @@ response = requests.post(
 
 This finds products that are:
 - Under $150 AND
-- From Sezane OR Ganni AND
+- From fwrd OR Ganni AND
 - Blue OR red AND
 - For summer
 

@@ -155,7 +155,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "vendor": "Sezane",
+    "vendor": "fwrd",
     "page": 1
   }'
 ```
@@ -170,7 +170,7 @@ const response = await fetch(
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      vendor: 'Sezane',
+      vendor: 'fwrd',
       page: 1
     })
   }
@@ -189,7 +189,7 @@ response = requests.post(
         'Content-Type': 'application/json'
     },
     json={
-        'vendor': 'Sezane',
+        'vendor': 'fwrd',
         'page': 1
     }
 )
@@ -208,9 +208,9 @@ data = response.json()
       "id": "sez-001",
       "title": "Silk Blouse",
       "description": "Classic silk blouse with button front",
-      "vendor": "Sezane",
-      "brand": "Sezane",
-      "url": "https://sezane.com/blouse-001",
+      "vendor": "fwrd",
+      "brand": "fwrd",
+      "url": "https://fwrd.com/blouse-001",
       "handle": "silk-blouse",
       "is_available": true,
       "attributes": {
@@ -234,8 +234,8 @@ data = response.json()
           "size": "M"
         }
       ],
-      "store_canonical_url": "https://sezane.com/blouse-001",
-      "store_domain": "sezane.com",
+      "store_canonical_url": "https://fwrd.com/blouse-001",
+      "store_domain": "fwrd.com",
       "platform": "shopify",
       "platform_id": "123456",
       "description_html": "<p>Classic silk blouse with button front</p>",
@@ -305,7 +305,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "vendor": "Sezane",
+    "vendor": "fwrd",
     "page": 2
   }'
 ```
@@ -320,7 +320,7 @@ const response = await fetch(
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      vendor: 'Sezane',
+      vendor: 'fwrd',
       page: 2
     })
   }
