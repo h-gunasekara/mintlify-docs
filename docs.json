@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Catalog API",
+  "name": "Catalog Documentation",
   "colors": {
     "primary": "#00B158",
     "light": "#00D166",
@@ -26,6 +26,14 @@
             "pages": [
               "api-reference/overview",
               {
+                "group": "Search",
+                "pages": [
+                  "api-reference/endpoints/search/agentic-search",
+                  "api-reference/endpoints/search/agentic-search-mini",
+                  "api-reference/endpoints/search/regular-search"
+                ]
+              },
+              {
                 "group": "Feed",
                 "pages": [
                   "api-reference/endpoints/feed/get-feed"
@@ -41,12 +49,6 @@
                 "group": "Vendors",
                 "pages": [
                   "api-reference/endpoints/vendors/list-vendors"
-                ]
-              },
-              {
-                "group": "Search",
-                "pages": [
-                  "api-reference/endpoints/search/search-products"
                 ]
               }
             ]

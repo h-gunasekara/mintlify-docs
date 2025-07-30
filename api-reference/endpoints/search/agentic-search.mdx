@@ -1,0 +1,291 @@
+---
+title: "Agentic Search"
+api: "POST https://catalogai.vercel.app/v1/agentic-search"
+description: "Intelligent product search powered by AI agents"
+---
+
+Perform advanced product searches that reason through natural language queries and customer preferences.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+### Request Body
+
+<ParamField body="query" type="string" required>
+  Natural language search query for product discovery
+  
+  **Examples:**
+  - `"performance activewear for HIIT workouts in humid climates"`
+  - `"versatile capsule wardrobe pieces for European business travel"`
+  - `"statement jewelry that complements a maximalist aesthetic"`
+</ParamField>
+
+<ParamField body="customer_profile" type="object">
+  Optional customer profile information to personalize search results. This field accepts any JSON structure, allowing you to provide custom customer attributes and preferences.
+  
+  **Intelligent personalization fields:**
+  - `age`, `gender`, `lifestyle` - Demographic targeting for relevant recommendations
+  - `style_preferences` - Style like `minimalist`, `luxury`, `sustainable`
+  - `price_range` - Budget constraints with `min`, `max`, and `currency`
+  - `occasion`, `season` - Context-aware matching for perfect timing
+  - `purchase_history`, `brand_preferences` - Learning from past behavior
+  - `body_measurements`, `fit_preferences` - Precision sizing intelligence
+  - Custom attributes like `color_palette`, `material_preferences`
+</ParamField>
+
+## Response
+
+<ResponseField name="products" type="array">
+  Array of products matching the search query
+  
+  <Expandable title="Product Properties">
+    <ResponseField name="title" type="string">
+      Product title
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Product description
+    </ResponseField>
+    
+    <ResponseField name="url" type="string">
+      Product URL
+    </ResponseField>
+    
+    <ResponseField name="price_amount" type="number">
+      Price amount in decimal format (e.g., 29.99)
+    </ResponseField>
+    
+    <ResponseField name="price_currency" type="string">
+      Currency code (e.g., "USD", "EUR")
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Search metadata and result information
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="totalItems" type="number">
+      Total number of products found
+    </ResponseField>
+    
+    <ResponseField name="urls" type="array">
+      Array of all product URLs in the result set
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/v1/agentic-search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "elevated dress for a black tie event",
+    "customer_profile": {
+      "gender": "female",
+      "age": 32,
+      "style_preferences": ["avant-garde", "luxury", "statement"],
+      "price_range": {
+        "min": 50000,
+        "max": 200000,
+        "currency": "USD"
+      },
+      "occasion": "formal",
+      "season": "fall",
+      "brand_preferences": ["Valentino", "Balenciaga", "The Row"]
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/v1/agentic-search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'elevated dress for a black tie event',
+    customer_profile: {
+      gender: 'female',
+      age: 32,
+      style_preferences: ['avant-garde', 'luxury', 'statement'],
+      price_range: {
+        min: 50000,
+        max: 200000,
+        currency: 'USD'
+      },
+      occasion: 'formal',
+      season: 'fall',
+      brand_preferences: ['Valentino', 'Balenciaga', 'The Row']
+    }
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/v1/agentic-search',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'query': 'elevated dress for a black tie event',
+        'customer_profile': {
+            'gender': 'female',
+            'age': 32,
+            'style_preferences': ['avant-garde', 'luxury', 'statement'],
+            'price_range': {
+                'min': 50000,
+                'max': 200000,
+                'currency': 'USD'
+            },
+            'occasion': 'formal',
+            'season': 'fall',
+            'brand_preferences': ['Valentino', 'Balenciaga', 'The Row']
+        }
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "products": [
+    {
+      "title": "Valentino Geometric Structured Gown",
+      "description": "Avant-garde evening gown featuring architectural pleating and dramatic silhouette in midnight black crepe",
+      "url": "https://valentino.com/collections/evening/geometric-structured-gown",
+      "price_amount": 7800.0,
+      "price_currency": "USD"
+    },
+    {
+      "title": "Balenciaga Sculptural Evening Dress",
+      "description": "Statement dress with exaggerated proportions and innovative construction techniques",
+      "url": "https://balenciaga.com/collections/couture/sculptural-evening-dress",
+      "price_amount": 5200.0,
+      "price_currency": "USD"
+    },
+    {
+      "title": "The Row Minimalist Column Gown",
+      "description": "Refined architectural gown in luxurious silk with precision tailoring and clean lines",
+      "url": "https://therow.com/collections/evening/minimalist-column-gown",
+      "price_amount": 4900.0,
+      "price_currency": "USD"
+    }
+  ],
+  "meta": {
+    "totalItems": 3,
+    "urls": [
+      "https://valentino.com/collections/evening/geometric-structured-gown",
+      "https://balenciaga.com/collections/couture/sculptural-evening-dress",
+      "https://therow.com/collections/evening/minimalist-column-gown"
+    ]
+  }
+}
+```
+
+</ResponseExample>
+
+## Examples
+
+### Basic Search
+
+Simple product search with natural language:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/v1/agentic-search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{"query": "timeless Italian leather handbags with impeccable craftsmanship"}'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/v1/agentic-search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'timeless Italian leather handbags with impeccable craftsmanship'
+  })
+});
+```
+
+</CodeGroup>
+
+### Personalized Search
+
+Search with customer profile for personalized results:
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/v1/agentic-search \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "sophisticated Parisian chic for Art Basel weekend",
+    "customer_profile": {
+      "gender": "female",
+      "age": 29,
+      "style_preferences": ["minimalist", "luxury", "contemporary"],
+      "price_range": {
+        "min": 80000,
+        "max": 300000,
+        "currency": "USD"
+      },
+      "season": "spring",
+      "occasion": "cultural events",
+      "brand_preferences": ["Celine", "Saint Laurent", "Lemaire"]
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/v1/agentic-search', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'sophisticated Parisian chic for Art Basel weekend',
+    customer_profile: {
+      gender: 'female',
+      age: 29,
+      style_preferences: ['minimalist', 'luxury', 'contemporary'],
+      price_range: {
+        min: 80000,
+        max: 300000,
+        currency: 'USD'
+      },
+      season: 'spring',
+      occasion: 'cultural events',
+      brand_preferences: ['Celine', 'Saint Laurent', 'Lemaire']
+    }
+  })
+});
+```
+
+</CodeGroup>
+
+

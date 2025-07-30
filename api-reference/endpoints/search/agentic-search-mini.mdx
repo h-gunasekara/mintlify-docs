@@ -1,0 +1,198 @@
+---
+title: "Agentic Search Mini"
+api: "POST https://catalogai.vercel.app/v1/agentic-search-mini"
+description: "Intelligent product discovery using Google Shopping with AI-powered analysis"
+---
+
+Discover products using intelligent search that combines Google Shopping results with AI-powered product analysis. This endpoint filters high-quality sources and provides enriched product data with detailed attributes.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+### Request Body
+
+<ParamField body="query" type="string" required>
+  Natural language search query for product discovery
+  
+  **Examples:**
+  - `"sustainable midi dresses"`
+  - `"luxury minimalist handbags"`
+  - `"versatile blazers for work"`
+</ParamField>
+
+## Response
+
+<ResponseField name="products" type="array">
+  Array of discovered products with enriched data
+  
+  <Expandable title="Product Properties">
+    <ResponseField name="url" type="string">
+      Product URL (normalized and cleaned)
+    </ResponseField>
+    
+    <ResponseField name="title" type="string">
+      Product title
+    </ResponseField>
+    
+    <ResponseField name="price_amount" type="number">
+      Product price as a number (e.g., 99.99)
+    </ResponseField>
+    
+    <ResponseField name="price_currency" type="string">
+      Currency code (e.g., "USD")
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Product description
+    </ResponseField>
+    
+    <ResponseField name="images" type="array">
+      Array of product image URLs
+    </ResponseField>
+    
+    <ResponseField name="attributes" type="object">
+      Comprehensive product attributes extracted through AI analysis
+      
+      <Expandable title="Common Attributes">
+        <ResponseField name="color" type="string">
+          Primary product color
+        </ResponseField>
+        
+        <ResponseField name="material" type="string">
+          Primary material composition
+        </ResponseField>
+        
+        <ResponseField name="category" type="string">
+          Product category classification
+        </ResponseField>
+        
+        <ResponseField name="brand" type="string">
+          Brand information
+        </ResponseField>
+        
+        <ResponseField name="features" type="string">
+          Key product features
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Search result metadata
+  
+  <Expandable title="Meta Properties">
+    <ResponseField name="totalItems" type="number">
+      Total number of products found
+    </ResponseField>
+    
+    <ResponseField name="urls" type="array">
+      Array of all product URLs returned
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/v1/agentic-search-mini \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "query": "sustainable midi dresses"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/v1/agentic-search-mini', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    query: 'sustainable midi dresses'
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/v1/agentic-search-mini',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'query': 'sustainable midi dresses'
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "products": [
+    {
+      "url": "https://eco-fashion.com/sustainable-midi-dress-olive",
+      "title": "Organic Cotton Midi Dress in Olive",
+      "price_amount": 128.00,
+      "price_currency": "USD",
+      "description": "Effortlessly elegant midi dress crafted from GOTS-certified organic cotton with a flattering A-line silhouette.",
+      "images": [
+        "https://eco-fashion.com/images/midi-dress-olive-front.jpg",
+        "https://eco-fashion.com/images/midi-dress-olive-detail.jpg"
+      ],
+      "attributes": {
+        "color": "olive green",
+        "material": "100% organic cotton",
+        "category": "Women > Dresses > Midi",
+        "brand": "Terra Collective",
+        "features": "GOTS certified, V-neck, 3/4 sleeves, side pockets",
+        "size_range": "XS-XL",
+        "care": "Machine wash cold, hang dry"
+      }
+    },
+    {
+      "url": "https://conscious-style.com/tencel-wrap-dress",
+      "title": "TENCEL™ Wrap Midi Dress",
+      "price_amount": 145.00,
+      "price_currency": "USD",
+      "description": "Luxuriously soft wrap dress made from sustainable TENCEL™ lyocell with an adjustable tie waist.",
+      "images": [
+        "https://conscious-style.com/images/tencel-wrap-dress.jpg"
+      ],
+      "attributes": {
+        "color": "forest green",
+        "material": "TENCEL™ lyocell",
+        "category": "Women > Dresses > Wrap",
+        "brand": "Mindful",
+        "features": "Wrap style, tie waist, midi length, sustainable fiber",
+        "size_range": "XS-XXL",
+        "sustainability": "Biodegradable, responsibly sourced"
+      }
+    }
+  ],
+  "meta": {
+    "totalItems": 2,
+    "urls": [
+      "https://eco-fashion.com/sustainable-midi-dress-olive",
+      "https://conscious-style.com/tencel-wrap-dress"
+    ]
+  }
+}
+```
+
+</ResponseExample>

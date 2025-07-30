@@ -16,6 +16,10 @@ Get a customized product feed based on vendor and filtering criteria. Ideal for 
 
 <ParamField body="vendor" type="string" required>
   Filter products by specific vendor name (required)
+  
+  <Note>
+    **Vendor** refers to the site name of the store (e.g., 'fwrd', 'amiri', 'ganni'). All indexed vendors can be found at the [/vendor endpoint](/api-reference/endpoints/vendors/list-vendors).
+  </Note>
 </ParamField>
 
 <ParamField body="page" type="number" required>
