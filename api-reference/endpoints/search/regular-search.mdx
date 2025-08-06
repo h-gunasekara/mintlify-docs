@@ -28,20 +28,12 @@ Search for products using intelligent semantic search with natural language unde
   Filter criteria to narrow down results
   
   <Expandable title="Filter Properties">
-    <ParamField body="price_min" type="number">
+    <ParamField body="min_price" type="number">
       Minimum price in cents (e.g., 2500 for $25.00)
     </ParamField>
     
-    <ParamField body="price_max" type="number">
-      Maximum price in cents (e.g., 15000 for $150.00)
-    </ParamField>
-    
-    <ParamField body="min_price" type="number">
-      Minimum price filter (alternative field)
-    </ParamField>
-    
     <ParamField body="max_price" type="number">
-      Maximum price filter (alternative field)
+      Maximum price in cents (e.g., 15000 for $150.00)
     </ParamField>
     
     <ParamField body="vendor" type="string">
@@ -80,38 +72,28 @@ Search for products using intelligent semantic search with natural language unde
       Product tag(s) for classification
     </ParamField>
     
-    <ParamField body="variants" type="object">
-      Variant-specific filters
-      
-      <Expandable title="Variant Filters">
-        <ParamField body="variants.color" type="string">
-          Variant color(s)
-        </ParamField>
-        
-        <ParamField body="variants.size" type="string">
-          Variant size(s)
-        </ParamField>
-        
-        <ParamField body="variants.title" type="string">
-          Variant title(s)
-        </ParamField>
-        
-        <ParamField body="variants.in_stock" type="boolean">
-          Variant stock availability
-        </ParamField>
-        
-        <ParamField body="variants.price_min" type="number">
-          Minimum variant price in cents
-        </ParamField>
-        
-        <ParamField body="variants.price_max" type="number">
-          Maximum variant price in cents
-        </ParamField>
-      </Expandable>
+    <ParamField body="variants_color" type="string">
+      Variant color(s) - can be single string or array of strings
+    </ParamField>
+    
+    <ParamField body="variants_size" type="string">
+      Variant size(s) - can be single string or array of strings
+    </ParamField>
+    
+    <ParamField body="variants_title" type="string">
+      Variant title(s) - can be single string or array of strings
+    </ParamField>
+    
+    <ParamField body="variants_in_stock" type="boolean">
+      Filter by variant stock availability
     </ParamField>
     
     <ParamField body="attributes" type="object">
       Product attribute filters - supports any attribute key-value pairs
+      
+      <Note>
+        Attribute filters depend on the specific attributes available in the product data. Not all products may have all attributes, and filter effectiveness varies based on data consistency.
+      </Note>
       
       <Expandable title="Common Attribute Filters">
         <ParamField body="attributes.color" type="string">
@@ -389,7 +371,7 @@ curl -X POST https://catalogai.vercel.app/api/search \
   -d '{
     "query": "summer dress",
     "filters": {
-      "price_max": 15000,
+      "max_price": 15000,
       "is_available": true,
       "brand": ["fwrd", "amiri"],
       "attributes": {
@@ -412,7 +394,7 @@ const response = await fetch('https://catalogai.vercel.app/api/search', {
   body: JSON.stringify({
     query: 'summer dress',
     filters: {
-      price_max: 15000,
+      max_price: 15000,
       is_available: true,
       attributes: {
         color: ['blue', 'white'],
@@ -439,7 +421,7 @@ response = requests.post(
     json={
         'query': 'summer dress',
         'filters': {
-            'price_max': 15000,
+            'max_price': 15000,
             'is_available': True,
             'attributes': {
                 'color': ['blue', 'white'],
@@ -563,8 +545,8 @@ curl -X POST https://catalogai.vercel.app/api/search \
   -d '{
     "query": "handbag",
     "filters": {
-      "price_min": 5000,
-      "price_max": 25000
+      "min_price": 5000,
+      "max_price": 25000
     }
   }'
 ```
@@ -579,8 +561,8 @@ const response = await fetch('https://catalogai.vercel.app/api/search', {
   body: JSON.stringify({
     query: 'handbag',
     filters: {
-      price_min: 5000,
-      price_max: 25000
+      min_price: 5000,
+      max_price: 25000
     }
   })
 });
