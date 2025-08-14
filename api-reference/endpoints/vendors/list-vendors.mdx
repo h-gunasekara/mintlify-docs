@@ -18,21 +18,23 @@ This endpoint does not support query parameters for filtering, pagination, or se
 
 ## Response
 
-The response is an array of vendor summary objects.
-
-<Expandable title="Vendor Summary Object">
-  <ResponseField name="vendor" type="string">
-    The vendor/brand name
-  </ResponseField>
+<ResponseField name="vendors" type="array">
+  Array of vendor summary objects
   
-  <ResponseField name="product_count" type="number">
-    Total number of products from this vendor
-  </ResponseField>
-  
-  <ResponseField name="latest_product_updated_at" type="string">
-    ISO 8601 timestamp of the most recently updated product from this vendor
-  </ResponseField>
-</Expandable>
+  <Expandable title="Vendor Summary Object">
+    <ResponseField name="vendor" type="string">
+      The vendor/brand name
+    </ResponseField>
+    
+    <ResponseField name="product_count" type="number">
+      Total number of products from this vendor
+    </ResponseField>
+    
+    <ResponseField name="latest_product_updated_at" type="string">
+      ISO 8601 timestamp of the most recently updated product from this vendor
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
 ## Error Responses
 
@@ -88,23 +90,25 @@ print(f"Found {len(data)} vendors")
 <ResponseExample>
 
 ```json Success Response
-[
-  {
-    "vendor": "skims",
-    "latest_product_updated_at": "2025-07-29T17:54:36.194088+00:00",
-    "product_count": 4588
-  },
-  {
-    "vendor": "thereformation",
-    "latest_product_updated_at": "2025-07-27T23:07:49.013718+00:00",
-    "product_count": 5029
-  },
-  {
-    "vendor": "universalstore",
-    "latest_product_updated_at": "2025-07-29T20:06:53.282267+00:00",
-    "product_count": 7475
-  }
-]
+{
+  "vendors": [
+    {
+      "vendor": "skims",
+      "latest_product_updated_at": "2025-07-29T17:54:36.194088+00:00",
+      "product_count": 4588
+    },
+    {
+      "vendor": "thereformation",
+      "latest_product_updated_at": "2025-07-27T23:07:49.013718+00:00",
+      "product_count": 5029
+    },
+    {
+      "vendor": "universalstore",
+      "latest_product_updated_at": "2025-07-29T20:06:53.282267+00:00",
+      "product_count": 7475
+    }
+  ]
+}
 ```
 
 </ResponseExample>
