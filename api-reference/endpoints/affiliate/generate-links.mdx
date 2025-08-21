@@ -1,0 +1,169 @@
+---
+title: "Generate Affiliate Links"
+api: "POST https://catalogai.vercel.app/v1/affiliate"
+description: "Convert regular product URLs into Wildfire affiliate tracking links"
+---
+
+Transform regular product URLs into affiliate tracking links using the Wildfire network. This endpoint generates trackable links that enable commission earning from product purchases made through your affiliate links.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key
+</ParamField>
+
+### Request Body
+
+<ParamField body="urls" type="array" required>
+  Array of product URLs to convert into affiliate links (maximum 100 URLs per request)
+  
+  **Example:**
+  ```json
+  [
+    "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
+    "https://www.adidas.com/us/gazelle-shoes/BB5476.html",
+    "https://www.amazon.com/dp/B08XYZ123"
+  ]
+  ```
+</ParamField>
+
+## Response
+
+<ResponseField name="results" type="array">
+  Array of affiliate link generation results, one for each input URL
+  
+  <Expandable title="Affiliate Link Result">
+    <ResponseField name="wildfire_link" type="string">
+      Generated Wildfire affiliate tracking link (empty if generation failed)
+    </ResponseField>
+    
+    <ResponseField name="original_url" type="string">
+      Original product URL that was processed
+    </ResponseField>
+    
+    <ResponseField name="device_id" type="string">
+      Wildfire device ID used for link generation
+    </ResponseField>
+    
+    <ResponseField name="success" type="boolean">
+      Whether the affiliate link was successfully generated
+    </ResponseField>
+    
+    <ResponseField name="error" type="string">
+      Error message if link generation failed (only present when success is false)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="total_processed" type="number">
+  Total number of URLs processed in this request
+</ResponseField>
+
+<ResponseField name="successful" type="number">
+  Number of URLs that successfully generated affiliate links
+</ResponseField>
+
+<ResponseField name="failed" type="number">
+  Number of URLs that failed to generate affiliate links
+</ResponseField>
+
+## Error Responses
+
+<ResponseField name="error" type="string">
+  Error message describing what went wrong
+</ResponseField>
+
+<ResponseField name="details" type="string">
+  Additional error details (when available)
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://catalogai.vercel.app/v1/affiliate \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "urls": [
+      "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
+      "https://www.adidas.com/us/gazelle-shoes/BB5476.html",
+      "https://www.amazon.com/dp/B08XYZ123"
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/v1/affiliate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    urls: [
+      'https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111',
+      'https://www.adidas.com/us/gazelle-shoes/BB5476.html',
+      'https://www.amazon.com/dp/B08XYZ123'
+    ]
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://catalogai.vercel.app/v1/affiliate',
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_API_KEY'
+    },
+    json={
+        'urls': [
+            'https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111',
+            'https://www.adidas.com/us/gazelle-shoes/BB5476.html',
+            'https://www.amazon.com/dp/B08XYZ123'
+        ]
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "results": [
+    {
+      "wildfire_link": "https://wildfire.app/track?url=https%3A%2F%2Fwww.nike.com%2Ft%2Fair-force-1-07-mens-shoes-5QFp5Z%2FCW2288-111&device_id=wf_device_12345",
+      "original_url": "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
+      "device_id": "wf_device_12345",
+      "success": true
+    },
+    {
+      "wildfire_link": "https://wildfire.app/track?url=https%3A%2F%2Fwww.adidas.com%2Fus%2Fgazelle-shoes%2FBB5476.html&device_id=wf_device_12345",
+      "original_url": "https://www.adidas.com/us/gazelle-shoes/BB5476.html",
+      "device_id": "wf_device_12345",
+      "success": true
+    }
+  ],
+  "total_processed": 2,
+  "successful": 2
+}
+```
+
+</ResponseExample>
+
+## Important Notes
+
+<Warning>
+  - Affiliate links are generated using your configured Wildfire device ID
+  - Not all product URLs may be supported by the Wildfire network
+  - Commission rates and tracking depend on Wildfire's affiliate partnerships
+  - Always test generated links before using them in production
+</Warning>

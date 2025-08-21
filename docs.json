@@ -42,7 +42,20 @@
               {
                 "group": "Product",
                 "pages": [
-                  "api-reference/endpoints/products/get-product"
+                  "api-reference/endpoints/products/get-product",
+                  "api-reference/endpoints/products/get-products"
+                ]
+              },
+              {
+                "group": "Usage",
+                "pages": [
+                  "api-reference/endpoints/usage/get-usage"
+                ]
+              },
+              {
+                "group": "Affiliate",
+                "pages": [
+                  "api-reference/endpoints/affiliate/generate-links"
                 ]
               },
               {
