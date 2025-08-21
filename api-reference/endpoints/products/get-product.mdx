@@ -18,7 +18,7 @@ Retrieve comprehensive details about a specific product by providing its URL. Th
   The product URL to search for
 </ParamField>
 
-<ParamField body="enableAI" type="boolean" default="true">
+<ParamField body="enable_enrichment" type="boolean" default="true">
   Whether to enable AI enrichment for single products
 </ParamField>
 
@@ -199,7 +199,7 @@ curl -X POST https://catalogai.vercel.app/api/product \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
     "url": "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
-    "enableAI": true,
+    "enable_enrichment": true,
     "country_code": "us"
   }'
 ```
@@ -213,7 +213,7 @@ const response = await fetch('https://catalogai.vercel.app/api/product', {
   },
   body: JSON.stringify({
     url: 'https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111',
-    enableAI: true,
+    enable_enrichment: true,
     country_code: 'us'
   })
 });
@@ -232,7 +232,7 @@ response = requests.post(
     },
     json={
         'url': 'https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111',
-        'enableAI': True,
+        'enable_enrichment': True,
         'country_code': 'us'
     }
 )
