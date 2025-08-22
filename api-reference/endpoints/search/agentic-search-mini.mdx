@@ -23,6 +23,10 @@ Discover products using intelligent search that combines Google Shopping results
   - `"versatile blazers for work"`
 </ParamField>
 
+<ParamField body="enable_enrichment" type="boolean" default="true">
+  Enable AI-powered product attribute enrichment for enhanced product data analysis
+</ParamField>
+
 ## Response
 
 <ResponseField name="products" type="array">
@@ -102,7 +106,8 @@ curl -X POST https://catalogai.vercel.app/v1/agentic-search-mini \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
-    "query": "sustainable midi dresses"
+    "query": "sustainable midi dresses",
+    "enable_enrichment": true
   }'
 ```
 
@@ -114,7 +119,8 @@ const response = await fetch('https://catalogai.vercel.app/v1/agentic-search-min
     'x-api-key': 'YOUR_API_KEY'
   },
   body: JSON.stringify({
-    query: 'sustainable midi dresses'
+    query: 'sustainable midi dresses',
+    enable_enrichment: true
   })
 });
 
@@ -131,7 +137,8 @@ response = requests.post(
         'x-api-key': 'YOUR_API_KEY'
     },
     json={
-        'query': 'sustainable midi dresses'
+        'query': 'sustainable midi dresses',
+        'enable_enrichment': True
     }
 )
 
