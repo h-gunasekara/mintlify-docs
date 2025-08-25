@@ -29,11 +29,11 @@ Search for products using intelligent semantic search with natural language unde
   
   <Expandable title="Filter Properties">
     <ParamField body="min_price" type="number">
-      Minimum price in cents (e.g., 2500 for $25.00)
+      Minimum price in dollars (e.g. $25.00)
     </ParamField>
     
     <ParamField body="max_price" type="number">
-      Maximum price in cents (e.g., 15000 for $150.00)
+      Maximum price in dollars (e.g. $150.00)
     </ParamField>
     
     <ParamField body="vendor" type="string">
@@ -267,7 +267,7 @@ Search for products using intelligent semantic search with natural language unde
     </ResponseField>
     
     <ResponseField name="price_amount" type="number | null">
-      Price in cents (e.g., 2999 for $29.99)
+      Price in dollars (e.g. $29.99)
     </ResponseField>
     
     <ResponseField name="price_currency" type="string | null">
@@ -371,7 +371,7 @@ curl -X POST https://catalogai.vercel.app/api/search \
   -d '{
     "query": "summer dress",
     "filters": {
-      "max_price": 15000,
+      "max_price": 150.00,
       "is_available": true,
       "brand": ["fwrd", "amiri"],
       "attributes": {
@@ -394,7 +394,7 @@ const response = await fetch('https://catalogai.vercel.app/api/search', {
   body: JSON.stringify({
     query: 'summer dress',
     filters: {
-      max_price: 15000,
+      max_price: 150.00,
       is_available: true,
       attributes: {
         color: ['blue', 'white'],
@@ -421,7 +421,7 @@ response = requests.post(
     json={
         'query': 'summer dress',
         'filters': {
-            'max_price': 15000,
+            'max_price': 150.00,
             'is_available': True,
             'attributes': {
                 'color': ['blue', 'white'],
@@ -451,10 +451,10 @@ data = response.json()
       "vendor": "Summer Collections",
       "brand": "amiri",
       "url": "https://store.example.com/dress-12345",
-      "price_amount": 8999,
+      "price_amount": 89.99,
       "price_currency": "USD",
-      "min_price": 8999,
-      "max_price": 8999,
+      "min_price": 89.99,
+      "max_price": 89.99,
       "is_available": true,
       "product_type": "Dress",
       "store_domain": "store.example.com",
@@ -469,7 +469,7 @@ data = response.json()
       "variants": {
         "color": ["blue"],
         "size": ["XS", "S", "M", "L"],
-        "price_range": { "min": 8999, "max": 8999 }
+        "price_range": { "min": 89.99, "max": 89.99 }
       },
       "options": {
         "size": ["XS", "S", "M", "L"],
@@ -545,8 +545,8 @@ curl -X POST https://catalogai.vercel.app/api/search \
   -d '{
     "query": "handbag",
     "filters": {
-      "min_price": 5000,
-      "max_price": 25000
+      "min_price": 50.00,
+      "max_price": 250.00
     }
   }'
 ```
@@ -561,8 +561,8 @@ const response = await fetch('https://catalogai.vercel.app/api/search', {
   body: JSON.stringify({
     query: 'handbag',
     filters: {
-      min_price: 5000,
-      max_price: 25000
+      min_price: 50.00,
+      max_price: 250.00
     }
   })
 });

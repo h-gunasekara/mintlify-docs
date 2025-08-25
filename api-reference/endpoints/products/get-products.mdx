@@ -89,7 +89,7 @@ Retrieve comprehensive details for multiple products by providing an array of UR
         </ResponseField>
         
         <ResponseField name="price_amount" type="number | null">
-          Price in cents
+          Price in dollars
         </ResponseField>
         
         <ResponseField name="price_currency" type="string | null">
@@ -267,10 +267,10 @@ data = response.json()
         "url": "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
         "handle": "air-force-1-07-mens-shoes",
         "is_available": true,
-        "price_amount": 11000,
+        "price_amount": 110.00,
         "price_currency": "USD",
-        "min_price": 11000,
-        "max_price": 11000,
+        "min_price": 110.00,
+        "max_price": 110.00,
         "images": {
           "primary": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/4f37fca8-6bce-43e7-ad07-f57ae3c13142/air-force-1-07-mens-shoes-5QFp5Z.png",
           "gallery": [
@@ -286,7 +286,7 @@ data = response.json()
             "id": "variant-001",
             "color": "white",
             "size": "10",
-            "price": 11000,
+            "price": 110.00,
             "available": true
           }
         ],
