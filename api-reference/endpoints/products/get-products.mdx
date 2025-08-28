@@ -69,11 +69,11 @@ Retrieve comprehensive details for multiple products by providing an array of UR
         </ResponseField>
         
         <ResponseField name="vendor" type="string">
-          Brand or vendor name
+          Store/retailer name (e.g., "net-a-porter", "Nike")
         </ResponseField>
         
         <ResponseField name="brand" type="string | null">
-          Product brand
+          Product brand name (e.g., "LOEFFLER RANDALL", "Nike")
         </ResponseField>
         
         <ResponseField name="url" type="string">
@@ -104,16 +104,124 @@ Retrieve comprehensive details for multiple products by providing an array of UR
           Maximum price for variants
         </ResponseField>
         
-        <ResponseField name="images" type="object">
-          Product images data
+        <ResponseField name="images" type="array">
+          Array of product images
+          
+          <Expandable title="Image Properties">
+            <ResponseField name="id" type="string">
+              Unique image identifier
+            </ResponseField>
+            
+            <ResponseField name="url" type="string">
+              Image URL
+            </ResponseField>
+            
+            <ResponseField name="width" type="number">
+              Image width in pixels
+            </ResponseField>
+            
+            <ResponseField name="height" type="number">
+              Image height in pixels
+            </ResponseField>
+            
+            <ResponseField name="altText" type="string">
+              Alt text for the image
+            </ResponseField>
+            
+            <ResponseField name="position" type="number">
+              Display position/order of the image
+            </ResponseField>
+            
+            <ResponseField name="variantIDs" type="array">
+              Array of variant IDs that use this image
+            </ResponseField>
+          </Expandable>
         </ResponseField>
         
-        <ResponseField name="options" type="object">
-          Product options (size, color, etc.)
+        <ResponseField name="options" type="array">
+          Array of product options (size, color, etc.)
+          
+          <Expandable title="Option Properties">
+            <ResponseField name="name" type="string">
+              Option name (e.g., "Size", "Color")
+            </ResponseField>
+            
+            <ResponseField name="values" type="array">
+              Array of available values for this option
+            </ResponseField>
+            
+            <ResponseField name="position" type="number">
+              Display position of the option
+            </ResponseField>
+          </Expandable>
         </ResponseField>
         
-        <ResponseField name="variants" type="object">
-          Product variants information
+        <ResponseField name="variants" type="array">
+          Array of product variants with detailed information
+          
+          <Expandable title="Variant Properties">
+            <ResponseField name="id" type="string">
+              Unique variant identifier
+            </ResponseField>
+            
+            <ResponseField name="SKU" type="string">
+              Stock Keeping Unit identifier
+            </ResponseField>
+            
+            <ResponseField name="image" type="object">
+              Variant-specific image information
+              
+              <Expandable title="Variant Image Properties">
+                <ResponseField name="id" type="string">
+                  Image identifier
+                </ResponseField>
+                
+                <ResponseField name="url" type="string">
+                  Image URL
+                </ResponseField>
+                
+                <ResponseField name="width" type="number">
+                  Image width in pixels
+                </ResponseField>
+                
+                <ResponseField name="height" type="number">
+                  Image height in pixels
+                </ResponseField>
+                
+                <ResponseField name="altText" type="string">
+                  Alt text for the variant image
+                </ResponseField>
+                
+                <ResponseField name="position" type="number">
+                  Image position
+                </ResponseField>
+                
+                <ResponseField name="variantIDs" type="array">
+                  Array of variant IDs using this image
+                </ResponseField>
+              </Expandable>
+            </ResponseField>
+            
+            <ResponseField name="price" type="string">
+              Variant price as string
+            </ResponseField>
+            
+            <ResponseField name="title" type="string">
+              Full variant title including options
+            </ResponseField>
+            
+            <ResponseField name="option1" type="string">
+              First option value (e.g., size)
+            </ResponseField>
+            
+            <ResponseField name="isAvailable" type="boolean">
+              Variant availability status
+            </ResponseField>
+            
+            <ResponseField name="compareAtPrice" type="string">
+              Compare at price (original/MSRP price)
+            </ResponseField>
+          </Expandable>
         </ResponseField>
         
         <ResponseField name="store_canonical_url" type="string | null">
@@ -124,8 +232,8 @@ Retrieve comprehensive details for multiple products by providing an array of UR
           Store domain
         </ResponseField>
         
-        <ResponseField name="platform" type="string">
-          E-commerce platform
+        <ResponseField name="platform" type="string | null">
+          E-commerce platform (null if not identified)
         </ResponseField>
         
         <ResponseField name="platform_id" type="string | null">
@@ -148,8 +256,8 @@ Retrieve comprehensive details for multiple products by providing an array of UR
           Full Google product category path
         </ResponseField>
         
-        <ResponseField name="tags" type="object">
-          Product tags
+        <ResponseField name="tags" type="array">
+          Array of product tags/categories
         </ResponseField>
         
         <ResponseField name="video_url" type="string | null">
@@ -256,63 +364,97 @@ data = response.json()
 {
   "products": [
     {
-      "url": "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
+      "url": "https://www.net-a-porter.com/en-us/shop/product/loeffler-randall/shoes/loafers/franco-leather-boat-shoes/46376663162925963",
       "success": true,
       "product": {
-        "id": "CW2288-111",
-        "title": "Nike Air Force 1 '07",
-        "description": "The radiance lives on in the Nike Air Force 1 '07, the basketball original that puts a fresh spin on what you know best: durably stitched overlays, clean finishes and the perfect amount of flash to make you shine.",
-        "vendor": "Nike",
-        "brand": "Nike",
-        "url": "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
-        "handle": "air-force-1-07-mens-shoes",
-        "is_available": true,
-        "price_amount": 110.00,
-        "price_currency": "USD",
-        "min_price": 110.00,
-        "max_price": 110.00,
-        "images": {
-          "primary": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/4f37fca8-6bce-43e7-ad07-f57ae3c13142/air-force-1-07-mens-shoes-5QFp5Z.png",
-          "gallery": [
-            "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/4f37fca8-6bce-43e7-ad07-f57ae3c13142/air-force-1-07-mens-shoes-5QFp5Z.png"
-          ]
-        },
-        "options": {
-          "size": ["7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13", "14", "15"],
-          "color": ["white"]
-        },
-        "variants": [
+        "id": "fec26b49-66f8-480e-8cbb-cfc823af1d33",
+        "url": "https://www.net-a-porter.com/en-us/shop/product/loeffler-randall/shoes/loafers/franco-leather-boat-shoes/46376663162925963",
+        "tags": ["SHOES"],
+        "brand": "LOEFFLER RANDALL",
+        "title": "Franco Leather Boat Shoes",
+        "handle": "46376663162925963",
+        "images": [
           {
-            "id": "variant-001",
-            "color": "white",
-            "size": "10",
-            "price": 110.00,
-            "available": true
+            "id": "img-1756348783902-0",
+            "url": "https://www.net-a-porter.com/variants/images/46376663162925963/in/w2000_q60.jpg",
+            "width": 2000,
+            "height": 2667,
+            "altText": "Franco leather boat shoes product image (primary)",
+            "position": 1,
+            "variantIDs": [
+              "variant-1756348783903-0",
+              "variant-1756348783903-1"
+            ]
           }
         ],
-        "store_canonical_url": "https://www.nike.com",
-        "store_domain": "www.nike.com",
-        "platform": "shopify",
-        "platform_id": "CW2288-111",
-        "description_html": "<p>The radiance lives on in the Nike Air Force 1 '07, the basketball original that puts a fresh spin on what you know best: durably stitched overlays, clean finishes and the perfect amount of flash to make you shine.</p>",
-        "product_type": "Shoes",
-        "google_product_category_id": "187",
-        "google_product_category_path": "Apparel & Accessories > Shoes",
-        "tags": ["shoes", "sneakers", "basketball", "nike"],
+        "vendor": "net-a-porter",
+        "options": [
+          {
+            "name": "Size",
+            "values": ["US5", "US5.5", "US6", "US6.5", "US7", "US7.5", "US8", "US8.5", "US9", "US9.5", "US10", "US10.5", "US11"],
+            "position": 1
+          }
+        ],
+        "platform": null,
+        "variants": [
+          {
+            "id": "variant-1756348783903-0",
+            "SKU": "0400666700588",
+            "image": {
+              "id": "img-variant-variant-1756348783903-0",
+              "url": "https://www.net-a-porter.com/variants/images/46376663162925963/in/w2000_q60.jpg",
+              "width": 2000,
+              "height": 2667,
+              "altText": "Franco leather boat shoes - US5 variant image",
+              "position": 1,
+              "variantIDs": ["variant-1756348783903-0"]
+            },
+            "price": "325",
+            "title": "Franco Leather Boat Shoes - Us5",
+            "option1": "US5",
+            "isAvailable": true,
+            "compareAtPrice": "325"
+          }
+        ],
+        "max_price": 325,
+        "min_price": 325,
         "video_url": null,
-        "updated_at": "2024-01-20T14:22:00Z",
         "attributes": {
-          "color": "white",
-          "material": "leather",
-          "category": "Men > Shoes > Sneakers",
-          "gender": "men",
-          "season": "all-season",
-          "occasion": "casual"
-        }
+          "mood": ["elegant", "relaxed"],
+          "color": {
+            "iscc_family": "brown",
+            "merchant_label": "Espresso"
+          },
+          "style": ["casual", "classic"],
+          "gender": "unisex",
+          "season": ["spring", "summer", "fall"],
+          "summary": "Modern leather boat shoes with classic design elements",
+          "features": "Soft leather construction, unique patina develops over time",
+          "material": {
+            "primary": "leather",
+            "merchant_label": "Soft leather"
+          },
+          "occasion": ["casual", "weekend", "work"],
+          "closure_type": "lace-up",
+          "care_instructions": "Wipe clean with a damp cloth, store in a cool dry place",
+          "additional_attributes": ["handmade", "contrasting stitching", "striped cord laces"]
+        },
+        "updated_at": "2025-08-28T02:39:49.827+00:00",
+        "description": "Loeffler Randall's 'Franco' boat shoes are traced with contrasting stitching and striped cord laces, giving the classic style a modern feel.",
+        "platform_id": "46376663162925963",
+        "is_available": true,
+        "price_amount": 325,
+        "product_type": "SHOES",
+        "store_domain": "www.net-a-porter.com",
+        "price_currency": "USD",
+        "description_html": "<p>Loeffler Randall's 'Franco' boat shoes are traced with contrasting stitching and striped cord laces, giving the classic style a modern feel.</p>",
+        "store_canonical_url": "https://www.net-a-porter.com/",
+        "google_product_category_id": "187",
+        "google_product_category_path": "Apparel & Accessories > Shoes"
       }
     },
     {
-      "url": "https://www.adidas.com/us/gazelle-shoes/BB5476.html",
+      "url": "https://www.example-store.com/invalid-product",
       "success": false,
       "product": null
     }
@@ -322,8 +464,8 @@ data = response.json()
     "total_successful": 1,
     "total_failed": 1,
     "urls_processed": [
-      "https://www.nike.com/t/air-force-1-07-mens-shoes-5QFp5Z/CW2288-111",
-      "https://www.adidas.com/us/gazelle-shoes/BB5476.html"
+      "https://www.net-a-porter.com/en-us/shop/product/loeffler-randall/shoes/loafers/franco-leather-boat-shoes/46376663162925963",
+      "https://www.example-store.com/invalid-product"
     ]
   }
 }
