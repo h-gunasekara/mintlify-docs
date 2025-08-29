@@ -4,7 +4,7 @@ api: "POST https://catalogai.vercel.app/v1/agentic-search-mini"
 description: "Intelligent product discovery using Google Shopping with AI-powered analysis"
 ---
 
-Discover products using intelligent search that combines Google Shopping results with AI-powered product analysis. This endpoint filters high-quality sources and provides enriched product data with detailed attributes.
+Discover products using intelligent search that combines AI-powered productshopping search. This endpoint looks at high-quality sources and provides enriched product data with detailed attributes.
 
 ## Request
 
@@ -24,13 +24,13 @@ Discover products using intelligent search that combines Google Shopping results
 </ParamField>
 
 <ParamField body="enable_enrichment" type="boolean" default="true">
-  Enable AI-powered product attribute enrichment for enhanced product data analysis
+  Enable AI-powered product attribute enrichment for enhanced product data analysis. Set to `false` for faster response times if detailed attributes are not needed.
 </ParamField>
 
 ## Response
 
 <ResponseField name="products" type="array">
-  Array of discovered products with enriched data
+  Array of discovered products with enriched data (returns up to 10 results)
   
   <Expandable title="Product Properties">
     <ResponseField name="url" type="string">
