@@ -1,6 +1,6 @@
 ---
 title: "Get Product by URL"
-api: "POST https://catalogai.vercel.app/api/product"
+api: "POST https://api.getcatalog.ai/api/product"
 description: "Get detailed information about a specific product by URL"
 ---
 
@@ -272,7 +272,7 @@ Retrieve comprehensive details about a specific product by providing its URL. Th
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/api/product \
+curl -X POST https://api.getcatalog.ai/api/product \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -283,7 +283,7 @@ curl -X POST https://catalogai.vercel.app/api/product \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/product', {
+const response = await fetch('https://api.getcatalog.ai/api/product', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'https://catalogai.vercel.app/api/product',
+    'https://api.getcatalog.ai/api/product',
     headers={
         'Content-Type': 'application/json',
         'x-api-key': 'YOUR_API_KEY'

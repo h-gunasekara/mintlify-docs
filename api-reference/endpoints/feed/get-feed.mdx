@@ -1,6 +1,6 @@
 ---
 title: "Get Feed"
-api: "POST https://catalogai.vercel.app/api/feed"
+api: "POST https://api.getcatalog.ai/api/feed"
 description: "Retrieve customizable product feeds for commerce applications"
 ---
 
@@ -159,7 +159,7 @@ Get a customized product feed based on vendor and filtering criteria. Ideal for 
 <RequestExample>
 
 ```bash cURL
-curl -X POST "https://catalogai.vercel.app/api/feed" \
+curl -X POST "https://api.getcatalog.ai/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -171,7 +171,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://catalogai.vercel.app/api/feed',
+  'https://api.getcatalog.ai/api/feed',
   {
     method: 'POST',
     headers: {
@@ -193,7 +193,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'https://catalogai.vercel.app/api/feed',
+    'https://api.getcatalog.ai/api/feed',
     headers={
         'x-api-key': 'YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -275,7 +275,7 @@ Get products from a specific vendor (first page):
 <CodeGroup>
 
 ```bash cURL
-curl -X POST "https://catalogai.vercel.app/api/feed" \
+curl -X POST "https://api.getcatalog.ai/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -286,7 +286,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://catalogai.vercel.app/api/feed',
+  'https://api.getcatalog.ai/api/feed',
   {
     method: 'POST',
     headers: {
@@ -312,7 +312,7 @@ Get the second page of products from a vendor:
 <CodeGroup>
 
 ```bash cURL
-curl -X POST "https://catalogai.vercel.app/api/feed" \
+curl -X POST "https://api.getcatalog.ai/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -323,7 +323,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://catalogai.vercel.app/api/feed',
+  'https://api.getcatalog.ai/api/feed',
   {
     method: 'POST',
     headers: {
@@ -349,7 +349,7 @@ Get 50 products per page from a vendor:
 <CodeGroup>
 
 ```bash cURL
-curl -X POST "https://catalogai.vercel.app/api/feed" \
+curl -X POST "https://api.getcatalog.ai/api/feed" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -361,7 +361,7 @@ curl -X POST "https://catalogai.vercel.app/api/feed" \
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://catalogai.vercel.app/api/feed',
+  'https://api.getcatalog.ai/api/feed',
   {
     method: 'POST',
     headers: {

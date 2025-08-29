@@ -1,6 +1,6 @@
 ---
 title: "Get API Usage Statistics"
-api: "GET https://catalogai.vercel.app/api/usage"
+api: "GET https://api.getcatalog.ai/api/usage"
 description: "Retrieve API usage statistics for your account grouped by endpoint path"
 ---
 
@@ -48,12 +48,12 @@ Get detailed usage analytics for your API key showing request counts grouped by 
 <RequestExample>
 
 ```bash cURL
-curl -X GET "https://catalogai.vercel.app/api/usage?period=7d" \
+curl -X GET "https://api.getcatalog.ai/api/usage?period=7d" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/usage?period=7d', {
+const response = await fetch('https://api.getcatalog.ai/api/usage?period=7d', {
   method: 'GET',
   headers: {
     'x-api-key': 'YOUR_API_KEY'
@@ -67,7 +67,7 @@ const data = await response.json();
 import requests
 
 response = requests.get(
-    'https://catalogai.vercel.app/api/usage?period=7d',
+    'https://api.getcatalog.ai/api/usage?period=7d',
     headers={
         'x-api-key': 'YOUR_API_KEY'
     }

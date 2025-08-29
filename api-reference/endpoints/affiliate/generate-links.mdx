@@ -1,6 +1,6 @@
 ---
 title: "Generate Affiliate Links"
-api: "POST https://catalogai.vercel.app/v1/affiliate"
+api: "POST https://api.getcatalog.ai/v1/affiliate"
 description: "Convert regular product URLs into Wildfire affiliate tracking links"
 ---
 
@@ -80,7 +80,7 @@ Transform regular product URLs into affiliate tracking links using the Wildfire 
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/v1/affiliate \
+curl -X POST https://api.getcatalog.ai/v1/affiliate \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -93,7 +93,7 @@ curl -X POST https://catalogai.vercel.app/v1/affiliate \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/v1/affiliate', {
+const response = await fetch('https://api.getcatalog.ai/v1/affiliate', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'https://catalogai.vercel.app/v1/affiliate',
+    'https://api.getcatalog.ai/v1/affiliate',
     headers={
         'Content-Type': 'application/json',
         'x-api-key': 'YOUR_API_KEY'

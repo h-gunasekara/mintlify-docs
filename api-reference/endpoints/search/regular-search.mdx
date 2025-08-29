@@ -1,6 +1,6 @@
 ---
 title: "Search Products"
-api: "POST https://catalogai.vercel.app/api/search"
+api: "POST https://api.getcatalog.ai/api/search"
 description: "Search products using natural language queries with advanced filtering"
 ---
 
@@ -365,7 +365,7 @@ Search for products using intelligent semantic search with natural language unde
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/api/search \
+curl -X POST https://api.getcatalog.ai/api/search \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -385,7 +385,7 @@ curl -X POST https://catalogai.vercel.app/api/search \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/search', {
+const response = await fetch('https://api.getcatalog.ai/api/search', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -413,7 +413,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'https://catalogai.vercel.app/api/search',
+    'https://api.getcatalog.ai/api/search',
     headers={
         'Content-Type': 'application/json',
         'x-api-key': 'YOUR_API_KEY'
@@ -511,14 +511,14 @@ Search for products with a simple query:
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/api/search \
+curl -X POST https://api.getcatalog.ai/api/search \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{"query": "black shoes"}'
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/search', {
+const response = await fetch('https://api.getcatalog.ai/api/search', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -539,7 +539,7 @@ Filter products by price range:
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/api/search \
+curl -X POST https://api.getcatalog.ai/api/search \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -552,7 +552,7 @@ curl -X POST https://catalogai.vercel.app/api/search \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/search', {
+const response = await fetch('https://api.getcatalog.ai/api/search', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -577,7 +577,7 @@ Search for products from specific brands:
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/api/search \
+curl -X POST https://api.getcatalog.ai/api/search \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -590,7 +590,7 @@ curl -X POST https://catalogai.vercel.app/api/search \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/api/search', {
+const response = await fetch('https://api.getcatalog.ai/api/search', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

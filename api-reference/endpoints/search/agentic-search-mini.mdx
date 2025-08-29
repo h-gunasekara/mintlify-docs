@@ -1,6 +1,6 @@
 ---
 title: "Agentic Search Mini"
-api: "POST https://catalogai.vercel.app/v1/agentic-search-mini"
+api: "POST https://api.getcatalog.ai/v1/agentic-search-mini"
 description: "Intelligent product discovery using Google Shopping with AI-powered analysis"
 ---
 
@@ -102,7 +102,7 @@ Discover products using intelligent search that combines AI-powered productshopp
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://catalogai.vercel.app/v1/agentic-search-mini \
+curl -X POST https://api.getcatalog.ai/v1/agentic-search-mini \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -112,7 +112,7 @@ curl -X POST https://catalogai.vercel.app/v1/agentic-search-mini \
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://catalogai.vercel.app/v1/agentic-search-mini', {
+const response = await fetch('https://api.getcatalog.ai/v1/agentic-search-mini', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'https://catalogai.vercel.app/v1/agentic-search-mini',
+    'https://api.getcatalog.ai/v1/agentic-search-mini',
     headers={
         'Content-Type': 'application/json',
         'x-api-key': 'YOUR_API_KEY'

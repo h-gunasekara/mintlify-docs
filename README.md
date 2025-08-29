@@ -61,7 +61,7 @@ To access the Catalog AI API:
 
 1. [Contact the team](mailto:founders@getcatalog.ai) to obtain an API key
 2. Include your API key in the `x-api-key` header with every request
-3. Use the API endpoints at `https://catalogai.vercel.app/api/`
+3. Use the API endpoints at `https://api.getcatalog.ai/api/`
 
 ## Troubleshooting
 
