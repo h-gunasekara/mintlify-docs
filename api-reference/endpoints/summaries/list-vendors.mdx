@@ -30,8 +30,12 @@ This endpoint does not support query parameters for filtering, pagination, or se
       Total number of products from this vendor
     </ResponseField>
     
-    <ResponseField name="latest_product_updated_at" type="string">
+    <ResponseField name="latest_product_update_by_catalog" type="string">
       ISO 8601 timestamp of the most recently updated product from this vendor
+    </ResponseField>
+    
+    <ResponseField name="in_affiliate_network" type="boolean">
+      Whether this vendor is part of the affiliate network
     </ResponseField>
   </Expandable>
 </ResponseField>
@@ -70,7 +74,7 @@ const response = await fetch('https://api.getcatalog.ai/api/vendors', {
 });
 
 const data = await response.json();
-console.log(`Found ${data.length} vendors`);
+console.log(`Found ${data.vendors.length} vendors`);
 ```
 
 ```python Python
@@ -82,7 +86,7 @@ response = requests.get(
 )
 
 data = response.json()
-print(f"Found {len(data)} vendors")
+print(f"Found {len(data['vendors'])} vendors")
 ```
 
 </RequestExample>
@@ -94,18 +98,21 @@ print(f"Found {len(data)} vendors")
   "vendors": [
     {
       "vendor": "skims",
-      "latest_product_updated_at": "2025-07-29T17:54:36.194088+00:00",
-      "product_count": 4588
+      "latest_product_update_by_catalog": "2025-07-29T17:54:36.194088+00:00",
+      "product_count": 4588,
+      "in_affiliate_network": false
     },
     {
       "vendor": "thereformation",
-      "latest_product_updated_at": "2025-07-27T23:07:49.013718+00:00",
-      "product_count": 5029
+      "latest_product_update_by_catalog": "2025-07-27T23:07:49.013718+00:00",
+      "product_count": 5029,
+      "in_affiliate_network": false
     },
     {
       "vendor": "universalstore",
-      "latest_product_updated_at": "2025-07-29T20:06:53.282267+00:00",
-      "product_count": 7475
+      "latest_product_update_by_catalog": "2025-07-29T20:06:53.282267+00:00",
+      "product_count": 7475,
+      "in_affiliate_network": false
     }
   ]
 }

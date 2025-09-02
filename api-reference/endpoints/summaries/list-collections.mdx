@@ -1,0 +1,160 @@
+---
+title: "List Collections"
+api: "POST https://api.getcatalog.ai/v1/collections"
+description: "Retrieve collections from a specific vendor with pagination"
+---
+
+Retrieve collections from a specific vendor with pagination. Collections are ordered by product count (highest first) to prioritize the most comprehensive collections.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField body="vendor" type="string" required>
+  The vendor/brand name to filter by
+</ParamField>
+
+<ParamField body="page" type="number" required>
+  Page number for pagination (minimum: 1)
+</ParamField>
+
+<ParamField body="page_size" type="number" optional>
+  Number of collections per page (minimum: 1, maximum: 100, default: 10)
+</ParamField>
+
+## Response
+
+<ResponseField name="collections" type="array">
+  Array of collection objects
+  
+  <Expandable title="Collection Object">
+    <ResponseField name="id" type="string">
+      Unique identifier for the collection
+    </ResponseField>
+    
+    <ResponseField name="url" type="string">
+      Collection URL
+    </ResponseField>
+    
+    <ResponseField name="products_total" type="number" optional>
+      Total number of products in this collection
+    </ResponseField>
+    
+    <ResponseField name="last_updated_by_catalog" type="string">
+      ISO 8601 timestamp when the collection was last updated
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Pagination metadata
+  
+  <Expandable title="Meta Object">
+    <ResponseField name="total_items" type="number">
+      Total number of collections matching the query
+    </ResponseField>
+    
+    <ResponseField name="total_pages" type="number">
+      Total number of pages available
+    </ResponseField>
+    
+    <ResponseField name="current_page" type="number">
+      Current page number
+    </ResponseField>
+    
+    <ResponseField name="page_size" type="number">
+      Number of items per page
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Error Responses
+
+<ResponseField name="error" type="string">
+  Error message describing what went wrong
+</ResponseField>
+
+<ResponseField name="details" type="string" optional>
+  Additional details about the error
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.getcatalog.ai/v1/collections \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vendor": "skims.com",
+    "page": 1,
+    "page_size": 20
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.getcatalog.ai/v1/collections', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    vendor: 'skims.com',
+    page: 1,
+    page_size: 20
+  })
+});
+
+const data = await response.json();
+console.log(`Found ${data.collections.length} collections`);
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.getcatalog.ai/v1/collections',
+    headers={'x-api-key': 'YOUR_API_KEY'},
+    json={
+        'vendor': 'skims.com',
+        'page': 1,
+        'page_size': 20
+    }
+)
+
+data = response.json()
+print(f"Found {len(data['collections'])} collections")
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "collections": [
+    {
+      "id": "clx789def012",
+      "url": "https://skims.com/collections/basics",
+      "products_total": 145,
+      "last_updated_by_catalog": "2024-01-20T18:45:00Z"
+    },
+    {
+      "id": "clx890ghi345",
+      "url": "https://skims.com/collections/loungewear",
+      "products_total": 89,
+      "last_updated_by_catalog": "2024-01-19T12:30:00Z"
+    }
+  ],
+  "meta": {
+    "total_items": 25,
+    "total_pages": 2,
+    "current_page": 1,
+    "page_size": 20
+  }
+}
+```
+
+</ResponseExample>

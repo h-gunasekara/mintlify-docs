@@ -59,9 +59,11 @@
                 ]
               },
               {
-                "group": "Vendors",
+                "group": "Summaries",
                 "pages": [
-                  "api-reference/endpoints/vendors/list-vendors"
+                  "api-reference/endpoints/summaries/list-vendors",
+                  "api-reference/endpoints/summaries/list-collections",
+                  "api-reference/endpoints/summaries/list-listings"
                 ]
               }
             ]

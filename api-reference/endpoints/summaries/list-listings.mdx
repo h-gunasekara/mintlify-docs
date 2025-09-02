@@ -1,0 +1,233 @@
+---
+title: "List All Products (Listings)"
+api: "POST https://api.getcatalog.ai/v1/listings"
+description: "Retrieve collection products with pagination and filtering options"
+---
+
+Retrieve collection products (listings) from a specific vendor with optional filtering by collection URLs. This endpoint provides paginated results with metadata for efficient browsing of large product catalogs.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField body="vendor" type="string" required>
+  The vendor/brand name to filter by
+</ParamField>
+
+<ParamField body="page" type="number" required>
+  Page number for pagination (minimum: 1)
+</ParamField>
+
+<ParamField body="page_size" type="number" optional>
+  Number of collection products per page (minimum: 1, maximum: 100, default: 10)
+</ParamField>
+
+<ParamField body="collection_urls" type="array" optional>
+  Array of collection URLs to filter by. If provided, only products from these collections will be returned.
+</ParamField>
+
+## Response
+
+<ResponseField name="collection_products" type="array">
+  Array of collection product objects
+  
+  <Expandable title="Collection Product Object">
+    <ResponseField name="id" type="string">
+      Unique identifier for the collection product
+    </ResponseField>
+    
+    <ResponseField name="url" type="string">
+      Product URL
+    </ResponseField>
+    
+    <ResponseField name="name" type="string" optional>
+      Product name/title
+    </ResponseField>
+    
+    <ResponseField name="images" type="array" optional>
+      Array of product image objects
+      
+      <Expandable title="Image Object">
+        <ResponseField name="id" type="string">
+          Unique identifier for the image
+        </ResponseField>
+        
+        <ResponseField name="url" type="string">
+          Image URL
+        </ResponseField>
+        
+        <ResponseField name="width" type="number">
+          Image width in pixels
+        </ResponseField>
+        
+        <ResponseField name="height" type="number">
+          Image height in pixels
+        </ResponseField>
+        
+        <ResponseField name="position" type="number">
+          Position/order of the image in the gallery
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    
+    <ResponseField name="price" type="object" optional>
+      Product pricing information
+      
+      <Expandable title="Price Object">
+        <ResponseField name="currency" type="string">
+          Currency code (e.g., "USD")
+        </ResponseField>
+        
+        <ResponseField name="current_value" type="number">
+          Current price value
+        </ResponseField>
+        
+        <ResponseField name="compare_at_value" type="number" optional>
+          Compare at price value (null if no comparison price)
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    
+    <ResponseField name="vendor" type="string">
+      The vendor/brand name
+    </ResponseField>
+    
+    <ResponseField name="first_seen_by_catalog" type="string">
+      ISO 8601 timestamp when the product was first added
+    </ResponseField>
+    
+    <ResponseField name="last_updated_by_catalog" type="string">
+      ISO 8601 timestamp when the product was last updated
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Pagination metadata
+  
+  <Expandable title="Meta Object">
+    <ResponseField name="total_items" type="number">
+      Total number of collection products matching the query
+    </ResponseField>
+    
+    <ResponseField name="total_pages" type="number">
+      Total number of pages available
+    </ResponseField>
+    
+    <ResponseField name="current_page" type="number">
+      Current page number
+    </ResponseField>
+    
+    <ResponseField name="page_size" type="number">
+      Number of items per page
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Error Responses
+
+<ResponseField name="error" type="string">
+  Error message describing what went wrong
+</ResponseField>
+
+<ResponseField name="details" type="string" optional>
+  Additional details about the error
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.getcatalog.ai/v1/listings \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vendor": "18east.com",
+    "page": 1,
+    "page_size": 10
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.getcatalog.ai/v1/listings', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    vendor: '18east.com',
+    page: 1,
+    page_size: 10
+  })
+});
+
+const data = await response.json();
+console.log(`Found ${data.collection_products.length} collection products`);
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.getcatalog.ai/v1/listings',
+    headers={'x-api-key': 'YOUR_API_KEY'},
+    json={
+        'vendor': '18east.com',
+        'page': 1,
+        'page_size': 10
+    }
+)
+
+data = response.json()
+print(f"Found {len(data['collection_products'])} collection products")
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "collection_products": [
+    {
+      "id": "bdc8f674-3ee7-444f-8f48-ef5f9c2bf4cf",
+      "url": "https://18east.co/products/ida-bomber-moss-brown",
+      "name": "IDA INSULATED BOMBER JACKET - MOSS / BROWN HERRINGBONE WOOLEN TWEED",
+      "images": [
+        {
+          "id": "24865584-1ffe-4fd8-ba59-7866744f1d4a",
+          "url": "https://cdn.shopify.com/s/files/1/0026/8707/4416/files/2024_18E_WINTER_068_ab9b99a1-60f9-4f0c-b5ec-4cdefdee364f.jpg?v=1731645869",
+          "width": 2880,
+          "height": 3600,
+          "position": 1
+        },
+        {
+          "id": "a9afe970-8727-4839-ba82-f4ad07d074ab",
+          "url": "https://cdn.shopify.com/s/files/1/0026/8707/4416/files/2024_18E_WINTER_072_fa695e3d-d0bb-4aff-a77a-750029a46e8c.jpg?v=1731645869",
+          "width": 2880,
+          "height": 3600,
+          "position": 2
+        }
+      ],
+      "price": {
+        "currency": "USD",
+        "current_value": 478,
+        "compare_at_value": null
+      },
+      "vendor": "18east.com",
+      "first_seen_by_catalog": "2025-09-02T07:27:26.545676+00:00",
+      "last_updated_by_catalog": "2025-09-02T07:31:35.43881+00:00"
+    }
+  ],
+  "meta": {
+    "total_items": 333,
+    "total_pages": 34,
+    "current_page": 1,
+    "page_size": 10
+  }
+}
+```
+
+</ResponseExample>
