@@ -105,5 +105,15 @@
       "chatgpt",
       "claude"
     ]
+  },
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "og:type": "website",
+      "og:site_name": "Catalog API Documentation",
+      "og:description": "Modern product discovery and intelligence API for agentic commerce applications",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@getcatalogai"
+    }
   }
 }

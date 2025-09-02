@@ -1,11 +1,13 @@
 ---
-title: "Filtering"
-description: "Advanced filtering techniques for precise product discovery"
+title: "Product Filtering Guide"
+description: "Master advanced filtering techniques for precise product discovery. Learn price filters, attribute filtering, vendor filtering, and how to combine multiple filters effectively."
 ---
 
-The Catalog API provides powerful filtering capabilities to help you find exactly the products you need. Learn how to combine different filter types for precise results.
+The Catalog API provides powerful filtering capabilities to help you find exactly the products you need. Learn how to combine different filter types for precise results and build sophisticated product discovery experiences.
 
-## Filter Types
+## What types of filters are available?
+
+The Catalog API supports multiple filter types that can be combined for precise product discovery. All filters work with any [search endpoint](/api-reference/overview#what-endpoints-are-available).
 
 ### Price Filters
 
@@ -223,7 +225,7 @@ Filter by product categories using hierarchical paths:
 
 </CodeGroup>
 
-## Combining Filters
+## How do you combine multiple filters?
 
 Combine multiple filters for precise results. All filters use AND logic:
 
@@ -270,7 +272,7 @@ response = requests.post(
 
 </CodeGroup>
 
-## Filter Logic
+## How does filter logic work?
 
 ### AND vs OR Logic
 
@@ -300,7 +302,7 @@ This finds products that are:
 - Blue OR red AND
 - For summer
 
-## Best Practices
+## What are the filtering best practices?
 
 ### Start Broad, Then Narrow
 
@@ -394,7 +396,7 @@ const searchWithFallback = async (query, filters) => {
 
 </CodeGroup>
 
-## Common Filter Patterns
+## What are common filtering patterns for different use cases?
 
 ### Sustainable Fashion
 
@@ -490,7 +492,7 @@ const searchWithFallback = async (query, filters) => {
 
 </CodeGroup>
 
-## Performance Tips
+## How do you optimize filtering performance?
 
 - Use specific vendor filters when possible for faster results
 - Combine semantic queries with filters for better relevance
@@ -498,5 +500,11 @@ const searchWithFallback = async (query, filters) => {
 - Cache common filter combinations for better user experience
 
 <Tip>
-  The API is optimized for real-time filtering with sub-100ms response times. All attributes are indexed for fast filtering performance.
+The API is optimized for real-time filtering with sub-100ms response times. All attributes are indexed for fast filtering performance.
 </Tip>
+
+## Related resources
+
+- **[Quickstart Guide](/quickstart)** - Learn basic filtering with your first API request
+- **[API Reference](/api-reference/overview)** - Complete parameter documentation for all endpoints
+- **[Pagination Guide](/guides/pagination)** - Handle large filtered result sets effectively

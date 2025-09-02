@@ -1,13 +1,15 @@
 ---
-title: "Quickstart"
-description: "Get started with the Catalog API in under 5 minutes"
+title: "Quickstart Guide"
+description: "Get started with the Catalog API in under 5 minutes. Learn authentication, make your first product search request, and explore filtering options."
 ---
 
-## Get your API key
+## How do you get started?
+
+### Step 1: Get your API key
 
 To access the Catalog API, you'll need an API key. [Contact our team](mailto:founders@getcatalog.ai) to get started.
 
-## Authentication
+### Step 2: Authenticate your requests
 
 Include your API key in the `x-api-key` header with every request:
 
@@ -17,9 +19,9 @@ curl -X POST https://api.getcatalog.ai/api/search \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-## Make your first request
+### Step 3: Make your first product search
 
-Search for products using natural language:
+Search for products using natural language queries. The API understands context and intent:
 
 <CodeGroup>
 
@@ -64,9 +66,9 @@ print(data['products'])
 
 </CodeGroup>
 
-## Response format
+## What does a successful response look like?
 
-The API returns structured product data with metadata:
+The API returns structured product data with rich metadata and product attributes:
 
 ```json
 {
@@ -96,9 +98,9 @@ The API returns structured product data with metadata:
 }
 ```
 
-## Add filters
+## How do you add filters to refine search results?
 
-Refine your search with filters:
+Combine natural language queries with precise filters to get exactly what you need:
 
 <CodeGroup>
 
@@ -166,13 +168,29 @@ data = response.json()
 
 </CodeGroup>
 
-## Next steps
+## What's next after your first search?
+
+### Explore different search types
+
+Choose the right endpoint for your use case:
+
+- **[Agentic Search](/api-reference/endpoints/search/agentic-search)** - Full AI-powered search with comprehensive filtering
+- **[Agentic Search Mini](/api-reference/endpoints/search/agentic-search-mini)** - Fast AI search with up to 10 results  
+- **[Regular Search](/api-reference/endpoints/search/regular-search)** - High-performance search without AI processing
+
+### Learn advanced techniques
 
 <CardGroup cols={2}>
-  <Card title="API Reference" icon="book" href="/api-reference/overview">
-    Explore all available endpoints and parameters
+  <Card title="Advanced Filtering" icon="filter" href="/guides/filtering">
+    Master complex filters, attribute filtering, and search logic
   </Card>
-  <Card title="Filtering Guide" icon="filter" href="/guides/filtering">
-    Learn about advanced filtering options
+  <Card title="Pagination" icon="chevrons-right" href="/guides/pagination">
+    Handle large result sets with proper pagination
+  </Card>
+  <Card title="API Reference" icon="book" href="/api-reference/overview">
+    Complete endpoint documentation and response formats
+  </Card>
+  <Card title="Get Support" icon="envelope" href="mailto:founders@getcatalog.ai">
+    Questions? Get help from our team
   </Card>
 </CardGroup>

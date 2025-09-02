@@ -1,18 +1,28 @@
 ---
-title: "Agentic Search Mini"
+title: "Agentic Search Mini API"
 api: "POST https://api.getcatalog.ai/v1/agentic-search-mini"
-description: "Intelligent product discovery using Google Shopping with AI-powered analysis"
+description: "Fast intelligent product discovery using Google Shopping with AI-powered attribute enrichment. Get up to 10 products with detailed attributes in milliseconds."
 ---
 
-Discover products using intelligent search that combines AI-powered productshopping search. This endpoint looks at high-quality sources and provides enriched product data with detailed attributes.
+The Agentic Search Mini endpoint provides fast, intelligent product discovery using Google Shopping data enhanced with AI-powered attribute analysis. This lightweight endpoint is optimized for speed while still providing detailed product attributes through optional AI enrichment.
 
-## Request
+## When to use Agentic Search Mini
+
+Use this endpoint when you need:
+- **Fast product discovery** with sub-second response times
+- **Limited result set** of up to 10 high-quality products
+- **AI-powered attribute enrichment** for detailed product analysis
+- **Google Shopping integration** for current product availability
+
+For larger result sets or more comprehensive search capabilities, consider using the [full Agentic Search endpoint](/api-reference/endpoints/search/agentic-search) instead.
+
+## How to authenticate requests
 
 <ParamField header="x-api-key" type="string" required>
-  Your API key for authentication
+  Your API key for authentication. [Get your API key](mailto:founders@getcatalog.ai) if you don't have one yet.
 </ParamField>
 
-### Request Body
+## What parameters can you send?
 
 <ParamField body="query" type="string" required>
   Natural language search query for product discovery
@@ -25,12 +35,24 @@ Discover products using intelligent search that combines AI-powered productshopp
 
 <ParamField body="enable_enrichment" type="boolean" default="true">
   Enable AI-powered product attribute enrichment for enhanced product data analysis. Set to `false` for faster response times if detailed attributes are not needed.
+  
+  **When to disable enrichment:**
+  - You need the fastest possible response times
+  - You only need basic product information (title, price, URL)
+  - You're building a real-time autocomplete feature
+  
+  **When to enable enrichment (default):**
+  - You need detailed product attributes (color, material, features)
+  - You're building product comparison tools
+  - You need rich product data for AI-powered recommendations
 </ParamField>
 
-## Response
+## What does the API response include?
+
+The API returns up to 10 products with detailed information and optional AI-enriched attributes. Each response includes both product data and metadata about the search results.
 
 <ResponseField name="products" type="array">
-  Array of discovered products with enriched data (returns up to 10 results)
+  Array of discovered products with enriched data (limited to 10 results for optimal performance)
   
   <Expandable title="Product Properties">
     <ResponseField name="url" type="string">
@@ -98,6 +120,18 @@ Discover products using intelligent search that combines AI-powered productshopp
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+## How does this compare to other search endpoints?
+
+| Feature | Agentic Search Mini | [Regular Search](/api-reference/endpoints/search/regular-search) | [Full Agentic Search](/api-reference/endpoints/search/agentic-search) |
+| --- | --- | --- | --- |
+| **Response Time** | < 1 second | < 500ms | 1-3 seconds |
+| **Max Results** | 10 products | 50+ products | 50+ products |
+| **AI Enrichment** | ✅ Optional | ❌ No | ✅ Advanced |
+| **Data Source** | Google Shopping | Multiple sources | Multiple sources |
+| **Best For** | Fast discovery | High-volume searches | Comprehensive analysis |
+
+## Example implementation
 
 <RequestExample>
 

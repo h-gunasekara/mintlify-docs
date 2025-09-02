@@ -1,25 +1,30 @@
 ---
-title: "API Reference"
-description: "Complete reference for the Catalog API endpoints"
+title: "Catalog API Reference"
+description: "Complete API reference for product search, discovery, and commerce intelligence endpoints. Includes authentication, request/response formats, and error handling."
 ---
 
-The Catalog API provides endpoints for product search, discovery, and commerce intelligence.
+The Catalog API provides powerful endpoints for product search, discovery, and commerce intelligence. Build intelligent shopping experiences with natural language search, detailed product data, and real-time availability information.
 
-## Base URL
+## What is the API base URL?
 
+All API endpoints use the base URL:
 ```
 https://api.getcatalog.ai
 ```
 
-## Authentication
+## How do you authenticate API requests?
 
-All requests require an API key in the `x-api-key` header:
+All requests require your API key in the `x-api-key` header. [Get your API key](mailto:founders@getcatalog.ai) if you don't have one yet.
 
 ```bash
 curl -H "x-api-key: YOUR_API_KEY" https://api.getcatalog.ai/api/search
 ```
 
-## Endpoints
+<Note>
+Keep your API key secure and never expose it in client-side code. Store it in environment variables or secure configuration.
+</Note>
+
+## What endpoints are available?
 
 ### Feed
 
@@ -47,15 +52,25 @@ curl -H "x-api-key: YOUR_API_KEY" https://api.getcatalog.ai/api/search
 
 ### Search
 
-<Card title="Search Products" icon="magnifying-glass" href="/api-reference/endpoints/search/agentic-search">
+<Card title="Agentic Search" icon="magnifying-glass" href="/api-reference/endpoints/search/agentic-search">
   **POST** `/api/search`
   
-  Search products using natural language queries with advanced filtering capabilities.
+  Advanced AI-powered product search with natural language understanding and comprehensive filtering.
 </Card>
 
+<Card title="Agentic Search Mini" icon="zap" href="/api-reference/endpoints/search/agentic-search-mini">
+  **POST** `/v1/agentic-search-mini`
+  
+  Fast product discovery with Google Shopping data and optional AI enrichment (up to 10 results).
+</Card>
 
+<Card title="Regular Search" icon="search" href="/api-reference/endpoints/search/regular-search">
+  **POST** `/api/regular-search`
+  
+  High-performance product search without AI processing for maximum speed.
+</Card>
 
-## Response Format
+## What do API responses look like?
 
 All API responses follow a consistent structure:
 
@@ -103,9 +118,9 @@ For search and feed endpoints, the response includes a `products` array:
 }
 ```
 
-## Error Handling
+## How does the API handle errors?
 
-Errors are returned with appropriate HTTP status codes and descriptive messages:
+The API returns errors with standard HTTP status codes and detailed error information to help you troubleshoot issues quickly:
 
 ```json
 {
@@ -121,13 +136,17 @@ Errors are returned with appropriate HTTP status codes and descriptive messages:
 }
 ```
 
-Common error codes:
+### Common error codes and how to fix them
 
-| Code | Status | Description |
-| ---- | ------ | ----------- |
-| `UNAUTHORIZED` | 401 | Invalid or missing API key |
-| `FORBIDDEN` | 403 | API key access denied |
-| `INVALID_PARAMETER` | 400 | Invalid request parameter |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMITED` | 429 | Too many requests |
-| `INTERNAL_ERROR` | 500 | Server error |
+| Error Code | HTTP Status | What it means | How to fix |
+| --- | --- | --- | --- |
+| `UNAUTHORIZED` | 401 | Invalid or missing API key | Check your API key is correct and included in the `x-api-key` header |
+| `FORBIDDEN` | 403 | API key access denied | Contact support to verify your API key permissions |
+| `INVALID_PARAMETER` | 400 | Invalid request parameter | Review the parameter requirements in the endpoint documentation |
+| `NOT_FOUND` | 404 | Resource not found | Verify the endpoint URL and any resource IDs |
+| `RATE_LIMITED` | 429 | Too many requests | Implement rate limiting or reduce request frequency |
+| `INTERNAL_ERROR` | 500 | Server error | Try again or contact support if the issue persists |
+
+<Tip>
+All error responses include detailed `message` and `details` fields to help you identify and fix issues quickly.
+</Tip>
