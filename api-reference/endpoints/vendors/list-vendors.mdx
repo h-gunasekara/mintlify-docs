@@ -1,0 +1,110 @@
+---
+title: "List Vendors"
+api: "GET https://catalogai.vercel.app/api/vendors"
+description: "Retrieve vendor summaries with product counts and latest update timestamps"
+---
+
+Retrieve a summary of all vendors in the Catalog API, including their product counts and the timestamp of their most recently updated product.
+
+## Request
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<Note>
+This endpoint does not support query parameters for filtering, pagination, or search. It returns all vendor summaries in a single response.
+</Note>
+
+## Response
+
+The response is an array of vendor summary objects.
+
+<Expandable title="Vendor Summary Object">
+  <ResponseField name="vendor" type="string">
+    The vendor/brand name
+  </ResponseField>
+  
+  <ResponseField name="product_count" type="number">
+    Total number of products from this vendor
+  </ResponseField>
+  
+  <ResponseField name="latest_product_updated_at" type="string">
+    ISO 8601 timestamp of the most recently updated product from this vendor
+  </ResponseField>
+</Expandable>
+
+## Error Responses
+
+<ResponseField name="error" type="string">
+  Error message describing what went wrong
+</ResponseField>
+
+<ResponseField name="details" type="string" optional>
+  Additional details about the error
+</ResponseField>
+
+<ResponseField name="code" type="string" optional>
+  Error code for programmatic handling. Possible values:
+  - `TIMEOUT`: Request timeout occurred
+  - `DB_TIMEOUT`: Database query timeout
+  - `FUNCTION_NOT_FOUND`: Database function not found
+  - `DB_ERROR`: Generic database error
+  - `INTERNAL_ERROR`: Unexpected server error
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET https://catalogai.vercel.app/api/vendors \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch('https://catalogai.vercel.app/api/vendors', {
+  headers: {
+    'x-api-key': 'YOUR_API_KEY'
+  }
+});
+
+const data = await response.json();
+console.log(`Found ${data.length} vendors`);
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://catalogai.vercel.app/api/vendors',
+    headers={'x-api-key': 'YOUR_API_KEY'}
+)
+
+data = response.json()
+print(f"Found {len(data)} vendors")
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+[
+  {
+    "vendor": "skims",
+    "latest_product_updated_at": "2025-07-29T17:54:36.194088+00:00",
+    "product_count": 4588
+  },
+  {
+    "vendor": "thereformation",
+    "latest_product_updated_at": "2025-07-27T23:07:49.013718+00:00",
+    "product_count": 5029
+  },
+  {
+    "vendor": "universalstore",
+    "latest_product_updated_at": "2025-07-29T20:06:53.282267+00:00",
+    "product_count": 7475
+  }
+]
+```
+
+</ResponseExample>

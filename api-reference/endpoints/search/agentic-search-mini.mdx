@@ -1,10 +1,10 @@
 ---
 title: "Agentic Search Mini"
 api: "POST https://api.getcatalog.ai/v1/agentic-search-mini"
-description: "Fast intelligent product discovery using Google Shopping with AI-powered attribute enrichment. Get up to 10 products with detailed attributes in milliseconds."
+description: "Fast unbounded product discovery with AI-powered attribute enrichment. Get up to 10 products with detailed attributes in milliseconds."
 ---
 
-The Agentic Search Mini endpoint provides fast, intelligent product discovery using Google Shopping data enhanced with AI-powered attribute analysis. This lightweight endpoint is optimized for speed while still providing detailed product attributes through optional AI enrichment.
+The Agentic Search Mini endpoint provides fast, intelligent product discovery enhanced with AI-powered attribute analysis. This lightweight endpoint is optimized for speed while still providing detailed product attributes through optional AI enrichment.
 
 ## When to use Agentic Search Mini
 
@@ -12,7 +12,6 @@ Use this endpoint when you need:
 - **Fast product discovery** with sub-second response times
 - **Limited result set** of up to 10 high-quality products
 - **AI-powered attribute enrichment** for detailed product analysis
-- **Google Shopping integration** for current product availability
 
 For larger result sets or more comprehensive search capabilities, consider using the [full Agentic Search endpoint](/api-reference/endpoints/search/agentic-search) instead.
 
@@ -128,7 +127,6 @@ The API returns up to 10 products with detailed information and optional AI-enri
 | **Response Time** | < 1 second | < 500ms | 1-3 seconds |
 | **Max Results** | 10 products | 50+ products | 50+ products |
 | **AI Enrichment** | ✅ Optional | ❌ No | ✅ Advanced |
-| **Data Source** | Google Shopping | Multiple sources | Multiple sources |
 | **Best For** | Fast discovery | High-volume searches | Comprehensive analysis |
 
 ## Example implementation
